@@ -549,7 +549,8 @@ begin
     {$else}
     avk_TSimpleButton(GetFraimById(GetIdByName('Производительность'))).LabelCaption.Caption:= 'Это не дебаг';
     {$EndIf}
-    if not NeedToRender then begin
+    //if not NeedToRender then begin
+    begin
       if key_Down( K_A ) or key_Down( K_LEFT ) then begin
         WievPanel.X := WievPanel.X - SpeedLost;
         NeedToRender := true;
