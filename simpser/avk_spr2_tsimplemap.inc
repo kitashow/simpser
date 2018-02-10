@@ -76,7 +76,7 @@ procedure avk_TSimpleMap.DoProcLot();
 var
   STPntX, STPntY: Single;
   TMPRt: zglPRenderTarget;
-  CKL1, CKL2: Integer;
+  CKL0, CKL1, CKL2: Integer;
   DrawSpr: avk_TSimpleTile;
 begin
   if (PrevRoundPnt.X = round(WievPanel.X))
@@ -86,31 +86,35 @@ begin
   PrevRoundPnt.X := round(WievPanel.X);
   PrevRoundPnt.Y := round(WievPanel.Y);
 
-  StrX := (trunc(WievPanel.X) div TileSizeW);
-  STPntX := (StrX * TileSizeW) - WievPanel.X;
-  StrY := trunc(WievPanel.Y) div TileSizeH;
-  STPntY := (StrY * TileSizeH) - WievPanel.Y;
+  STPntX := (TileBildInWP.X * TileSizeW) - WievPanel.X;
+  STPntY := (TileBildInWP.Y * TileSizeH) - WievPanel.Y;
 
   if (WrtSCR = nil) or (rtSCR1 = WrtSCR) then
     TMPRt := rtSCR2 else TMPRt := rtSCR1;
 
   //теперь рендерим в нее
   rtarget_Set( TMPRt );//начали
+  StrX := (TileBildInWP.X - 1);
+  StrY := (TileBildInWP.Y - 1);
+  //for CKL0 := 0 to FCountLoyer - 1 do begin
+  for CKL0 := 0 to 0 do begin //заглушка
+    for CKL1 := StrX to (TileBildInWP.W + 1) do begin //+1 для запаса на дергания
+      for CKL2 := StrY to (TileBildInWP.H + 1) do begin
+        if (CKL1 < 0) or (CKL2 < 0) or (CKL1 > (FCountTileX - 1)) or (CKL2 > (FCountTileY - 1)) then
+          DrawSpr := nil
+        else
+          DrawSpr := LOT[CKL0, CKL1, CKL2];
+        if not(DrawSpr = nil) then begin
+          DrawSpr.DoProc(Self);
 
-  for CKL1 := StrX to (StrX + StpX) do
-    for CKL2 := StrY to (StrY + StpY) do begin
-      if (CKL1 < 0) or (CKL2 < 0) or (CKL1 > (FCountTileX - 1)) or (CKL2 > (FCountTileY - 1)) then
-        DrawSpr := nil
-      else
-        DrawSpr := LOT[CKL1,CKL2];
-      if not(DrawSpr = nil) then begin
-        DrawSpr.DoProc(Self);
-
-        DrawSpr.X := STPntX + ((CKL1 - StrX) * TileSizeW);
-        DrawSpr.Y := STPntY + ((CKL2 - StrY) * TileSizeH);
-        DrawSpr.DoDraw(Self);
+          //TODO: посчитать отклонения этажей
+          DrawSpr.X := STPntX + ((CKL1 - StrX) * TileSizeW);
+          DrawSpr.Y := STPntY + ((CKL2 - StrY) * TileSizeH);
+          DrawSpr.DoDraw(Self);
+        end;
       end;
     end;
+  end;
 
   rtarget_Set( nil );//закончили
   WrtSCR := TMPRt;
@@ -146,6 +150,12 @@ begin
   PrevTileBildInWP := TileBildInWP;
 
   TileBildInWP.X := trunc(WievPanel.X / TileSizeW); //это с какой начинать
+  if TileBildInWP.X = PrevRoundPnt.X then
+    Exit
+  else begin
+    //для скорости просто вычту
+    TileBildInWP.W := TileBildInWP.W + TileBildInWP.X - PrevRoundPnt.X;
+  end;
 
 end;
 

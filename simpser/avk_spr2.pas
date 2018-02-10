@@ -113,8 +113,9 @@ avk_TSimpleMap = class (avk_TElement)
     PrevRoundPnt: zglTPoint2D;
     procedure DoProc(Sender: TObject);
   public //private
-    FCountTileX: integer;
-    FCountTileY: integer;
+    FCountLoyer: integer; //слоев (этажей)
+    FCountTileX: integer; //по Х
+    FCountTileY: integer; //по Y
     FOnAfterProc: TNotifyEvent;
     FOnBeforeProc: TNotifyEvent;
     StrX: Integer;
@@ -138,7 +139,7 @@ avk_TSimpleMap = class (avk_TElement)
     Hide: boolean;
     FxFlags : LongWord;//флаги, для маштаба не забыть!
     NeedToRender: boolean;
-    LOT : array of array of avk_TSimpleTile;
+    LOT : array of array of array of avk_TSimpleTile; //слой, горизонталь, вертикаль
     EmpityTex : zglPTexture;
     Animate: boolean;
   public
@@ -148,6 +149,7 @@ avk_TSimpleMap = class (avk_TElement)
   public
     property TileSizeW: Integer read FTileSizeW write SetTileSizeW;
     property TileSizeH: Integer read FTileSizeH write SetTileSizeH;
+    property CountLoyer: Integer read FCountLoyer;
     property CountTileW: Integer read FCountTileX;
     property CountTileH: Integer read FCountTileY;
   public
