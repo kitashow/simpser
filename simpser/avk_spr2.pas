@@ -56,10 +56,14 @@ uses
   , zgl_main;
 
 type
+{ avk_TIntegerRect }
+avk_TIntegerRect = record
+  X, Y, W, H : Integer;
+end;
 
-  { avk_TSimpleTile }
+{ avk_TSimpleTile }
 
-  avk_TSimpleTile = class (TObject)
+avk_TSimpleTile = class (TObject)
   private
     FAngle: Single;
     FOnAfterProc: TNotifyEvent;
@@ -94,16 +98,21 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-  end;
+end;
 
-  { avk_TSimpleMap2 }
+{ avk_TSimpleMap }
 
-  avk_TSimpleMap = class (avk_TElement)
+avk_TSimpleMap = class (avk_TElement)
+  {$IfDef Debug}
   public
+    CalcPrgs: Integer;
+    CalcDraw: Integer;
+  {$EndIf}
+  public //private
     HowManyConvert: Integer;
     PrevRoundPnt: zglTPoint2D;
     procedure DoProc(Sender: TObject);
-  public
+  public //private
     FCountTileX: integer;
     FCountTileY: integer;
     FOnAfterProc: TNotifyEvent;
@@ -123,18 +132,15 @@ type
     procedure SetTileSizeW(AValue: Integer);
   public
     WievPanel: zglTRect;
+    TileBildInWP: avk_TIntegerRect;
+    procedure SetWiewPanelX(AValue: Single);
+  public
     Hide: boolean;
     FxFlags : LongWord;//флаги, для маштаба не забыть!
     NeedToRender: boolean;
     LOT : array of array of avk_TSimpleTile;
     EmpityTex : zglPTexture;
     Animate: boolean;
-
- {$IfDef Debug}
-  public
-    CalcPrgs: Integer;
-    CalcDraw: Integer;
- {$EndIf}
   public
     procedure SetAreaElement(const InX,InY,InW,InH: Single);
     procedure DoDraw(Sender: TObject);
@@ -150,7 +156,7 @@ type
   public
     constructor Create(const InParent: avk_TFraim = nil; InName: String = '');
     destructor Destroy; override;
-  end;
+end;
 
 
 implementation

@@ -62,8 +62,8 @@ begin
   CalcPrgs := CalcPrgs + 1;
   if CalcPrgs = High(CalcPrgs) then CalcPrgs := 0;
   {$EndIf}
-  //if HowManyConvert > 10 then begin
-    NeedToRender := Animate;
+  //if HowManyConvert > 3 then begin
+    //NeedToRender := Animate;
     DoProcLot;
     HowManyConvert := 0;
   //end else
@@ -134,6 +134,19 @@ begin
   if FTileSizeW=AValue then Exit;
   FTileSizeW:=AValue;
   SetAreaElement(AreaElement);
+end;
+
+procedure avk_TSimpleMap.SetWiewPanelX(AValue: Single);
+var
+  PrevTileBildInWP: avk_TIntegerRect;
+begin
+  if AValue = WievPanel.X then Exit;
+
+  PrevRoundPnt.X := round(WievPanel.X);
+  PrevTileBildInWP := TileBildInWP;
+
+  TileBildInWP.X := trunc(WievPanel.X / TileSizeW); //это с какой начинать
+
 end;
 
 constructor avk_TSimpleMap.Create(const InParent: avk_TFraim; InName: String);
