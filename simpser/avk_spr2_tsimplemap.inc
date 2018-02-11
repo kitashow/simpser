@@ -47,58 +47,69 @@ begin
   if Assigned(FOnAfterProc) then FOnAfterProc(Self);
 end;
 
-procedure avk_TSimpleMap.DoProcLot();
+procedure avk_TSimpleMap.DoLoyer(const ALoyer: Integer; const ASVert, ASHort, AFVert, AFHort: Integer);
 var
   STPntX, STPntY: Single;
-  TMPRt: zglPRenderTarget;
-  CKL0, CKL1, CKL2: Integer;
+  CKL1, CKL2, LocTileSizeW, LocTileSizeH: Integer;
+  MakePreviosFloor: Boolean;
   DrawSpr: avk_TSimpleTile;
-  MakePreviosFloor: boolean;
 begin
-  if (PrevRoundPnt.X = round(WievPanel.X))
-  and (PrevRoundPnt.Y = round(WievPanel.Y)) then
-    Exit;
+  //размеры тайла на PersemtPreviousLoyer% меньше на этаже ниже
+  if ALoyer >= CountLoyer then Exit; //дырка в никуда
 
-  PrevRoundPnt.X := round(WievPanel.X);
-  PrevRoundPnt.Y := round(WievPanel.Y);
+  LocTileSizeW := TileSizeW;
+  LocTileSizeH := TileSizeH;
+  if ALoyer > NowLoyer then begin
+     LocTileSizeW := trunc(TileSizeW * (PersemtPreviousLoyer * 0.01));
+     LocTileSizeH := trunc(TileSizeH * (PersemtPreviousLoyer * 0.01));
+  end;
 
-  STPntX := (TileBildInWP.X * TileSizeW) - WievPanel.X;
-  STPntY := (TileBildInWP.Y * TileSizeH) - WievPanel.Y;
+  if NeedToRender then begin
+    STPntX := (ASVert * LocTileSizeW) - WievPanel.X;
+    STPntY := (ASHort * LocTileSizeH) - WievPanel.Y;
+  end;
 
+  for CKL1 := ASVert - 1 to AFVert + 1 do
+    for CKL2 := ASHort - 1 to AFHort + 1 do begin
+      if (CKL1 < 0) or (CKL2 < 0) or (CKL1 > (FCountTileX - 1)) or (CKL2 > (FCountTileY - 1)) then begin
+        DrawSpr := nil;
+      end else begin
+        DrawSpr := LOT[NowLoyer, CKL1, CKL2];
+        MakePreviosFloor := DrawSpr = nil;
+        if not MakePreviosFloor then
+          MakePreviosFloor := DrawSpr.HaveAlpha;
+      end;
+
+      if MakePreviosFloor then begin
+        DoPreviousLoyer(NowLoyer + 1, CKL1, CKL2, CKL1, CKL2); //ToDo: большие дырки вызовут пересчеты ((((
+      end;
+
+      if not(DrawSpr = nil) then begin
+        DrawSpr.DoProc(Self); // анимация
+        if NeedToRender then begin
+          DrawSpr.X := STPntX + (CKL1 * LocTileSizeW);
+          DrawSpr.Y := STPntY + (CKL2 * LocTileSizeH);
+        end;
+        DrawSpr.DoDraw(Self);
+      end;
+
+    end;//CKL2
+end;
+
+procedure avk_TSimpleMap.DoProcLot();
+var
+  TMPRt: zglPRenderTarget;
+begin
   if (WrtSCR = nil) or (rtSCR1 = WrtSCR) then
     TMPRt := rtSCR2 else TMPRt := rtSCR1;
 
   //теперь рендерим в нее
   rtarget_Set( TMPRt );//начали
 
-  StrX := (TileBildInWP.X - 1);
-  StrY := (TileBildInWP.Y - 1);
-  MakePreviosFloor := False;
-
-  for CKL1 := StrX to (TileBildInWP.W + 1) do begin //+1 для запаса на дергания
-    for CKL2 := StrY to (TileBildInWP.H + 1) do begin
-      if (CKL1 < 0) or (CKL2 < 0) or (CKL1 > (FCountTileX - 1)) or (CKL2 > (FCountTileY - 1)) then begin
-        DrawSpr := nil;
-        MakePreviosFloor := True;
-      end else begin
-        DrawSpr := LOT[NowLoyer, CKL1, CKL2];
-        MakePreviosFloor := DrawSpr.HaveAlpha;
-      end;
-
-      if MakePreviosFloor then begin
-        //ToDo: отрисовка нижнего этажа
-      end;
-
-      if not(DrawSpr = nil) then begin
-        DrawSpr.DoProc(Self); // анимация
-        DrawSpr.X := STPntX + ((CKL1 - StrX) * TileSizeW);
-        DrawSpr.Y := STPntY + ((CKL2 - StrY) * TileSizeH);
-        DrawSpr.DoDraw(Self);
-      end;
-    end;
-  end;
+  DoPreviousLoyer(NowLoyer, TileBildInWP.X, TileBildInWP.Y, TileBildInWP.W, TileBildInWP.H);
 
   rtarget_Set( nil );//закончили
+
   WrtSCR := TMPRt;
 end;
 
@@ -134,9 +145,11 @@ begin
   CurrValueKoord := trunc(AWievPanelKoord / ATileSizeWH); //это с какой начинать
   if CurrValueKoord = PrevValueKoord then
     Exit
-  else
+  else begin
     //для скорости просто вычту
     ATileBildInWP_WH := ATileBildInWP_WH + CurrValueKoord - PrevValueKoord;
+    NeedToRender := true;
+  end;
 
 end;
 

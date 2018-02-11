@@ -112,6 +112,7 @@ avk_TSimpleMap = class (avk_TElement)
   public //private
     HowManyConvert: Integer;
     PrevRoundPnt: zglTPoint2D;
+    procedure DoLoyer(const ALoyer: Integer; const ASVert, ASHort, AFVert, AFHort: Integer);
     procedure CalcAfterMove(const AWievPanelKoord: Single; const ATileSizeWH: Integer;
       var ATileBildInWPKoord, ATileBildInWP_WH: Integer);
   public //private
@@ -146,6 +147,7 @@ avk_TSimpleMap = class (avk_TElement)
     LOT : array of array of array of avk_TSimpleTile; //слой, горизонталь, вертикаль
     EmpityTex : zglPTexture;
     Animate: boolean;
+    PersemtPreviousLoyer: Integer;
   public
     procedure SetAreaElement(const InX,InY,InW,InH: Single);
     procedure DoDraw(Sender: TObject);
