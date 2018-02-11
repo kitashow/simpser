@@ -29,31 +29,6 @@ begin
   ssprite2d_Draw( WrtSCR.Surface, GetAbsolyteArea.X, GetAbsolyteArea.Y, AreaElement.W, AreaElement.H, 0, Transparence, FxFlags );
 end;
 
-procedure avk_TSimpleMap.SetSizeMap(const CountW, CountH: Integer);
-var
-  TmpX, TmpY: Integer;
-  CKL1: Integer;
-  CKL2: Integer;
-begin
-  if (CountW = FCountTileX) and (CountH = FCountTileY) then Exit;
-  TmpX := trunc(max(CountW,FCountTileX)) - 1;
-  TmpY := trunc(max(CountH,FCountTileY)) - 1;
-  if CountW > FCountTileX then SetLength(LOT,CountW);//Карта меньше, надо заполнять
-  for CKL1 := 0 to TmpX do begin
-    if CKL1 >= FCountTileY then SetLength(LOT[CKL1],CountH);//Карта меньше, надо заполнять
-    for CKL2 := 0 to TmpY do begin
-      if (CKL1 > CountW) or (CKL2 >= CountH) then //Карта больше новых значений, надо прибивать
-        if LOT[CKL1,CKL2] <> nil then LOT[CKL1,CKL2].Destroy;
-      if (CKL1 > FCountTileX) or (CKL2 >= FCountTileY) then //Карта меньше, надо заполнять
-        LOT[CKL1,CKL2] := nil;
-    end;
-    if CKL1 >= CountW then SetLength(LOT[CKL1],0);//Карта больше новых значений, надо прибивать
-  end;
-  if CountW < FCountTileX then SetLength(LOT,CountW);//Карта меньше, надо заполнять
-  FCountTileX := CountW;
-  FCountTileY := CountH;
-end;
-
 procedure avk_TSimpleMap.DoProc(Sender: TObject);
 begin
   if Assigned(FOnBeforeProc) then FOnBeforeProc(Self);
@@ -78,6 +53,7 @@ var
   TMPRt: zglPRenderTarget;
   CKL0, CKL1, CKL2: Integer;
   DrawSpr: avk_TSimpleTile;
+  MakePreviosFloor: boolean;
 begin
   if (PrevRoundPnt.X = round(WievPanel.X))
   and (PrevRoundPnt.Y = round(WievPanel.Y)) then
@@ -94,24 +70,30 @@ begin
 
   //теперь рендерим в нее
   rtarget_Set( TMPRt );//начали
+
   StrX := (TileBildInWP.X - 1);
   StrY := (TileBildInWP.Y - 1);
-  //for CKL0 := 0 to FCountLoyer - 1 do begin
-  for CKL0 := 0 to 0 do begin //заглушка
-    for CKL1 := StrX to (TileBildInWP.W + 1) do begin //+1 для запаса на дергания
-      for CKL2 := StrY to (TileBildInWP.H + 1) do begin
-        if (CKL1 < 0) or (CKL2 < 0) or (CKL1 > (FCountTileX - 1)) or (CKL2 > (FCountTileY - 1)) then
-          DrawSpr := nil
-        else
-          DrawSpr := LOT[CKL0, CKL1, CKL2];
-        if not(DrawSpr = nil) then begin
-          DrawSpr.DoProc(Self);
+  MakePreviosFloor := False;
 
-          //TODO: посчитать отклонения этажей
-          DrawSpr.X := STPntX + ((CKL1 - StrX) * TileSizeW);
-          DrawSpr.Y := STPntY + ((CKL2 - StrY) * TileSizeH);
-          DrawSpr.DoDraw(Self);
-        end;
+  for CKL1 := StrX to (TileBildInWP.W + 1) do begin //+1 для запаса на дергания
+    for CKL2 := StrY to (TileBildInWP.H + 1) do begin
+      if (CKL1 < 0) or (CKL2 < 0) or (CKL1 > (FCountTileX - 1)) or (CKL2 > (FCountTileY - 1)) then begin
+        DrawSpr := nil;
+        MakePreviosFloor := True;
+      end else begin
+        DrawSpr := LOT[NowLoyer, CKL1, CKL2];
+        MakePreviosFloor := DrawSpr.HaveAlpha;
+      end;
+
+      if MakePreviosFloor then begin
+        //ToDo: отрисовка нижнего этажа
+      end;
+
+      if not(DrawSpr = nil) then begin
+        DrawSpr.DoProc(Self); // анимация
+        DrawSpr.X := STPntX + ((CKL1 - StrX) * TileSizeW);
+        DrawSpr.Y := STPntY + ((CKL2 - StrY) * TileSizeH);
+        DrawSpr.DoDraw(Self);
       end;
     end;
   end;
@@ -140,23 +122,34 @@ begin
   SetAreaElement(AreaElement);
 end;
 
-procedure avk_TSimpleMap.SetWiewPanelX(AValue: Single);
+procedure avk_TSimpleMap.CalcAfterMove(const AWievPanelKoord: Single; const ATileSizeWH: Integer;
+  var ATileBildInWPKoord, ATileBildInWP_WH: Integer);
 var
-  PrevTileBildInWP: avk_TIntegerRect;
+  PrevValueKoord: Integer;
+  CurrValueKoord: Integer;
+begin
+  PrevRoundPnt.X := round(WievPanel.X);
+  PrevValueKoord := ATileBildInWPKoord;
+
+  CurrValueKoord := trunc(AWievPanelKoord / ATileSizeWH); //это с какой начинать
+  if CurrValueKoord = PrevValueKoord then
+    Exit
+  else
+    //для скорости просто вычту
+    ATileBildInWP_WH := ATileBildInWP_WH + CurrValueKoord - PrevValueKoord;
+
+end;
+
+procedure avk_TSimpleMap.SetWiewPanelX(AValue: Single);
 begin
   if AValue = WievPanel.X then Exit;
+  CalcAfterMove(WievPanel.X, TileSizeW, TileBildInWP.X, TileBildInWP.W);
+end;
 
-  PrevRoundPnt.X := round(WievPanel.X);
-  PrevTileBildInWP := TileBildInWP;
-
-  TileBildInWP.X := trunc(WievPanel.X / TileSizeW); //это с какой начинать
-  if TileBildInWP.X = PrevRoundPnt.X then
-    Exit
-  else begin
-    //для скорости просто вычту
-    TileBildInWP.W := TileBildInWP.W + TileBildInWP.X - PrevRoundPnt.X;
-  end;
-
+procedure avk_TSimpleMap.SetWiewPanelY(AValue: Single);
+begin
+  if AValue = WievPanel.Y then Exit;
+  CalcAfterMove(WievPanel.Y, TileSizeH, TileBildInWP.Y, TileBildInWP.H);
 end;
 
 constructor avk_TSimpleMap.Create(const InParent: avk_TFraim; InName: String);
@@ -191,14 +184,17 @@ end;
 
 destructor avk_TSimpleMap.Destroy;
 var
-  CKL1: Integer;
-  CKL2: Integer;
+  CKL0, CKL1, CKL2: Integer;
 begin
-  for CKL1 := 0 to CountTileW - 1 do begin
-    for CKL2 := 0 to CountTileH - 1 do begin
-      LOT[CKL1,CKL2].Destroy;
+  for CKL0 := 0 to CountLoyer - 1 do begin
+    for CKL1 := 0 to CountTileW - 1 do begin
+      for CKL2 := 0 to CountTileH - 1 do begin
+        if LOT[CKL0, CKL1, CKL2] <> nil then
+          LOT[CKL0, CKL1, CKL2].Destroy;
+      end;
+      SetLength(LOT[CKL0, CKL1] ,0);
     end;
-    SetLength(LOT[CKL1],0);
+    SetLength(LOT[CKL0] ,0);
   end;
   SetLength(LOT,0);
   inherited Destroy;

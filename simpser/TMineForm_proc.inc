@@ -326,7 +326,7 @@ begin
   TmpMap.TileSizeH := 64;
   TmpMap.WievPanel.W := 1000;
   TmpMap.WievPanel.H := 680;
-  TmpMap.SetSizeMap(100,90);
+  //TmpMap.SetSizeMap(100,90);
   for CKL1 := 0 to TmpMap.CountTileW - 1 do begin
     for CKL2 := 0 to TmpMap.CountTileH - 1 do begin
       NumSpr := Random(6);
@@ -347,7 +347,7 @@ begin
       end;
       SprTile.W := TmpMap.TileSizeW;
       SprTile.H := TmpMap.TileSizeH;
-      TmpMap.LOT[CKL1,CKL2] := SprTile;
+      TmpMap.LOT[0, CKL1,CKL2] := SprTile;
     end;
   end;
   TmpMap.SetAreaElement(0,0,1000,680);

@@ -88,6 +88,7 @@ avk_TSimpleTile = class (TObject)
     Hide    : boolean;
     Animate : boolean;
     TexFrame: Word; //номер фрейма внутри текстуры
+    HaveAlpha: boolean;
   public
     property Angle: Single read GetAngle write SetAngle;//поворот спрайта
     property OnBeforeProc: TNotifyEvent read FOnBeforeProc write FOnBeforeProc;
@@ -111,7 +112,8 @@ avk_TSimpleMap = class (avk_TElement)
   public //private
     HowManyConvert: Integer;
     PrevRoundPnt: zglTPoint2D;
-    procedure DoProc(Sender: TObject);
+    procedure CalcAfterMove(const AWievPanelKoord: Single; const ATileSizeWH: Integer;
+      var ATileBildInWPKoord, ATileBildInWP_WH: Integer);
   public //private
     FCountLoyer: integer; //слоев (этажей)
     FCountTileX: integer; //по Х
@@ -135,17 +137,19 @@ avk_TSimpleMap = class (avk_TElement)
     WievPanel: zglTRect;
     TileBildInWP: avk_TIntegerRect;
     procedure SetWiewPanelX(AValue: Single);
+    procedure SetWiewPanelY(AValue: Single);
   public
     Hide: boolean;
     FxFlags : LongWord;//флаги, для маштаба не забыть!
     NeedToRender: boolean;
+    NowLoyer: Integer;
     LOT : array of array of array of avk_TSimpleTile; //слой, горизонталь, вертикаль
     EmpityTex : zglPTexture;
     Animate: boolean;
   public
     procedure SetAreaElement(const InX,InY,InW,InH: Single);
     procedure DoDraw(Sender: TObject);
-    procedure SetSizeMap(const CountW,CountH: Integer);
+    procedure DoProc(Sender: TObject);
   public
     property TileSizeW: Integer read FTileSizeW write SetTileSizeW;
     property TileSizeH: Integer read FTileSizeH write SetTileSizeH;

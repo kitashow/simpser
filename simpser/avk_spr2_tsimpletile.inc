@@ -54,6 +54,7 @@ begin
   StopCadre:=1;
   NowCadre := 1;
   Animate  := true;
+  HaveAlpha := false;
 end;
 
 destructor avk_TSimpleTile.Destroy;
