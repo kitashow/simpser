@@ -326,7 +326,7 @@ begin
   TmpMap.TileSizeH := 64;
   TmpMap.WievPanel.W := 1000;
   TmpMap.WievPanel.H := 680;
-  //TmpMap.SetSizeMap(100,90);
+  TmpMap.SetSizeMap(1, 100, 90);
   for CKL1 := 0 to TmpMap.CountTileW - 1 do begin
     for CKL2 := 0 to TmpMap.CountTileH - 1 do begin
       NumSpr := Random(6);
@@ -351,8 +351,8 @@ begin
     end;
   end;
   TmpMap.SetAreaElement(0,0,1000,680);
-  TmpMap.WievPanel.X := 1500;
-  TmpMap.WievPanel.Y := 1000;
+  TmpMap.SetWiewPanelX(1500);
+  TmpMap.SetWiewPanelY(1000);
   TmpMap.GetMouse := false; //Не должен брать мыш
   TmpMap.Layer := 1;
   TmpMap.EmpityTex := MineForm.TexManager.TexName['пол1'];

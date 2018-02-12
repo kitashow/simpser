@@ -113,8 +113,9 @@ avk_TSimpleMap = class (avk_TElement)
     HowManyConvert: Integer;
     PrevRoundPnt: zglTPoint2D;
     procedure DoLoyer(const ALoyer: Integer; const ASVert, ASHort, AFVert, AFHort: Integer);
-    procedure CalcAfterMove(const AWievPanelKoord: Single; const ATileSizeWH: Integer;
-      var ATileBildInWPKoord, ATileBildInWP_WH: Integer);
+    procedure CalcAfterMove(const AWievPanelKoord, AWievPanelSize: Single;
+      const ATileSizeWH: Integer; var ATileBildInWPKoord,
+  ATileBildInWP_WH: Integer);
   public //private
     FCountLoyer: integer; //слоев (этажей)
     FCountTileX: integer; //по Х
