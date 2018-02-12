@@ -165,6 +165,28 @@ begin
   CalcAfterMove(WievPanel.Y, TileSizeH, TileBildInWP.Y, TileBildInWP.H);
 end;
 
+procedure avk_TSimpleMap.SetSizeMap(const ACountL, ACountW, ACountH: Integer);
+var
+  CKL1: Integer;
+  CKL2: Integer;
+begin
+  if (CountW = FCountTileX) and (CountH = FCountTileY) then Exit;
+
+  if not((FCountLoyer = 0) and (FCountTileX = 0) and (FCountTileY = 0)) then ClearMap;
+
+  for CKL0 := 0 to ACountL - 1 do
+    for CKL1 := 0 to ACountW - 1 do begin
+      SetLength(LOT[CKL0, CKL1], ACountH);
+      for CKL2 := 0 to ACountH - 1 do
+          LOT[CKL0, CKL1, CKL2] := nil;
+    end;
+
+  FCountLoyer := ACountL;
+  FCountTileX := ACountW;
+  FCountTileY := ACountH;
+end;
+
+
 constructor avk_TSimpleMap.Create(const InParent: avk_TFraim; InName: String);
 begin
   inherited Create(InParent);
@@ -195,7 +217,7 @@ begin
   {$EndIf}
 end;
 
-destructor avk_TSimpleMap.Destroy;
+procedure avk_TSimpleMap.ClearMap;
 var
   CKL0, CKL1, CKL2: Integer;
 begin
@@ -210,6 +232,11 @@ begin
     SetLength(LOT[CKL0] ,0);
   end;
   SetLength(LOT,0);
+end;
+
+destructor avk_TSimpleMap.Destroy;
+begin
+  ClearMap;
   inherited Destroy;
 end;
 

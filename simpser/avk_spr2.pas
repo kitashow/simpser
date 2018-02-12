@@ -149,6 +149,7 @@ avk_TSimpleMap = class (avk_TElement)
     Animate: boolean;
     PersemtPreviousLoyer: Integer;
   public
+    procedure SetSizeMap(const ACountL, ACountW, ACountH: Integer);
     procedure SetAreaElement(const InX,InY,InW,InH: Single);
     procedure DoDraw(Sender: TObject);
     procedure DoProc(Sender: TObject);
@@ -162,6 +163,7 @@ avk_TSimpleMap = class (avk_TElement)
     property OnBeforeProc: TNotifyEvent read FOnBeforeProc write FOnBeforeProc;
     property OnAfterProc: TNotifyEvent read FOnAfterProc write FOnAfterProc;
   public
+    procedure ClearMap;
     constructor Create(const InParent: avk_TFraim = nil; InName: String = '');
     destructor Destroy; override;
 end;
