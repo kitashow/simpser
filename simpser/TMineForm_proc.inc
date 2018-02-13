@@ -324,8 +324,7 @@ begin
   TmpMap := avk_TSimpleMap.Create(tmpTestForm,'Тайловая карта');
   TmpMap.TileSizeW := 64;
   TmpMap.TileSizeH := 64;
-  TmpMap.WievPanel.W := 1000;
-  TmpMap.WievPanel.H := 680;
+  TmpMap.SetWievPanel(0, 0 , 1024, 768);
   TmpMap.SetSizeMap(1, 100, 90);
   for CKL1 := 0 to TmpMap.CountTileW - 1 do begin
     for CKL2 := 0 to TmpMap.CountTileH - 1 do begin
@@ -339,7 +338,7 @@ begin
         SprTile.W := 64;
         SprTile.H := 64;
         SprTile.StopCadre := 37;
-        SprTile.RateCadre := 40;
+        SprTile.RateCadre := 10;
         SprTile.Angle := 0;
       end else begin
         TmpNameSpr := 'пол' + avk_IntToStr(NumSpr);
@@ -351,8 +350,8 @@ begin
     end;
   end;
   TmpMap.SetAreaElement(0,0,1000,680);
-  TmpMap.SetWiewPanelX(1500);
-  TmpMap.SetWiewPanelY(1000);
+  TmpMap.SetWiewPanelX(780);
+  TmpMap.SetWiewPanelY(250);
   TmpMap.GetMouse := false; //Не должен брать мыш
   TmpMap.Layer := 1;
   TmpMap.EmpityTex := MineForm.TexManager.TexName['пол1'];
@@ -549,24 +548,17 @@ begin
     {$else}
     avk_TSimpleButton(GetFraimById(GetIdByName('Производительность'))).LabelCaption.Caption:= 'Это не дебаг';
     {$EndIf}
-    //if not NeedToRender then begin
-    begin
-      if key_Down( K_A ) or key_Down( K_LEFT ) then begin
-        WievPanel.X := WievPanel.X - SpeedLost;
-        NeedToRender := true;
-      end;
-      if key_Down( K_D ) or key_Down( K_RIGHT ) then begin
-        WievPanel.X := WievPanel.X + SpeedLost;
-        NeedToRender := true;
-      end;
-      if key_Down( K_W ) or key_Down( K_UP ) then begin
-        WievPanel.Y := WievPanel.Y - SpeedLost;
-        NeedToRender := true;
-      end;
-      if key_Down( K_S ) or key_Down( K_DOWN ) then begin
-        WievPanel.Y := WievPanel.Y + SpeedLost;
-        NeedToRender := true;
-      end;
+    if key_Down( K_A ) or key_Down( K_LEFT ) then begin
+      SetWiewPanelX(WievPanel.X - SpeedLost);
+    end;
+    if key_Down( K_D ) or key_Down( K_RIGHT ) then begin
+      SetWiewPanelX(WievPanel.X + SpeedLost);
+    end;
+    if key_Down( K_W ) or key_Down( K_UP ) then begin
+      SetWiewPanelY(WievPanel.Y - SpeedLost);
+    end;
+    if key_Down( K_S ) or key_Down( K_DOWN ) then begin
+      SetWiewPanelY(WievPanel.Y + SpeedLost);
     end;
   end;
 end;

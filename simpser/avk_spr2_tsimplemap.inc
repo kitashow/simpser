@@ -4,17 +4,17 @@
 procedure avk_TSimpleMap.SetAreaElement(const InX, InY, InW, InH: Single);
 begin
   inherited SetAreaElement(InX, InY, InW, InH);
-  WievPanel.X := InX;
-  WievPanel.Y := InY;
-  WievPanel.W := InW;
-  WievPanel.H := InH;
-  StrX := trunc(WievPanel.X) div FTileSizeW;
-  StpX := trunc(WievPanel.W) div FTileSizeW + 1;
-  StrY := trunc(WievPanel.Y) div FTileSizeH;
-  StpY := trunc(WievPanel.H) div FTileSizeH + 1;
-  rtSCR1 := rtarget_Add( tex_CreateZero( Trunc(InW), Trunc(InH) ), RT_CLEAR_COLOR );
-  rtSCR2 := rtarget_Add( tex_CreateZero( Trunc(InW), Trunc(InH) ), RT_CLEAR_COLOR );
-  EmpityTex := tex_CreateZero( Trunc(InW), Trunc(InH), $FF000000 );
+  //WievPanel.X := InX;
+  //WievPanel.Y := InY;
+  //WievPanel.W := InW;
+  //WievPanel.H := InH;
+  //StrX := trunc(WievPanel.X) div FTileSizeW;
+  //StpX := trunc(WievPanel.W) div FTileSizeW + 1;
+  //StrY := trunc(WievPanel.Y) div FTileSizeH;
+  //StpY := trunc(WievPanel.H) div FTileSizeH + 1;
+  //rtSCR1 := rtarget_Add( tex_CreateZero( Trunc(InW), Trunc(InH) ), RT_CLEAR_COLOR );
+  //rtSCR2 := rtarget_Add( tex_CreateZero( Trunc(InW), Trunc(InH) ), RT_CLEAR_COLOR );
+  //EmpityTex := tex_CreateZero( Trunc(InW), Trunc(InH), $FF000000 );
   NeedToRender := true;
 end;
 
@@ -33,18 +33,51 @@ procedure avk_TSimpleMap.DoProc(Sender: TObject);
 begin
   if Assigned(FOnBeforeProc) then FOnBeforeProc(Self);
 
-  {$IfDef Debug}
-  CalcPrgs := CalcPrgs + 1;
-  if CalcPrgs = High(CalcPrgs) then CalcPrgs := 0;
-  {$EndIf}
-  //if HowManyConvert > 3 then begin
-    //NeedToRender := Animate;
+  if HowManyConvert > 2 then begin
+    {$IfDef Debug}
+    CalcPrgs := CalcPrgs + 1;
+    if CalcPrgs = High(CalcPrgs) then CalcPrgs := 0;
+    {$EndIf}
     DoProcLot;
     HowManyConvert := 0;
-  //end else
-  //  HowManyConvert := HowManyConvert + 1;
+  end else
+    HowManyConvert := HowManyConvert + 1;
 
   if Assigned(FOnAfterProc) then FOnAfterProc(Self);
+end;
+
+procedure avk_TSimpleMap.FSetWievPanel(AValue: zglTRect);
+begin
+  if (FWievPanel.X = AValue.X)
+    and (FWievPanel.Y = AValue.Y)
+    and (FWievPanel.W = AValue.W)
+    and (FWievPanel.H = AValue.H)
+  then Exit;
+
+  FWievPanel:=AValue;
+
+  TileBildInWP.X := trunc(FWievPanel.X / TileSizeW) - 1;
+  TileBildInWP.W := trunc(FWievPanel.W / TileSizeW) + 1;
+
+  TileBildInWP.Y := trunc(FWievPanel.Y / TileSizeH) - 1;
+  TileBildInWP.H := trunc(FWievPanel.H / TileSizeH) + 1;
+
+  rtSCR1 := rtarget_Add( tex_CreateZero( Trunc(FWievPanel.W), Trunc(FWievPanel.H) ), RT_CLEAR_COLOR );
+  rtSCR2 := rtarget_Add( tex_CreateZero( Trunc(FWievPanel.W), Trunc(FWievPanel.H) ), RT_CLEAR_COLOR );
+  EmpityTex := tex_CreateZero( Trunc(FWievPanel.W), Trunc(FWievPanel.H), $FF000000 );
+  NeedToRender := true;
+
+end;
+
+procedure avk_TSimpleMap.SetWievPanel(X, Y, W, H: Single);
+var
+  OutVal: zglTRect;
+begin
+  OutVal.X := X;
+  OutVal.Y := Y;
+  OutVal.W := W;
+  OutVal.H := H;
+  FSetWievPanel(OutVal);
 end;
 
 procedure avk_TSimpleMap.DoLoyer(const ALoyer: Integer; const ASVert, ASHort, AFVert, AFHort: Integer);
@@ -53,6 +86,7 @@ var
   CKL1, CKL2, LocTileSizeW, LocTileSizeH: Integer;
   MakePreviosFloor: Boolean;
   DrawSpr: avk_TSimpleTile;
+  LokTLB: avk_TIntegerRect;
 begin
   //размеры тайла на PersemtPreviousLoyer% меньше на этаже ниже
   if ALoyer >= CountLoyer then Exit; //дырка в никуда
@@ -62,6 +96,7 @@ begin
   if ALoyer > NowLoyer then begin
      LocTileSizeW := trunc(TileSizeW * (PersemtPreviousLoyer * 0.01));
      LocTileSizeH := trunc(TileSizeH * (PersemtPreviousLoyer * 0.01));
+     NeedToRender := true;
   end;
 
   if NeedToRender then begin
@@ -69,8 +104,10 @@ begin
     STPntY := (ASHort * LocTileSizeH) - WievPanel.Y;
   end;
 
-  for CKL1 := ASVert - 1 to AFVert + 1 do
-    for CKL2 := ASHort - 1 to AFHort + 1 do begin
+  MakePreviosFloor := false;
+
+  for CKL1 := ASVert - 1 to ASVert + AFVert + 1 do
+    for CKL2 := ASHort - 1 to ASHort + AFHort + 1 do begin
       if (CKL1 < 0) or (CKL2 < 0) or (CKL1 > (FCountTileX - 1)) or (CKL2 > (FCountTileY - 1)) then begin
         DrawSpr := nil;
       end else begin
@@ -81,14 +118,18 @@ begin
       end;
 
       if MakePreviosFloor then begin
-        DoLoyer(NowLoyer + 1, CKL1, CKL2, CKL1, CKL2); //ToDo: большие дырки вызовут пересчеты ((((
+        DoLoyer(NowLoyer + 1, CKL1, CKL2, 1, 1); //ToDo: большие дырки вызовут пересчеты ((((
+        MakePreviosFloor := false;
       end;
 
-      if not(DrawSpr = nil) then begin
-        DrawSpr.DoProc(Self); // анимация
+      if not(DrawSpr = nil)then begin
+        if NeedToRender or DrawSpr.Animate then
+          DrawSpr.DoProc(Self); // анимация
         if NeedToRender then begin
           DrawSpr.X := STPntX + (CKL1 * LocTileSizeW);
           DrawSpr.Y := STPntY + (CKL2 * LocTileSizeH);
+          DrawSpr.W := LocTileSizeW;
+          DrawSpr.H := LocTileSizeH;
         end;
         DrawSpr.DoDraw(Self);
       end;
@@ -135,34 +176,18 @@ begin
   SetAreaElement(AreaElement);
 end;
 
-procedure avk_TSimpleMap.CalcAfterMove(const AWievPanelKoord, AWievPanelSize: Single; const ATileSizeWH: Integer;
-  var ATileBildInWPKoord, ATileBildInWP_WH: Integer);
-var
-  PrevValueKoord: Integer;
-  CurrValueKoord: Integer;
-begin
-  PrevValueKoord := ATileBildInWPKoord;
-
-  CurrValueKoord := trunc(AWievPanelKoord / ATileSizeWH); //это с какой начинать
-  //if not (CurrValueKoord = PrevValueKoord) then begin
-  //  //для скорости просто вычту
-  //  //ATileBildInWP_WH := ATileBildInWP_WH + CurrValueKoord - PrevValueKoord;
-    ATileBildInWP_WH := trunc((AWievPanelKoord + AWievPanelSize) / ATileSizeWH);
-    NeedToRender := true;
-  //end;
-
-end;
-
 procedure avk_TSimpleMap.SetWiewPanelX(AValue: Single);
 begin
-  if AValue = WievPanel.X then Exit;
-  CalcAfterMove(WievPanel.X, WievPanel.W, TileSizeW, TileBildInWP.X, TileBildInWP.W);
+  if AValue = FWievPanel.X then Exit;
+  FWievPanel.X := AValue;
+  TileBildInWP.X := trunc(FWievPanel.X / TileSizeW) - 1;
 end;
 
 procedure avk_TSimpleMap.SetWiewPanelY(AValue: Single);
 begin
-  if AValue = WievPanel.Y then Exit;
-  CalcAfterMove(WievPanel.Y, WievPanel.H, TileSizeH, TileBildInWP.Y, TileBildInWP.H);
+  if AValue = FWievPanel.Y then Exit;
+  FWievPanel.Y := AValue;
+  TileBildInWP.Y := trunc(FWievPanel.Y / TileSizeH) - 1;
 end;
 
 procedure avk_TSimpleMap.SetSizeMap(const ACountL, ACountW, ACountH: Integer);
@@ -194,15 +219,15 @@ begin
   Name := InName;
   with WievPanel do begin
     X := 0; Y := 0;
-    W := 0; H := 0;
+    W := 1024; H := 768;
   end;
   HowManyConvert := 0;
   PrevRoundPnt.X := -1;
   PrevRoundPnt.Y := -1;
   FCountTileX := 0;
   FCountTileY := 0;
-  TileSizeW := 0;
-  TileSizeH := 0;
+  TileSizeW := 32;
+  TileSizeH := 32;
   Hide := false;
   rtSCR1 := nil;
   rtSCR2 := nil;
@@ -217,9 +242,8 @@ begin
   NowLoyer := 0;
   with TileBildInWP do begin
     X := 0; Y := 0;
-    W := 0; H := 0;
+    W := 1; H := 1;
   end;
-
 
   {$IfDef Debug}
   CalcPrgs := 0;

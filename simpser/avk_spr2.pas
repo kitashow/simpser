@@ -113,10 +113,8 @@ avk_TSimpleMap = class (avk_TElement)
     HowManyConvert: Integer;
     PrevRoundPnt: zglTPoint2D;
     procedure DoLoyer(const ALoyer: Integer; const ASVert, ASHort, AFVert, AFHort: Integer);
-    procedure CalcAfterMove(const AWievPanelKoord, AWievPanelSize: Single;
-      const ATileSizeWH: Integer; var ATileBildInWPKoord,
-  ATileBildInWP_WH: Integer);
   public //private
+    FWievPanel: zglTRect;
     FCountLoyer: integer; //слоев (этажей)
     FCountTileX: integer; //по Х
     FCountTileY: integer; //по Y
@@ -136,10 +134,12 @@ avk_TSimpleMap = class (avk_TElement)
     procedure SetTileSizeH(AValue: Integer);
     procedure SetTileSizeW(AValue: Integer);
   public
-    WievPanel: zglTRect;
     TileBildInWP: avk_TIntegerRect;
+    procedure FSetWievPanel(AValue: zglTRect);
+    procedure SetWievPanel(X, Y, W, H : Single);
     procedure SetWiewPanelX(AValue: Single);
     procedure SetWiewPanelY(AValue: Single);
+    property WievPanel: zglTRect read FWievPanel write FSetWievPanel;
   public
     Hide: boolean;
     FxFlags : LongWord;//флаги, для маштаба не забыть!
@@ -168,7 +168,6 @@ avk_TSimpleMap = class (avk_TElement)
     constructor Create(const InParent: avk_TFraim = nil; InName: String = '');
     destructor Destroy; override;
 end;
-
 
 implementation
 
