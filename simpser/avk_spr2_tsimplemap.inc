@@ -16,7 +16,7 @@ procedure avk_TSimpleMap.DoProc(Sender: TObject);
 begin
   if Assigned(FOnBeforeProc) then FOnBeforeProc(Self);
 
-  if HowManyConvert > 2 then begin
+  if HowManyConvert > 6 then begin
     {$IfDef Debug}
     CalcPrgs := CalcPrgs + 1;
     if CalcPrgs = High(CalcPrgs) then CalcPrgs := 0;
@@ -132,7 +132,9 @@ begin
   FTileBildInWP.Y := trunc(FWievPanel.Y / TileSizeH) - 1;
   FTileBildInWP.H := trunc(FWievPanel.H / TileSizeH) + 1;
 
+  if rtSCR1 <> nil then rtarget_Del(rtSCR1);
   rtSCR1 := rtarget_Add( tex_CreateZero( Trunc(FWievPanel.W), Trunc(FWievPanel.H) ), RT_CLEAR_COLOR );
+  if rtSCR2 <> nil then rtarget_Del(rtSCR2);
   rtSCR2 := rtarget_Add( tex_CreateZero( Trunc(FWievPanel.W), Trunc(FWievPanel.H) ), RT_CLEAR_COLOR );
   NeedToRender := true;
 
@@ -192,6 +194,9 @@ constructor avk_TSimpleMap.Create(const InParent: avk_TFraim; InName: String);
 begin
   inherited Create(InParent);
   Name := InName;
+  rtSCR1 := nil;
+  rtSCR2 := nil;
+
   HowManyConvert := 0;
   Hide := false;
   NeedToRender := true;

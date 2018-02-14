@@ -327,7 +327,7 @@ begin
 
   TmpMap.SetSizeMap(1, 100, 90);
 
-  TmpMap.SetWievPanelSize(1024, 768);
+  TmpMap.SetWievPanelSize(2048, 1536);
   TmpMap.SetWiewPanelX(780);
   TmpMap.SetWiewPanelY(250);
 
@@ -359,11 +359,13 @@ begin
   TmpMap.Layer := 1;
   TmpMap.OnBeforeProc := DoPnlSprMove;
 
+  {$IfDef Debug}
   TmpBtn := avk_TSimpleButton.Create(TmpMap,'Производительность');
   TmpBtn.TexButton := MineForm.TexManager.TexName['Кнопка'];
   TmpBtn.SetAreaElement(1,649,100,30);
   TmpBtn.LabelCaption.Caption := '000000';
   TmpBtn.LabelCaption.FontColor := $8B0000;
+  {$EndIf}
 
 end;
 
@@ -547,8 +549,6 @@ begin
     SpeedLost := 0.5;
     {$IfDef Debug}
     avk_TSimpleButton(GetFraimById(GetIdByName('Производительность'))).LabelCaption.Caption:= 'P - D ' + avk_IntToStr(CalcPrgs - CalcDraw);
-    {$else}
-    avk_TSimpleButton(GetFraimById(GetIdByName('Производительность'))).LabelCaption.Caption:= 'Это не дебаг';
     {$EndIf}
     if key_Down( K_A ) or key_Down( K_LEFT ) then begin
       SetWiewPanelX(WievPanel.X - SpeedLost);
@@ -561,6 +561,7 @@ begin
     end;
     if key_Down( K_S ) or key_Down( K_DOWN ) then begin
       SetWiewPanelY(WievPanel.Y + SpeedLost);
+      //SetWievPanelSize(WievPanel.W + 20,  WievPanel.H + 20);
     end;
   end;
 end;
