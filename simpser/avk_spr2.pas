@@ -57,6 +57,7 @@ uses
 
 type
 { avk_TIntegerRect }
+
 avk_TIntegerRect = record
   X, Y, W, H : Integer;
 end;
@@ -109,34 +110,29 @@ avk_TSimpleMap = class (avk_TElement)
     CalcPrgs: Integer;
     CalcDraw: Integer;
   {$EndIf}
-  public //private
-    HowManyConvert: Integer;
-    PrevRoundPnt: zglTPoint2D;
-    procedure DoLoyer(const ALoyer: Integer; const ASVert, ASHort, AFVert, AFHort: Integer);
-  public //private
+  private
+    FOnAfterProc: TNotifyEvent;
+    FOnBeforeProc: TNotifyEvent;
+  private
     FWievPanel: zglTRect;
     FCountLoyer: integer; //слоев (этажей)
     FCountTileX: integer; //по Х
     FCountTileY: integer; //по Y
-    FOnAfterProc: TNotifyEvent;
-    FOnBeforeProc: TNotifyEvent;
-    StrX: Integer;
-    StpX: Integer;
-    StrY: Integer;
-    StpY: Integer;
     rtSCR1: zglPRenderTarget;//буфер 1
     rtSCR2: zglPRenderTarget;//буфер 2
     WrtSCR: zglPRenderTarget;//рабочий
+    FTileBildInWP: avk_TIntegerRect;
     FTileSizeW: Integer;
     FTileSizeH: Integer;
     procedure DoProcLot();
-    procedure SetCountTileX(AValue: integer);
     procedure SetTileSizeH(AValue: Integer);
     procedure SetTileSizeW(AValue: Integer);
+  private
+    HowManyConvert: Integer;
+    procedure DoLoyer(ALoyer, ASVert, ASHort, AFVert, AFHort: Integer);
   public
-    TileBildInWP: avk_TIntegerRect;
     procedure FSetWievPanel(AValue: zglTRect);
-    procedure SetWievPanel(X, Y, W, H : Single);
+    procedure SetWievPanelSize(W, H : Single);
     procedure SetWiewPanelX(AValue: Single);
     procedure SetWiewPanelY(AValue: Single);
     property WievPanel: zglTRect read FWievPanel write FSetWievPanel;
@@ -146,12 +142,9 @@ avk_TSimpleMap = class (avk_TElement)
     NeedToRender: boolean;
     NowLoyer: Integer;
     LOT : array of array of array of avk_TSimpleTile; //слой, горизонталь, вертикаль
-    EmpityTex : zglPTexture;
     Animate: boolean;
     PersemtPreviousLoyer: Integer;
   public
-    procedure SetSizeMap(const ACountL, ACountW, ACountH: Integer);
-    procedure SetAreaElement(const InX,InY,InW,InH: Single);
     procedure DoDraw(Sender: TObject);
     procedure DoProc(Sender: TObject);
   public
@@ -160,6 +153,7 @@ avk_TSimpleMap = class (avk_TElement)
     property CountLoyer: Integer read FCountLoyer;
     property CountTileW: Integer read FCountTileX;
     property CountTileH: Integer read FCountTileY;
+    procedure SetSizeMap(const ACountL, ACountW, ACountH: Integer);
   public
     property OnBeforeProc: TNotifyEvent read FOnBeforeProc write FOnBeforeProc;
     property OnAfterProc: TNotifyEvent read FOnAfterProc write FOnAfterProc;

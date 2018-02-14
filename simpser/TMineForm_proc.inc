@@ -324,8 +324,13 @@ begin
   TmpMap := avk_TSimpleMap.Create(tmpTestForm,'Тайловая карта');
   TmpMap.TileSizeW := 64;
   TmpMap.TileSizeH := 64;
-  TmpMap.SetWievPanel(0, 0 , 1024, 768);
+
   TmpMap.SetSizeMap(1, 100, 90);
+
+  TmpMap.SetWievPanelSize(1024, 768);
+  TmpMap.SetWiewPanelX(780);
+  TmpMap.SetWiewPanelY(250);
+
   for CKL1 := 0 to TmpMap.CountTileW - 1 do begin
     for CKL2 := 0 to TmpMap.CountTileH - 1 do begin
       NumSpr := Random(6);
@@ -350,11 +355,8 @@ begin
     end;
   end;
   TmpMap.SetAreaElement(0,0,1000,680);
-  TmpMap.SetWiewPanelX(780);
-  TmpMap.SetWiewPanelY(250);
   TmpMap.GetMouse := false; //Не должен брать мыш
   TmpMap.Layer := 1;
-  TmpMap.EmpityTex := MineForm.TexManager.TexName['пол1'];
   TmpMap.OnBeforeProc := DoPnlSprMove;
 
   TmpBtn := avk_TSimpleButton.Create(TmpMap,'Производительность');
