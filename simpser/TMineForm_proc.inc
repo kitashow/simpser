@@ -327,7 +327,7 @@ begin
 
   TmpMap.SetSizeMap(1, 100, 90);
 
-  TmpMap.SetWievPanelSize(2048, 1536);
+  TmpMap.SetWievPanelSize(1920, 1080);
   TmpMap.SetWiewPanelX(780);
   TmpMap.SetWiewPanelY(250);
 
@@ -548,7 +548,7 @@ begin
   with tempEl do begin
     SpeedLost := 0.5;
     {$IfDef Debug}
-    avk_TSimpleButton(GetFraimById(GetIdByName('Производительность'))).LabelCaption.Caption:= 'P - D ' + avk_IntToStr(CalcPrgs - CalcDraw);
+    avk_TSimpleButton(GetFraimById(GetIdByName('Производительность'))).LabelCaption.Caption:= 'P - D ' + avk_IntToStr(CalcPrgs - CalcDraw) + '[' + avk_IntToStr(FSFrecvency) + ']';
     {$EndIf}
     if key_Down( K_A ) or key_Down( K_LEFT ) then begin
       SetWiewPanelX(WievPanel.X - SpeedLost);

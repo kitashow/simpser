@@ -105,11 +105,6 @@ end;
 { avk_TSimpleMap }
 
 avk_TSimpleMap = class (avk_TElement)
-  {$IfDef Debug}
-  public
-    CalcPrgs: Integer;
-    CalcDraw: Integer;
-  {$EndIf}
   private
     FOnAfterProc: TNotifyEvent;
     FOnBeforeProc: TNotifyEvent;
@@ -127,8 +122,13 @@ avk_TSimpleMap = class (avk_TElement)
     procedure DoProcLot();
     procedure SetTileSizeH(AValue: Integer);
     procedure SetTileSizeW(AValue: Integer);
+  {$IfDef Debug}
+  public
+  {$Else}
   private
-    HowManyConvert: Integer;
+  {$EndIf}
+    CalcPrgs, CalcDraw: Integer;
+    FFrecvency, FSFrecvency: Integer;
     procedure DoLoyer(ALoyer, ASVert, ASHort, AFVert, AFHort: Integer);
   public
     procedure FSetWievPanel(AValue: zglTRect);

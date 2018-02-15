@@ -3,10 +3,9 @@
 
 procedure avk_TSimpleMap.DoDraw(Sender: TObject);
 begin
-  {$IfDef Debug}
   CalcDraw := CalcDraw + 1;
   if CalcDraw = High(CalcDraw) then CalcDraw := 0;
-  {$EndIf}
+
   if Hide then Exit; // скрыт
   if WrtSCR = nil then Exit;//нет рабочей
   ssprite2d_Draw( WrtSCR.Surface, GetAbsolyteArea.X, GetAbsolyteArea.Y, AreaElement.W, AreaElement.H, 0, Transparence, FxFlags );
@@ -16,15 +15,25 @@ procedure avk_TSimpleMap.DoProc(Sender: TObject);
 begin
   if Assigned(FOnBeforeProc) then FOnBeforeProc(Self);
 
-  if HowManyConvert > 6 then begin
-    {$IfDef Debug}
+  if FFrecvency > FSFrecvency then begin
+
     CalcPrgs := CalcPrgs + 1;
     if CalcPrgs = High(CalcPrgs) then CalcPrgs := 0;
-    {$EndIf}
+
+    if ((CalcPrgs - CalcDraw) > 200) or ((CalcPrgs - CalcDraw) < -200) then begin
+      if (CalcPrgs - CalcDraw) > 200 then
+        INC(FSFrecvency, 1);
+      if (CalcPrgs - CalcDraw) < -200 then
+        INC(FSFrecvency, -1);
+      CalcPrgs := 0;
+      CalcDraw := 0;
+      FSFrecvency := trunc(max(FSFrecvency, 2));
+    end;
+
     DoProcLot;
-    HowManyConvert := 0;
+    FFrecvency := 0;
   end else
-    HowManyConvert := HowManyConvert + 1;
+     INC(FFrecvency, 1);
 
   if Assigned(FOnAfterProc) then FOnAfterProc(Self);
 end;
@@ -138,6 +147,8 @@ begin
   rtSCR2 := rtarget_Add( tex_CreateZero( Trunc(FWievPanel.W), Trunc(FWievPanel.H) ), RT_CLEAR_COLOR );
   NeedToRender := true;
 
+  FSFrecvency := trunc(max((FTileBildInWP.W * 0.1), (FTileBildInWP.H * 0.1)));
+  FSFrecvency := trunc(max(FSFrecvency, 2));
 end;
 
 procedure avk_TSimpleMap.SetWievPanelSize(W, H: Single);
@@ -197,7 +208,8 @@ begin
   rtSCR1 := nil;
   rtSCR2 := nil;
 
-  HowManyConvert := 0;
+  FFrecvency := 0;
+  FSFrecvency := 2;
   Hide := false;
   NeedToRender := true;
   FxFlags := FX_BLEND;
