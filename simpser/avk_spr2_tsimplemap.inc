@@ -38,7 +38,7 @@ begin
   if Assigned(FOnAfterProc) then FOnAfterProc(Self);
 end;
 
-procedure avk_TSimpleMap.DoLoyer(ALoyer, ASVert, ASHort, AFVert, AFHort: Integer);
+procedure avk_TSimpleMap.DoPreviousLoyer(ALoyer, ASVert, ASHort, AFVert, AFHort: Integer);
 var
   STPntX, STPntY: Single;
   Coef: Single;
@@ -59,10 +59,16 @@ begin
     NeedToRender := true;
   end;
 
+  {$IfNDef Debug}
   if NeedToRender then begin
-    STPntX := (ASVert * LocTileSizeW) - WievPanel.X;
-    STPntY := (ASHort * LocTileSizeH) - WievPanel.Y;
+  {$EndIf}
+    //STPntX := (ASVert * LocTileSizeW) - WievPanel.X;
+    //STPntY := (ASHort * LocTileSizeH) - WievPanel.Y;
+    STPntX := (ASVert * TileSizeW) - WievPanel.X;
+    STPntY := (ASHort * TileSizeH) - WievPanel.Y;
+  {$IfNDef Debug}
   end;
+  {$EndIf}
 
   MakePreviosFloor := false;
 
@@ -79,7 +85,7 @@ begin
 
       if MakePreviosFloor then begin
         PrevNTR := NeedToRender;
-        DoLoyer(ALoyer + 1, FTD1, FTD2, 2, 2); //ToDo: большие дырки вызовут пересчеты ((((
+        DoLoyer(ALoyer + 1, FTD1, FTD2, 1, 1); //ToDo: большие дырки вызовут пересчеты ((((
         MakePreviosFloor := false;
         NeedToRender := PrevNTR;
       end;
@@ -103,8 +109,72 @@ begin
           DrawSpr.W := LocTileSizeW;
           DrawSpr.H := LocTileSizeH;
         end;
+        {$IfDef Debug}
+        if ALoyer > LoyerHideBefore then
+          DrawSpr.DoDraw(Self);
+        {$Else}
         DrawSpr.DoDraw(Self);
+        {$EndIf}
       end;
+
+      {$IfDef Debug}
+      if (DrawSpr = nil) then begin
+        pr2d_Rect( STPntX + ((FTD1 - ASVert) * LocTileSizeW) , STPntY + ((FTD2 - ASHort) * LocTileSizeH) , LocTileSizeW, LocTileSizeH , $DC143C, Transparence, FxFlags);
+      end;
+      {$EndIf}
+
+    end;//FTD2
+
+  NeedToRender := false;
+
+end;
+
+
+procedure avk_TSimpleMap.DoLoyer(ALoyer, ASVert, ASHort, AFVert, AFHort: Integer);
+var
+  STPntX, STPntY: Single;
+  Coef: Single;
+  FTD1, FTD2: Integer;
+  //LocTileSizeW, LocTileSizeH: Integer;
+  MakePreviosFloor, PrevNTR: Boolean;
+  DrawSpr: avk_TSimpleTile;
+begin
+  if NeedToRender then begin
+    STPntX := (ASVert * TileSizeW) - WievPanel.X;
+    STPntY := (ASHort * TileSizeH) - WievPanel.Y;
+  end;
+
+  for FTD1 := ASVert - 1 to ASVert + AFVert + 1 do
+    for FTD2 := ASHort - 1 to ASHort + AFHort + 1 do begin
+      if (FTD1 < 0) or (FTD2 < 0) or (FTD1 > (FCountTileX - 1)) or (FTD2 > (FCountTileY - 1)) then begin
+        DrawSpr := nil;
+      end else begin
+        DrawSpr := LOT[ALoyer, FTD1, FTD2];
+      end;
+
+      if not(DrawSpr = nil)then begin
+        if NeedToRender or DrawSpr.Animate then
+          DrawSpr.DoProc(Self); // анимация
+        if NeedToRender then begin
+          DrawSpr.X := STPntX + ((FTD1 - ASVert) * TileSizeW);
+          DrawSpr.Y := STPntY + ((FTD2 - ASHort) * TileSizeH);
+          DrawSpr.W := TileSizeW;
+          DrawSpr.H := TileSizeH;
+        end;
+        {$IfDef Debug}
+        if ALoyer > LoyerHideBefore then
+          DrawSpr.DoDraw(Self);
+        {$Else}
+        DrawSpr.DoDraw(Self);
+        {$EndIf}
+      end;
+
+      {$IfDef Debug}
+      if (DrawSpr = nil) then begin
+        pr2d_Rect( STPntX + ((FTD1 - ASVert) * TileSizeW) , STPntY + ((FTD2 - ASHort) * TileSizeH) , TileSizeW, TileSizeH , $DC143C, Transparence, FxFlags);
+      end;
+      {$EndIf}
+
     end;//FTD2
 
   NeedToRender := false;
@@ -244,9 +314,10 @@ begin
   NowLoyer := 0;
 
   {$IfDef Debug}
+  LoyerHideBefore := -1;
+  {$EndIf}
   CalcPrgs := 0;
   CalcDraw := 0;
-  {$EndIf}
 end;
 
 procedure avk_TSimpleMap.ClearMap;

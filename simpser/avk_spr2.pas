@@ -108,6 +108,7 @@ avk_TSimpleMap = class (avk_TElement)
   private
     FOnAfterProc: TNotifyEvent;
     FOnBeforeProc: TNotifyEvent;
+    procedure DoPreviousLoyer(ALoyer, ASVert, ASHort, AFVert, AFHort: Integer);
   private
     FWievPanel: zglTRect;
     FCountLoyer: integer; //слоев (этажей)
@@ -124,6 +125,7 @@ avk_TSimpleMap = class (avk_TElement)
     procedure SetTileSizeW(AValue: Integer);
   {$IfDef Debug}
   public
+    LoyerHideBefore: Integer;
   {$Else}
   private
   {$EndIf}

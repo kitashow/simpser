@@ -369,6 +369,7 @@ begin
   TmpMap.OnBeforeProc := DoPnlSprMove;
 
   {$IfDef Debug}
+  //TmpMap.LoyerHideBefore := 0;
   TmpBtn := avk_TSimpleButton.Create(TmpMap,'Производительность');
   TmpBtn.TexButton := MineForm.TexManager.TexName['Кнопка'];
   TmpBtn.SetAreaElement(1,649,100,30);
