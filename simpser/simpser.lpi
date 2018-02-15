@@ -125,7 +125,8 @@
       </Options>
     </Linking>
     <Other>
-      <CustomOptions Value="-dMOUSE3KEY
+      <CustomOptions Value="-dDebug
+-dMOUSE3KEY
 -dWINDOWS
 -dNoBlockingSocket"/>
       <OtherDefines Count="6">

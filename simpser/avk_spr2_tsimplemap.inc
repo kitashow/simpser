@@ -44,7 +44,7 @@ var
   Coef: Single;
   FTD1, FTD2: Integer;
   LocTileSizeW, LocTileSizeH: Integer;
-  MakePreviosFloor: Boolean;
+  MakePreviosFloor, PrevNTR: Boolean;
   DrawSpr: avk_TSimpleTile;
 begin
   //размеры тайла на PersemtPreviousLoyer% меньше на этаже ниже
@@ -71,15 +71,27 @@ begin
       if (FTD1 < 0) or (FTD2 < 0) or (FTD1 > (FCountTileX - 1)) or (FTD2 > (FCountTileY - 1)) then begin
         DrawSpr := nil;
       end else begin
-        DrawSpr := LOT[NowLoyer, FTD1, FTD2];
+        DrawSpr := LOT[ALoyer, FTD1, FTD2];
         MakePreviosFloor := DrawSpr = nil;
         if not MakePreviosFloor then
           MakePreviosFloor := DrawSpr.HaveAlpha;
       end;
 
       if MakePreviosFloor then begin
-        DoLoyer(NowLoyer + 1, FTD1, FTD2, 1, 1); //ToDo: большие дырки вызовут пересчеты ((((
+        PrevNTR := NeedToRender;
+        DoLoyer(ALoyer + 1, FTD1, FTD2, 2, 2); //ToDo: большие дырки вызовут пересчеты ((((
         MakePreviosFloor := false;
+        NeedToRender := PrevNTR;
+      end;
+    end;
+
+
+  for FTD1 := ASVert - 1 to ASVert + AFVert + 1 do
+    for FTD2 := ASHort - 1 to ASHort + AFHort + 1 do begin
+      if (FTD1 < 0) or (FTD2 < 0) or (FTD1 > (FCountTileX - 1)) or (FTD2 > (FCountTileY - 1)) then begin
+        DrawSpr := nil;
+      end else begin
+        DrawSpr := LOT[ALoyer, FTD1, FTD2];
       end;
 
       if not(DrawSpr = nil)then begin

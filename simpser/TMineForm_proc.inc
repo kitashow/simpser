@@ -307,7 +307,7 @@ var
   SprTile: avk_TSimpleTile;
   CKL1: Integer;
   CKL2: Integer;
-  NumSpr: Integer;
+  NumSpr, CKL0: Integer;
   TmpNameSpr: UTF8String;
 begin
   if MineForm.ListName['Пример тайлового поля'] <> nil then Exit;
@@ -325,33 +325,42 @@ begin
   TmpMap.TileSizeW := 64;
   TmpMap.TileSizeH := 64;
 
-  TmpMap.SetSizeMap(1, 100, 90);
+  TmpMap.SetSizeMap(2, 100, 90);
 
-  TmpMap.SetWievPanelSize(1920, 1080);
+  TmpMap.SetWievPanelSize(1024, 768);
   TmpMap.SetWiewPanelX(780);
   TmpMap.SetWiewPanelY(250);
 
-  for CKL1 := 0 to TmpMap.CountTileW - 1 do begin
-    for CKL2 := 0 to TmpMap.CountTileH - 1 do begin
-      NumSpr := Random(6);
-      SprTile := avk_TSimpleTile.Create;
-      if NumSpr = 0 then begin
-        SprTile.Texture := MineForm.TexManager.TexName['пол7'];
-        tex_SetFrameSize( SprTile.Texture, 64, 64);
-        SprTile.X := 0;
-        SprTile.Y := 0;
-        SprTile.W := 64;
-        SprTile.H := 64;
-        SprTile.StopCadre := 37;
-        SprTile.RateCadre := 10;
-        SprTile.Angle := 0;
-      end else begin
-        TmpNameSpr := 'пол' + avk_IntToStr(NumSpr);
-        SprTile.Texture := MineForm.TexManager.TexName[TmpNameSpr];
+  for CKL0 := 0 to 1 do begin
+    for CKL1 := 0 to TmpMap.CountTileW - 1 do begin
+      for CKL2 := 0 to TmpMap.CountTileH - 1 do begin
+        NumSpr := Random(6);
+        SprTile := avk_TSimpleTile.Create;
+        if NumSpr = 0 then begin
+          SprTile.Texture := MineForm.TexManager.TexName['пол7'];
+          tex_SetFrameSize( SprTile.Texture, 64, 64);
+          SprTile.X := 0;
+          SprTile.Y := 0;
+          SprTile.W := 64;
+          SprTile.H := 64;
+          SprTile.StopCadre := 37;
+          SprTile.RateCadre := 10;
+          SprTile.Angle := 0;
+        end else begin
+          TmpNameSpr := 'пол' + avk_IntToStr(NumSpr);
+          SprTile.Texture := MineForm.TexManager.TexName[TmpNameSpr];
+        end;
+        SprTile.W := TmpMap.TileSizeW;
+        SprTile.H := TmpMap.TileSizeH;
+        if NumSpr = 0 then begin
+          if (Random(2) = 1) and (CKL0 = 0) then begin
+            TmpMap.LOT[CKL0, CKL1,CKL2] := nil;
+            SprTile.Destroy;
+          end else
+            TmpMap.LOT[CKL0, CKL1,CKL2] := SprTile;
+        end else
+          TmpMap.LOT[CKL0, CKL1,CKL2] := SprTile;
       end;
-      SprTile.W := TmpMap.TileSizeW;
-      SprTile.H := TmpMap.TileSizeH;
-      TmpMap.LOT[0, CKL1,CKL2] := SprTile;
     end;
   end;
   TmpMap.SetAreaElement(0,0,1000,680);
