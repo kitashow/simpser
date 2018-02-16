@@ -108,7 +108,6 @@ avk_TSimpleMap = class (avk_TElement)
   private
     FOnAfterProc: TNotifyEvent;
     FOnBeforeProc: TNotifyEvent;
-    procedure DoPreviousLoyer(ALoyer, ASVert, ASHort, AFVert, AFHort: Integer);
   private
     FWievPanel: zglTRect;
     FCountLoyer: integer; //слоев (этажей)
@@ -131,7 +130,7 @@ avk_TSimpleMap = class (avk_TElement)
   {$EndIf}
     CalcPrgs, CalcDraw: Integer;
     FFrecvency, FSFrecvency: Integer;
-    procedure DoLoyer(ALoyer, ASVert, ASHort, AFVert, AFHort: Integer);
+    procedure DoLoyer(ALoyer: Integer);
   public
     procedure FSetWievPanel(AValue: zglTRect);
     procedure SetWievPanelSize(W, H : Single);

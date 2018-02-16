@@ -38,24 +38,42 @@ begin
   if Assigned(FOnAfterProc) then FOnAfterProc(Self);
 end;
 
-procedure avk_TSimpleMap.DoPreviousLoyer(ALoyer, ASVert, ASHort, AFVert, AFHort: Integer);
+procedure avk_TSimpleMap.DoLoyer(ALoyer: Integer);
 var
   STPntX, STPntY: Single;
   Coef: Single;
-  FTD1, FTD2: Integer;
   LocTileSizeW, LocTileSizeH: Integer;
-  MakePreviosFloor, PrevNTR: Boolean;
+  FTBinWP: avk_TIntegerRect;
+  FWP: zglTRect;
+  FTD1, FTD2: Integer;
+  //DontDraw: Boolean;
+  //CKL1, CKL2: Integer;
   DrawSpr: avk_TSimpleTile;
 begin
   //размеры тайла на PersemtPreviousLoyer% меньше на этаже ниже
-  if ALoyer >= CountLoyer then Exit; //дырка в никуда
-
   LocTileSizeW := TileSizeW;
   LocTileSizeH := TileSizeH;
+  FWP := WievPanel;
+  FTBinWP := FTileBildInWP;
+
   if ALoyer > NowLoyer then begin
     Coef := ((PersemtPreviousLoyer * (ALoyer - NowLoyer)) * 0.01);
+
     LocTileSizeW := TileSizeW - trunc(TileSizeW * Coef);
     LocTileSizeH := TileSizeH - trunc(TileSizeH * Coef);
+
+    FWP.W := FWP.W + trunc(FWievPanel.W * Coef);
+    FWP.X := FWievPanel.X - trunc((FWP.W - FWievPanel.W) / 2);
+
+    FWP.H := FWP.H + trunc(FWievPanel.H * Coef);
+    FWP.Y := FWievPanel.Y - trunc((FWP.H - FWievPanel.H) / 2);
+
+    FTBinWP.X := trunc(FWP.X / LocTileSizeW) - 1;
+    FTBinWP.W := trunc(FWP.W / LocTileSizeW) + 1;
+
+    FTBinWP.Y := trunc(FWP.Y / LocTileSizeH) - 1;
+    FTBinWP.H := trunc(FWP.H / LocTileSizeH) + 1;
+
     NeedToRender := true;
   end;
 
@@ -64,126 +82,63 @@ begin
   {$EndIf}
     //STPntX := (ASVert * LocTileSizeW) - WievPanel.X;
     //STPntY := (ASHort * LocTileSizeH) - WievPanel.Y;
-    STPntX := (ASVert * TileSizeW) - WievPanel.X;
-    STPntY := (ASHort * TileSizeH) - WievPanel.Y;
+    STPntX := (FTBinWP.X * LocTileSizeW) - FWP.X;
+    STPntY := (FTBinWP.Y * LocTileSizeH) - FWP.Y;
   {$IfNDef Debug}
   end;
   {$EndIf}
 
-  MakePreviosFloor := false;
-
-  for FTD1 := ASVert - 1 to ASVert + AFVert + 1 do
-    for FTD2 := ASHort - 1 to ASHort + AFHort + 1 do begin
-      if (FTD1 < 0) or (FTD2 < 0) or (FTD1 > (FCountTileX - 1)) or (FTD2 > (FCountTileY - 1)) then begin
-        DrawSpr := nil;
-      end else begin
-        DrawSpr := LOT[ALoyer, FTD1, FTD2];
-        MakePreviosFloor := DrawSpr = nil;
-        if not MakePreviosFloor then
-          MakePreviosFloor := DrawSpr.HaveAlpha;
-      end;
-
-      if MakePreviosFloor then begin
-        PrevNTR := NeedToRender;
-        DoLoyer(ALoyer + 1, FTD1, FTD2, 1, 1); //ToDo: большие дырки вызовут пересчеты ((((
-        MakePreviosFloor := false;
-        NeedToRender := PrevNTR;
-      end;
-    end;
-
-
-  for FTD1 := ASVert - 1 to ASVert + AFVert + 1 do
-    for FTD2 := ASHort - 1 to ASHort + AFHort + 1 do begin
+  for FTD1 := FTBinWP.X to FTBinWP.X + FTBinWP.W do
+    for FTD2 := FTBinWP.Y to FTBinWP.Y + FTBinWP.H do begin
       if (FTD1 < 0) or (FTD2 < 0) or (FTD1 > (FCountTileX - 1)) or (FTD2 > (FCountTileY - 1)) then begin
         DrawSpr := nil;
       end else begin
         DrawSpr := LOT[ALoyer, FTD1, FTD2];
       end;
 
-      if not(DrawSpr = nil)then begin
-        if NeedToRender or DrawSpr.Animate then
-          DrawSpr.DoProc(Self); // анимация
-        if NeedToRender then begin
-          DrawSpr.X := STPntX + ((FTD1 - ASVert) * LocTileSizeW);
-          DrawSpr.Y := STPntY + ((FTD2 - ASHort) * LocTileSizeH);
-          DrawSpr.W := LocTileSizeW;
-          DrawSpr.H := LocTileSizeH;
-        end;
-        {$IfDef Debug}
-        if ALoyer > LoyerHideBefore then
+      //DontDraw := ALoyer > NowLoyer;
+      //if DontDraw then
+      //  for CKL1 := FTD1 - 1 to FTD1 + 1 do
+      //    for CKL2 := FTD2 - 1 to FTD2 + 1 do begin
+      //      if not (LOT[ALoyer - 1, CKL1, CKL2] = nil) then
+      //        //if (LOT[ALoyer - 1, CKL1, CKL2].Alpha < 255) then
+      //        //  DontDraw := DontDraw and false
+      //      else DontDraw := DontDraw and false;
+      //    end;
+      //
+      //if not DontDraw then
+        if not(DrawSpr = nil)then begin
+          if NeedToRender or DrawSpr.Animate then
+            DrawSpr.DoProc(Self); // анимация
+          if NeedToRender then begin
+            DrawSpr.X := STPntX + ((FTD1 - FTBinWP.X) * LocTileSizeW);
+            DrawSpr.Y := STPntY + ((FTD2 - FTBinWP.Y) * LocTileSizeH);
+            DrawSpr.W := LocTileSizeW;
+            DrawSpr.H := LocTileSizeH;
+          end;
+          {$IfDef Debug}
+          if ALoyer > LoyerHideBefore then
+            DrawSpr.DoDraw(Self);
+          {$Else}
           DrawSpr.DoDraw(Self);
-        {$Else}
-        DrawSpr.DoDraw(Self);
-        {$EndIf}
-      end;
+          {$EndIf}
+        end;
 
       {$IfDef Debug}
       if (DrawSpr = nil) then begin
-        pr2d_Rect( STPntX + ((FTD1 - ASVert) * LocTileSizeW) , STPntY + ((FTD2 - ASHort) * LocTileSizeH) , LocTileSizeW, LocTileSizeH , $DC143C, Transparence, FxFlags);
+        pr2d_Rect( STPntX + ((FTD1 - FTBinWP.X) * LocTileSizeW) , STPntY + ((FTD2 - FTBinWP.Y) * LocTileSizeH) , LocTileSizeW, LocTileSizeH , $DC143C, Transparence, FxFlags);
       end;
       {$EndIf}
 
     end;//FTD2
 
-  NeedToRender := false;
-
 end;
 
-
-procedure avk_TSimpleMap.DoLoyer(ALoyer, ASVert, ASHort, AFVert, AFHort: Integer);
-var
-  STPntX, STPntY: Single;
-  Coef: Single;
-  FTD1, FTD2: Integer;
-  //LocTileSizeW, LocTileSizeH: Integer;
-  MakePreviosFloor, PrevNTR: Boolean;
-  DrawSpr: avk_TSimpleTile;
-begin
-  if NeedToRender then begin
-    STPntX := (ASVert * TileSizeW) - WievPanel.X;
-    STPntY := (ASHort * TileSizeH) - WievPanel.Y;
-  end;
-
-  for FTD1 := ASVert - 1 to ASVert + AFVert + 1 do
-    for FTD2 := ASHort - 1 to ASHort + AFHort + 1 do begin
-      if (FTD1 < 0) or (FTD2 < 0) or (FTD1 > (FCountTileX - 1)) or (FTD2 > (FCountTileY - 1)) then begin
-        DrawSpr := nil;
-      end else begin
-        DrawSpr := LOT[ALoyer, FTD1, FTD2];
-      end;
-
-      if not(DrawSpr = nil)then begin
-        if NeedToRender or DrawSpr.Animate then
-          DrawSpr.DoProc(Self); // анимация
-        if NeedToRender then begin
-          DrawSpr.X := STPntX + ((FTD1 - ASVert) * TileSizeW);
-          DrawSpr.Y := STPntY + ((FTD2 - ASHort) * TileSizeH);
-          DrawSpr.W := TileSizeW;
-          DrawSpr.H := TileSizeH;
-        end;
-        {$IfDef Debug}
-        if ALoyer > LoyerHideBefore then
-          DrawSpr.DoDraw(Self);
-        {$Else}
-        DrawSpr.DoDraw(Self);
-        {$EndIf}
-      end;
-
-      {$IfDef Debug}
-      if (DrawSpr = nil) then begin
-        pr2d_Rect( STPntX + ((FTD1 - ASVert) * TileSizeW) , STPntY + ((FTD2 - ASHort) * TileSizeH) , TileSizeW, TileSizeH , $DC143C, Transparence, FxFlags);
-      end;
-      {$EndIf}
-
-    end;//FTD2
-
-  NeedToRender := false;
-
-end;
 
 procedure avk_TSimpleMap.DoProcLot();
 var
   TMPRt: zglPRenderTarget;
+  CKL1: Integer;
 begin
   if (WrtSCR = nil) or (rtSCR1 = WrtSCR) then
     TMPRt := rtSCR2 else TMPRt := rtSCR1;
@@ -191,7 +146,11 @@ begin
   //теперь рендерим в нее
   rtarget_Set( TMPRt );//начали
 
-  DoLoyer(NowLoyer, FTileBildInWP.X, FTileBildInWP.Y, FTileBildInWP.W, FTileBildInWP.H);
+  for CKL1 := 0 to CountLoyer - 1 do begin
+    if CKL1 >= NowLoyer then
+      DoLoyer(CountLoyer - 1 - CKL1); // в обратном порядке
+  end;
+  NeedToRender := false;
 
   rtarget_Set( nil );//закончили
 
