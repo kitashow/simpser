@@ -118,13 +118,18 @@ begin
    MineForm.LoadResource(TmpPrefix+'bevelpanelec.png', 'Панелька пуст');
    MineForm.LoadResource(TmpPrefix+'PersonSteps.png', 'Шагающий стрелок');
    MineForm.LoadResource(TmpPrefix+'leafs.png', 'Листочек');
-   MineForm.LoadResource(TmpPrefix+'m_a_tilefloor01.png', 'пол1');
-   MineForm.LoadResource(TmpPrefix+'m_a_tilefloor05.png', 'пол2');
-   MineForm.LoadResource(TmpPrefix+'m_m_metaltiles02.png', 'пол3');
-   MineForm.LoadResource(TmpPrefix+'m_m_platform01.png', 'пол4');
+   MineForm.LoadResource(TmpPrefix+'tile_floor1.png', 'пол1');
+   MineForm.LoadResource(TmpPrefix+'tile_floor2.png', 'пол2');
+   MineForm.LoadResource(TmpPrefix+'tile_floor3.png', 'пол3');
+   MineForm.LoadResource(TmpPrefix+'tile_floor4.png', 'пол4');
+   MineForm.LoadResource(TmpPrefix+'m_a_tilefloor05.png', 'пол11');
+   MineForm.LoadResource(TmpPrefix+'m_m_metaltiles02.png', 'пол9');
+   MineForm.LoadResource(TmpPrefix+'m_m_platform01.png', 'пол10');
    MineForm.LoadResource(TmpPrefix+'m_m_platform03.png', 'пол5');
    MineForm.LoadResource(TmpPrefix+'m_m_platform04.png', 'пол6');
    MineForm.LoadResource(TmpPrefix+'plat_anim.png', 'пол7');
+   MineForm.LoadResource(TmpPrefix+'BorderIndicatorComp64.png', 'край со стрелкой');
+   MineForm.LoadResource(TmpPrefix+'m_a_tilefloor01.png', 'пол8');
    MineForm.LoadResource(TmpPrefix+'bullet.png', 'пулька');
 
    MineForm.LoadResource(TmpPrefix+'helmet.png', 'спрайт шлем');

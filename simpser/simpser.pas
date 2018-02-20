@@ -1,8 +1,8 @@
 program simpser;
 
 {$mode DELPHI}{$H+}
-
 {$codepage UTF8}
+
 uses
   {$IFNDEF WINDOWS}
    cwstring,
@@ -27,7 +27,7 @@ Begin
   zgl_Reg( SYS_EXIT, @Quit );
   //zgl_Enable(APP_USE_UTF8);
   randomize();
-  timer_Add( @Proc, 1 );
+  timer_Add( @Proc, 2 );
   wnd_SetCaption( 'Простейший сервер' + Debug);
   wnd_ShowCursor( TRUE );
   scr_SetOptions(1280,720, REFRESH_MAXIMUM, false, false );

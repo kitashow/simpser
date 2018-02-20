@@ -91,7 +91,7 @@
       <Filename Value="compiled/simpser"/>
     </Target>
     <SearchPaths>
-      <IncludeFiles Value="$(ProjOutDir)"/>
+      <IncludeFiles Value="$(ProjOutDir);../avk-1"/>
       <OtherUnitFiles Value="../zengl-src-0.3.12;../zengl-src-0.3.12/src;../zengl-src-0.3.12/headers;../zengl-src-0.3.12/lib/jpeg/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/msvcrt/$(TargetCPU);../zengl-src-0.3.12/lib/ogg/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/theora/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/zlib/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/zip/$(TargetCPU)-$(TargetOS);../avk-1;../avk-1/avk_add;../Lnet_lib"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
