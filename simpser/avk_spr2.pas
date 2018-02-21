@@ -102,15 +102,14 @@ avk_TSimpleTile = class (TObject)
     destructor Destroy; override;
 end;
 
-{ avk_TSimpleMap }
+{ avk_TTileMap }
 
-avk_TSimpleMap = class (avk_TElement)
+avk_TTileMap = class (TObject)
   private
-    FOnAfterProc: TNotifyEvent;
     FOnBeforeProc: TNotifyEvent;
+    FOnAfterProc: TNotifyEvent;
   private
     FWievPanel: zglTRect;
-    FCountLoyer: integer; //слоев (этажей)
     FCountTileX: integer; //по Х
     FCountTileY: integer; //по Y
     rtSCR1: zglPRenderTarget;//буфер 1
@@ -119,47 +118,76 @@ avk_TSimpleMap = class (avk_TElement)
     FTileBildInWP: avk_TIntegerRect;
     FTileSizeW: Integer;
     FTileSizeH: Integer;
-    procedure DoProcLot();
+    procedure FSetWievPanel(AValue: zglTRect);
+    procedure DoProcLot;
     procedure SetTileSizeH(AValue: Integer);
     procedure SetTileSizeW(AValue: Integer);
   {$IfDef Debug}
   public
-    LoyerHideBefore: Integer;
   {$Else}
   private
   {$EndIf}
     CalcPrgs, CalcDraw: Integer;
     FFrecvency, FSFrecvency: Integer;
-    procedure DoLoyer(ALoyer: Integer);
+    procedure DoLoyer;
   public
-    procedure FSetWievPanel(AValue: zglTRect);
     procedure SetWievPanelSize(W, H : Single);
     procedure SetWiewPanelX(AValue: Single);
     procedure SetWiewPanelY(AValue: Single);
     property WievPanel: zglTRect read FWievPanel write FSetWievPanel;
   public
     Hide: boolean;
+    Angle: Single;
+    Alpha: Byte;
     FxFlags : LongWord;//флаги, для маштаба не забыть!
     NeedToRender: boolean;
-    NowLoyer: Integer;
-    LOT : array of array of array of avk_TSimpleTile; //слой, горизонталь, вертикаль
     Animate: boolean;
-    PersemtPreviousLoyer: Integer;
+    LOT : array of array of avk_TSimpleTile; //горизонталь, вертикаль
   public
-    procedure DoDraw(Sender: TObject);
+    procedure Draw(X, Y, W, H: Single);
     procedure DoProc(Sender: TObject);
   public
     property TileSizeW: Integer read FTileSizeW write SetTileSizeW;
     property TileSizeH: Integer read FTileSizeH write SetTileSizeH;
-    property CountLoyer: Integer read FCountLoyer;
     property CountTileW: Integer read FCountTileX;
     property CountTileH: Integer read FCountTileY;
-    procedure SetSizeMap(const ACountL, ACountW, ACountH: Integer);
+    procedure SetSizeMap(const ACountW, ACountH: Integer);
   public
     property OnBeforeProc: TNotifyEvent read FOnBeforeProc write FOnBeforeProc;
     property OnAfterProc: TNotifyEvent read FOnAfterProc write FOnAfterProc;
   public
     procedure ClearMap;
+    constructor Create;
+    destructor Destroy; override;
+end;
+
+{avk_TSimpleMap}
+
+avk_TSimpleMap = class (avk_TElement)
+  private
+    FCountLoyer: Integer; //этажей
+    FLoyer: array of avk_TTileMap;
+    procedure ClearMap;
+    function FGetLoyer(InID : Integer): avk_TTileMap;
+    procedure FSetCountLoyer(AValue: Integer);
+  private
+    FNowLoyer: Integer;
+    FPercentDistance: Integer;
+    function FGetTileSizeW: Integer;
+    function FGetTileSizeH: Integer;
+    function FGetWievPanel: zglTRect;
+  public
+    property CountLoyer: Integer read FCountLoyer write FSetCountLoyer;
+    property Loyer[InID: Integer]: avk_TTileMap read FGetLoyer;
+    property NowLoyer: Integer read FNowLoyer;
+    property PercentDistance: Integer read FPercentDistance;
+    property TileSizeW: Integer read FGetTileSizeW;
+    property TileSizeH: Integer read FGetTileSizeH;
+    property WievPanel: zglTRect read FGetWievPanel;
+    procedure SetMapParam(ANowLoyer: Integer; APercentDistance: Integer);
+  public
+    procedure DoDraw(Sender: TObject);
+  public
     constructor Create(const InParent: avk_TFraim = nil; InName: String = '');
     destructor Destroy; override;
 end;
@@ -169,8 +197,12 @@ implementation
 //avk_TSimpleTile
 {$INCLUDE avk_spr2_tsimpletile.inc}
 
+//avk_TTileMap
+{$INCLUDE avk_spr2_ttilemap.inc}
+
 //avk_TSimpleMap
 {$INCLUDE avk_spr2_tsimplemap.inc}
+
 
 end.
 
