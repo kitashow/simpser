@@ -28,7 +28,7 @@ Begin
   //zgl_Enable(APP_USE_UTF8);
   randomize();
   timer_Add( @Proc, 2 );
-  wnd_SetCaption( 'Простейший сервер' + Debug);
+  wnd_SetCaption( 'Набор тестов' + Debug);
   wnd_ShowCursor( TRUE );
   scr_SetOptions(1280,720, REFRESH_MAXIMUM, false, false );
   zgl_Init();

@@ -309,6 +309,7 @@ var
   CKL2: Integer;
   NumSpr, CKL0: Integer;
   TmpNameSpr: UTF8String;
+  TmpTileMap: avk_TTileMap;
 begin
   if MineForm.ListName['Пример тайлового поля'] <> nil then Exit;
 
@@ -322,59 +323,56 @@ begin
   TmpBtn.OnClick := MineForm.DoClickOnClosePnl;
   TmpBtn.Layer := 50;
   TmpMap := avk_TSimpleMap.Create(tmpTestForm,'Тайловая карта');
-  //TmpMap.TileSizeW := 64;
-  //TmpMap.TileSizeH := 64;
-  //
-  //TmpMap.SetSizeMap(100, 90);
-  //
-  //TmpMap.SetWievPanelSize(1024, 768);
-  //TmpMap.SetWiewPanelX(780);
-  //TmpMap.SetWiewPanelY(250);
-  //
-  //for CKL1 := 0 to TmpMap.CountTileW - 1 do begin
-  //  for CKL2 := 0 to TmpMap.CountTileH - 1 do begin
-  //    NumSpr := Random(13);
-  //    SprTile := avk_TSimpleTile.Create;
-  //    if NumSpr = 7 then begin
-  //      SprTile.Texture := MineForm.TexManager.TexName['пол7'];
-  //      tex_SetFrameSize( SprTile.Texture, 64, 64);
-  //      SprTile.X := 0;
-  //      SprTile.Y := 0;
-  //      SprTile.W := 64;
-  //      SprTile.H := 64;
-  //      SprTile.StopCadre := 37;
-  //      SprTile.RateCadre := 10;
-  //      SprTile.Angle := 0;
-  //    end else if NumSpr >= 12 then begin
-  //      SprTile.Texture := MineForm.TexManager.TexName['край со стрелкой'];
-  //      tex_SetFrameSize( SprTile.Texture, 64, 64);
-  //      SprTile.X := 0;
-  //      SprTile.Y := 0;
-  //      SprTile.W := 64;
-  //      SprTile.H := 64;
-  //      SprTile.StopCadre := 12;
-  //      SprTile.RateCadre := 20;
-  //      SprTile.Angle := Random(3) * 90;
-  //    end else begin
-  //      TmpNameSpr := 'пол' + avk_IntToStr(NumSpr);
-  //      SprTile.Texture := MineForm.TexManager.TexName[TmpNameSpr];
-  //    end;
-  //    SprTile.W := TmpMap.TileSizeW;
-  //    SprTile.H := TmpMap.TileSizeH;
-  //    if NumSpr = 0 then begin
-  //      if (Random(2) = 1) and (CKL0 = 0) then begin
-  //        TmpMap.LOT[CKL1, CKL2] := nil;
-  //        SprTile.Destroy;
-  //      end else
-  //        TmpMap.LOT[CKL1,CKL2] := SprTile;
-  //    end else
-  //      TmpMap.LOT[CKL1,CKL2] := SprTile;
-  //  end;
-  //end;
-  //TmpMap.SetAreaElement(0,0,1000,680);
-  //TmpMap.GetMouse := false; //Не должен брать мыш
-  //TmpMap.Layer := 1;
-  //TmpMap.OnBeforeProc := DoPnlSprMove;
+  TmpMap.CountStage := 2;
+  TmpMap.SetMapSize(100, 90);
+  TmpMap.SetWievPanelAndTileSize(1024, 768, 64, 64);
+  for CKL0 := 0 to TmpMap.CountStage - 1 do begin
+    TmpTileMap := TmpMap.Stage[CKL0];
+    for CKL1 := 0 to TmpTileMap.CountTileW - 1 do begin
+      for CKL2 := 0 to TmpTileMap.CountTileH - 1 do begin
+        NumSpr := Random(13);
+        SprTile := avk_TSimpleTile.Create;
+        if NumSpr = 7 then begin
+          SprTile.Texture := MineForm.TexManager.TexName['пол7'];
+          tex_SetFrameSize( SprTile.Texture, 64, 64);
+          SprTile.X := 0;
+          SprTile.Y := 0;
+          SprTile.W := 64;
+          SprTile.H := 64;
+          SprTile.StopCadre := 37;
+          SprTile.RateCadre := 10;
+          SprTile.Angle := 0;
+        end else if NumSpr >= 12 then begin
+          SprTile.Texture := MineForm.TexManager.TexName['край со стрелкой'];
+          tex_SetFrameSize( SprTile.Texture, 64, 64);
+          SprTile.X := 0;
+          SprTile.Y := 0;
+          SprTile.W := 64;
+          SprTile.H := 64;
+          SprTile.StopCadre := 12;
+          SprTile.RateCadre := 20;
+          SprTile.Angle := Random(3) * 90;
+        end else begin
+          TmpNameSpr := 'пол' + avk_IntToStr(NumSpr);
+          SprTile.Texture := MineForm.TexManager.TexName[TmpNameSpr];
+        end;
+        SprTile.W := TmpMap.TileSizeW;
+        SprTile.H := TmpMap.TileSizeH;
+        if NumSpr = 0 then begin
+          if (Random(2) = 1) and (CKL0 = 0) then begin
+            TmpTileMap.LOT[CKL1, CKL2] := nil;
+            SprTile.Destroy;
+          end else
+            TmpTileMap.LOT[CKL1,CKL2] := SprTile;
+        end else
+          TmpTileMap.LOT[CKL1,CKL2] := SprTile;
+      end;
+    end;
+  end;
+  TmpMap.SetAreaElement(0,0,1000,680);
+  TmpMap.GetMouse := false; //Не должен брать мыш
+  TmpMap.Layer := 1;
+  TmpMap.OnBeforeProc := DoPnlSprMove;
 
   {$IfDef Debug}
   //TmpMap.LoyerHideBefore := 0;
@@ -562,14 +560,14 @@ var
   SpeedLost, SpeedLostX, SpeedLostY: Single;
 begin
   if Sender.ClassName <> 'avk_TSimpleMap' then Exit;
-  //tempEl := avk_TSimpleMap(Sender);
+  tempEl := avk_TSimpleMap(Sender);
   //SpeedLost := 1;
-  //with tempEl do begin
+  with tempEl do begin
   //  SpeedLostX := 0;
   //  SpeedLostY := 0;
-  //  {$IfDef Debug}
-  //  avk_TSimpleButton(GetFraimById(GetIdByName('Производительность'))).LabelCaption.Caption:= 'P - D ' + avk_IntToStr(CalcPrgs - CalcDraw) + '[' + avk_IntToStr(FSFrecvency) + ']';
-  //  {$EndIf}
+    {$IfDef Debug}
+    avk_TSimpleButton(GetFraimById(GetIdByName('Производительность'))).LabelCaption.Caption:= 'P - D ' + avk_IntToStr(CalcPrgs - CalcDraw) + '[' + avk_IntToStr(FSFrecvency) + ']';
+    {$EndIf}
   //  if key_Down( K_A ) or key_Down( K_LEFT ) then begin
   //    SpeedLostX := SpeedLostX - SpeedLost;
   //  end;
@@ -590,7 +588,7 @@ begin
   //    SetWiewPanelX(WievPanel.X + SpeedLostX);
   //  if not (SpeedLostY = 0) then
   //    SetWiewPanelY(WievPanel.Y + SpeedLostY);
-  //end;
+  end;
 end;
 
 procedure TMineForm.DoInspectBullet(Sender: TObject);

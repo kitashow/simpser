@@ -136,7 +136,8 @@
       <CustomOptions Value="-dDebug
 -dMOUSE3KEY
 -dWINDOWS
--dNoBlockingSocket"/>
+-dNoBlockingSocket
+-dLOCALHOST"/>
       <OtherDefines Count="6">
         <Define0 Value="Debug"/>
         <Define1 Value="MOUSE3KEY"/>

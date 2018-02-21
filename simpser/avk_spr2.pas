@@ -106,9 +106,6 @@ end;
 
 avk_TTileMap = class (TObject)
   private
-    FOnBeforeProc: TNotifyEvent;
-    FOnAfterProc: TNotifyEvent;
-  private
     FWievPanel: zglTRect;
     FCountTileX: integer; //по Х
     FCountTileY: integer; //по Y
@@ -144,7 +141,7 @@ avk_TTileMap = class (TObject)
     Animate: boolean;
     LOT : array of array of avk_TSimpleTile; //горизонталь, вертикаль
   public
-    procedure Draw(X, Y, W, H: Single);
+    procedure Draw(AX, AY, AW, AH: Single);
     procedure DoProc(Sender: TObject);
   public
     property TileSizeW: Integer read FTileSizeW write SetTileSizeW;
@@ -152,9 +149,6 @@ avk_TTileMap = class (TObject)
     property CountTileW: Integer read FCountTileX;
     property CountTileH: Integer read FCountTileY;
     procedure SetSizeMap(const ACountW, ACountH: Integer);
-  public
-    property OnBeforeProc: TNotifyEvent read FOnBeforeProc write FOnBeforeProc;
-    property OnAfterProc: TNotifyEvent read FOnAfterProc write FOnAfterProc;
   public
     procedure ClearMap;
     constructor Create;
@@ -165,28 +159,44 @@ end;
 
 avk_TSimpleMap = class (avk_TElement)
   private
-    FCountLoyer: Integer; //этажей
-    FLoyer: array of avk_TTileMap;
+    FCountStage: Integer; //этажей
+    FStage: array of avk_TTileMap;
     procedure ClearMap;
-    function FGetLoyer(InID : Integer): avk_TTileMap;
-    procedure FSetCountLoyer(AValue: Integer);
+    function FGetStage(InID : Integer): avk_TTileMap;
+    procedure FSetCountStage(AValue: Integer);
   private
-    FNowLoyer: Integer;
+    FOnAfterProc: TNotifyEvent;
+    FOnBeforeProc: TNotifyEvent;
+    FCurrentStage: Integer;
     FPercentDistance: Integer;
     function FGetTileSizeW: Integer;
     function FGetTileSizeH: Integer;
     function FGetWievPanel: zglTRect;
   public
-    property CountLoyer: Integer read FCountLoyer write FSetCountLoyer;
-    property Loyer[InID: Integer]: avk_TTileMap read FGetLoyer;
-    property NowLoyer: Integer read FNowLoyer;
+    property CountStage: Integer read FCountStage write FSetCountStage;
+    property Stage[InID: Integer]: avk_TTileMap read FGetStage;
+    property CurrentStage: Integer read FCurrentStage;
     property PercentDistance: Integer read FPercentDistance;
     property TileSizeW: Integer read FGetTileSizeW;
     property TileSizeH: Integer read FGetTileSizeH;
     property WievPanel: zglTRect read FGetWievPanel;
-    procedure SetMapParam(ANowLoyer: Integer; APercentDistance: Integer);
+    {$IfDef Debug}
+    function CalcPrgs: Integer;
+    function CalcDraw: Integer;
+    function FSFrecvency: Integer;
+    {$EndIf}
+  public
+    procedure SetMapSize(const ACountW, ACountH: Integer;
+      const AOnlyCurrent: Boolean = false);
+    procedure SetWievPanelAndTileSize(const AWievPanelW, AWievPanelH: Single;
+      const ATileSizeW, ATileSizeH: Integer);
+    procedure SetStageAndPercentDistance(const ACurrentStage, APercentDistance: Integer);
   public
     procedure DoDraw(Sender: TObject);
+    procedure DoProc(Sender: TObject);
+  public
+    property OnBeforeProc: TNotifyEvent read FOnBeforeProc write FOnBeforeProc;
+    property OnAfterProc: TNotifyEvent read FOnAfterProc write FOnAfterProc;
   public
     constructor Create(const InParent: avk_TFraim = nil; InName: String = '');
     destructor Destroy; override;

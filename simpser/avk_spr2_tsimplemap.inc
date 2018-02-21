@@ -4,101 +4,171 @@ procedure avk_TSimpleMap.ClearMap;
 var
   CKL: Integer;
 begin
-  for CKL := 0 to FCountLoyer - 1 do
-      FLoyer[CKL].Destroy;
-  SetLength(FLoyer, 0);
+  for CKL := 0 to FCountStage - 1 do
+      FStage[CKL].Destroy;
+  SetLength(FStage, 0);
 end;
 
-function avk_TSimpleMap.FGetLoyer(InID : Integer): avk_TTileMap;
+function avk_TSimpleMap.FGetStage(InID : Integer): avk_TTileMap;
 begin
-  Result := FLoyer[InId];
+  Result := FStage[InId];
 end;
 
-procedure avk_TSimpleMap.FSetCountLoyer(AValue: Integer);
+procedure avk_TSimpleMap.FSetCountStage(AValue: Integer);
 var
   CKL: Integer;
 begin
-  if FCountLoyer <> 0 then ClearMap;
-  SetLength(FLoyer, AValue);
-  FCountLoyer := AValue;
-  for CKL := 0 to FCountLoyer - 1 do begin
-    FLoyer[CKL] := avk_TTileMap.Create;
+  if FCountStage <> 0 then ClearMap;
+  SetLength(FStage, AValue);
+  FCountStage := AValue;
+  for CKL := 0 to FCountStage - 1 do begin
+    FStage[CKL] := avk_TTileMap.Create;
   end;
 end;
 
-function avk_TSimpleMap.FGetTileSizeW;
+function avk_TSimpleMap.FGetTileSizeW: Integer;
 begin
-  Result := FLoyer[FNowLoyer].TileSizeW;
+  Result := FStage[FCurrentStage].TileSizeW;
 end;
 
-function avk_TSimpleMap.FGetTileSizeH;
+function avk_TSimpleMap.FGetTileSizeH: Integer;
 begin
-  Result := FLoyer[FNowLoyer].TileSizeH;
+  Result := FStage[FCurrentStage].TileSizeH;
 end;
 
-function avk_TSimpleMap.FGetWievPanel;
+function avk_TSimpleMap.FGetWievPanel: zglTRect;
 begin
-  Result := FLoyer[FNowLoyer].WievPanel;
+  Result := FStage[FCurrentStage].WievPanel;
 end;
+
+{$IfDef Debug}
+function avk_TSimpleMap.CalcPrgs: Integer;
+begin
+  Result := FStage[FCurrentStage].CalcPrgs;
+end;
+
+function avk_TSimpleMap.CalcDraw: Integer;
+begin
+  Result := FStage[FCurrentStage].CalcDraw;
+end;
+
+function avk_TSimpleMap.FSFrecvency: Integer;
+begin
+  Result := FStage[FCurrentStage].FSFrecvency;
+end;
+{$EndIf}
 
 procedure avk_TSimpleMap.DoDraw(Sender: TObject);
 var
   CKL: Integer;
 begin
-  for CKL := 0 to FCountLoyer - 1 do begin
-    if FNowLoyer > CKL then Continue;
-    FLoyer[CKL].Draw(GetAbsolyteArea.X, GetAbsolyteArea.Y, AreaElement.X, AreaElement.Y);
+  for CKL := 0 to FCountStage - 1 do begin
+    if FCurrentStage > CKL then Continue;
+    //Рисовка в обратном порядке
+    FStage[(FCountStage - 1) - CKL].Draw(GetAbsolyteArea.X, GetAbsolyteArea.Y, AreaElement.W, AreaElement.H);
   end;
 end;
 
-procedure avk_TSimpleMap.SetMapParam(ANowLoyer: Integer; APercentDistance: Integer);
+procedure avk_TSimpleMap.DoProc(Sender: TObject);
 var
-  CKL, LocTileSizeW: Integer;
+  CKL: Integer;
+begin
+  if Assigned(FOnBeforeProc) then FOnBeforeProc(Self);
+  for CKL := 0 to FCountStage - 1 do begin
+    if FCurrentStage > CKL then Continue;
+    //FStage[CKL].NeedToRender := true;
+    FStage[CKL].DoProc(Self);
+  end;
+  if Assigned(FOnAfterProc) then FOnAfterProc(Self);
+end;
+
+procedure avk_TSimpleMap.SetStageAndPercentDistance(const ACurrentStage,
+  APercentDistance: Integer);
+var
+  CKL: Integer;
+  LocTileSizeW: Integer;
   LocTileSizeH: Integer;
   Coef: Single;
-  PrevLoyer, CurrLoyer: avk_TTileMap;
+  PrevStage, CurrStage: avk_TTileMap;
   FWP: zglTRect;
 begin
-  PrevLoyer := FLoyer[FNowLoyer];
+  PrevStage := FStage[FCurrentStage];
 
-  LocTileSizeW := PrevLoyer.FTileSizeW;
-  LocTileSizeH := PrevLoyer.FTileSizeH;
-  FWP := PrevLoyer.FWievPanel;
+  LocTileSizeW := PrevStage.FTileSizeW;
+  LocTileSizeH := PrevStage.FTileSizeH;
+  FWP := PrevStage.FWievPanel;
 
-  for CKL := 0 to FCountLoyer - 1 do begin
-    if ANowLoyer > CKL then Continue;
+  for CKL := 0 to FCountStage - 1 do begin
+    if CKL < ACurrentStage then Continue;
 
-    CurrLoyer := FLoyer[CKL];
+    CurrStage := FStage[CKL];
 
     //размеры тайла на PercentDistance% меньше на этаже ниже
-    Coef := ((APercentDistance * (CKL - ANowLoyer)) * 0.01);
-    LocTileSizeW := PrevLoyer.FTileSizeW - trunc(PrevLoyer.FTileSizeW * Coef);
-    LocTileSizeH := PrevLoyer.FTileSizeH - trunc(PrevLoyer.FTileSizeH * Coef);
+    Coef := ((APercentDistance * (CKL - ACurrentStage)) * 0.01);
 
-    FWP.W := FWP.W + trunc(PrevLoyer.FWievPanel.W * Coef);
-    FWP.X := PrevLoyer.FWievPanel.X - trunc((FWP.W - PrevLoyer.FWievPanel.W) / 2);
+    LocTileSizeW := PrevStage.FTileSizeW - trunc(PrevStage.FTileSizeW * Coef);
+    LocTileSizeH := PrevStage.FTileSizeH - trunc(PrevStage.FTileSizeH * Coef);
 
-    FWP.H := FWP.H + trunc(PrevLoyer.FWievPanel.H * Coef);
-    FWP.Y := PrevLoyer.FWievPanel.Y - trunc((FWP.H - PrevLoyer.FWievPanel.H) / 2);
+    FWP.W := FWP.W + trunc(PrevStage.FWievPanel.W * Coef);
+    FWP.X := PrevStage.FWievPanel.X - trunc(PrevStage.FWievPanel.X * Coef);
 
-    CurrLoyer.FTileSizeW := LocTileSizeW;
-    CurrLoyer.FTileSizeH := LocTileSizeH;
-    CurrLoyer.FSetWievPanel(FWP);
+    FWP.H := FWP.H + trunc(PrevStage.FWievPanel.H * Coef);
+    FWP.Y := PrevStage.FWievPanel.Y - trunc(PrevStage.FWievPanel.Y * Coef);
+
+    CurrStage.FTileSizeW := LocTileSizeW;
+    CurrStage.FTileSizeH := LocTileSizeH;
+    CurrStage.FSetWievPanel(FWP);
   end;
 
   //Переключаем
-  FNowLoyer := ANowLoyer;
+  FCurrentStage := ACurrentStage;
   FPercentDistance := APercentDistance;
 
 end;
+
+procedure avk_TSimpleMap.SetWievPanelAndTileSize(const AWievPanelW, AWievPanelH: Single;
+  const ATileSizeW, ATileSizeH: Integer);
+begin
+  with FStage[FCurrentStage] do begin
+    FTileSizeW := ATileSizeW;
+    FTileSizeH := ATileSizeH;
+    FWievPanel.W := AWievPanelW;
+    FWievPanel.H := AWievPanelH;
+  end;
+  SetStageAndPercentDistance(CurrentStage, PercentDistance);
+end;
+
+procedure avk_TSimpleMap.SetMapSize(const ACountW, ACountH: Integer;
+  const AOnlyCurrent: Boolean);
+var
+  TmpStage: avk_TTileMap;
+  CKL: Integer;
+begin
+  TmpStage := FStage[FCurrentStage];
+  TmpStage.SetSizeMap(ACountW, ACountH);
+
+  if AOnlyCurrent then Exit;//меняем только этот
+
+  for CKL := (FCurrentStage + 1) to (FCountStage - 1) do begin
+    TmpStage := FStage[CKL];
+    TmpStage.SetSizeMap(ACountW, ACountH);
+  end;
+
+end;
+
 
 constructor avk_TSimpleMap.Create(const InParent: avk_TFraim; InName: String);
 begin
   inherited Create(InParent);
   Name := InName;
-  FSetCountLoyer(1);
-  FNowLoyer := 0;
-  FPercentDistance := 0;
+  FSetCountStage(1);
+  FCurrentStage := 0;
+  FPercentDistance := 30;
+
+  OnProc := DoProc;
+  OnDraw := DoDraw;
+
+
 end;
 
 destructor avk_TSimpleMap.Destroy;

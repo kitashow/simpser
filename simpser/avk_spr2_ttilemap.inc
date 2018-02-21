@@ -1,20 +1,25 @@
 
 { avk_TTileMap }
 
-procedure avk_TTileMap.Draw(X, Y, W, H: Single);
+procedure avk_TTileMap.Draw(AX, AY, AW, AH: Single);
+var
+  WHAT: String;
 begin
   CalcDraw := CalcDraw + 1;
   if CalcDraw = High(CalcDraw) then CalcDraw := 0;
 
   if Hide then Exit; // скрыт
   if WrtSCR = nil then Exit;//нет рабочей
-  ssprite2d_Draw( WrtSCR.Surface, X, Y, W, H, Angle, Alpha, FxFlags );
+  WHAT := FloatToStr(AX);
+  WHAT := FloatToStr(AY);
+  WHAT := FloatToStr(AW);
+  WHAT := FloatToStr(AH);
+
+  ssprite2d_Draw( WrtSCR.Surface, AX, AY, AW, AH, Angle, Alpha, FxFlags );
 end;
 
 procedure avk_TTileMap.DoProc(Sender: TObject);
 begin
-  if Assigned(FOnBeforeProc) then FOnBeforeProc(Self);
-
   if FFrecvency > FSFrecvency then begin
 
     CalcPrgs := CalcPrgs + 1;
@@ -34,8 +39,6 @@ begin
     FFrecvency := 0;
   end else
      INC(FFrecvency, 1);
-
-  if Assigned(FOnAfterProc) then FOnAfterProc(Self);
 end;
 
 procedure avk_TTileMap.DoLoyer;
@@ -48,7 +51,6 @@ begin
     STPntX := (FTileBildInWP.X * FTileSizeW) - FWievPanel.X;
     STPntY := (FTileBildInWP.Y * FTileSizeH) - FWievPanel.Y;
   end;
-
   for FTD1 := FTileBildInWP.X to FTileBildInWP.X + FTileBildInWP.W do
     for FTD2 := FTileBildInWP.Y to FTileBildInWP.Y + FTileBildInWP.H do begin
       if (FTD1 < 0) or (FTD2 < 0) or (FTD1 > (FCountTileX - 1)) or (FTD2 > (FCountTileY - 1)) then begin
