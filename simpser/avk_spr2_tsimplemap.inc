@@ -51,21 +51,19 @@ begin
   end;
 end;
 
-procedure avk_TSimpleMap.SetMapParam(ANowLoyer: Integer;
-  APercentDistance: Integer);
+procedure avk_TSimpleMap.SetMapParam(ANowLoyer: Integer; APercentDistance: Integer);
 var
-  CKL, LocTileSizeW, LocTileSizeH: Integer;
+  CKL, LocTileSizeW: Integer;
+  LocTileSizeH: Integer;
   Coef: Single;
   PrevLoyer, CurrLoyer: avk_TTileMap;
   FWP: zglTRect;
-  FTBinWP: avk_TIntegerRect;
 begin
   PrevLoyer := FLoyer[FNowLoyer];
 
   LocTileSizeW := PrevLoyer.FTileSizeW;
   LocTileSizeH := PrevLoyer.FTileSizeH;
   FWP := PrevLoyer.FWievPanel;
-  FTBinWP := PrevLoyer.FTileBildInWP;
 
   for CKL := 0 to FCountLoyer - 1 do begin
     if ANowLoyer > CKL then Continue;
@@ -84,7 +82,7 @@ begin
     FWP.Y := PrevLoyer.FWievPanel.Y - trunc((FWP.H - PrevLoyer.FWievPanel.H) / 2);
 
     CurrLoyer.FTileSizeW := LocTileSizeW;
-    CurrLoyer.FTileSizeH := LocTileSizeW;
+    CurrLoyer.FTileSizeH := LocTileSizeH;
     CurrLoyer.FSetWievPanel(FWP);
   end;
 
