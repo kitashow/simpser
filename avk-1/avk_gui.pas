@@ -326,6 +326,7 @@ type
 
   avk_THostForm = class (avk_TElement)
   private
+    FGoDraw: boolean;
     FArhiveNowOpen: boolean;
     FFileResourses: String;
     FFontManager: avk_TFontManager;

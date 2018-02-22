@@ -58,7 +58,8 @@ var
   NowMouseOnForm: avk_TFraim;
 {$EndIf}
 begin
-  inherited Draw;
+  if FGoDraw then
+    inherited Draw;
   {$IfDef Debug}
    fx2d_SetVCA( $000000, $000000, $000000, $0000000, 255, 255, 255, 255 );
    Nazata := '';
@@ -96,6 +97,7 @@ end;
 procedure avk_THostForm.intProc;
 begin
   inherited intProc;
+  FGoDraw := True;
 end;
 
 // RU: Т.к. звуковая подсистема нацелена на 3D, для позиционирования звуков в 2D нужны некоторые ухищрения.
@@ -139,6 +141,7 @@ end;
 
 constructor avk_THostForm.Create(const InParent: avk_TFraim; InName: String);
 begin
+  FGoDraw := False;
   FFontManager := nil;
   FTextureManager := nil;
   FSoundManager := nil;

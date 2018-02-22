@@ -272,8 +272,11 @@ begin
     if not (TmpParent.Parent is avk_TElement) then Break;
     TmpPrevParent := TmpParent;
     TmpParent := TmpParent.ParentAsElement;
+
+    if TmpParent = nil then Continue;
+
     for CKL:= 0 to (TmpParent.Count - 1) do begin
-      if TmpParent.ListNom[CKL] <> TmpPrevParent then
+      if (TmpParent.ListNom[CKL] <> TmpPrevParent) then
         if TmpParent.ListNom[CKL].Layer >= TmpPrevParent.Layer then
           if TmpParent.ListNom[CKL] is avk_TElement then
             if avk_MouseInRect( avk_TElement(TmpParent.ListNom[CKL]).GetAbsolyteArea ) then

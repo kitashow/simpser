@@ -37,9 +37,9 @@ begin
   end;
 end;
 
+{$IfDef Debug}
 procedure avk_TSkeletPoint.DoAfterDraw(Sender: TObject);
 begin
-  {$IfDef Debug}
     {$IfDef ShowPoints}
     if Host = nil then
         pr2d_Circle(X, Y, 7, $7a250f, 150 ,250, PR2D_FILL)
@@ -48,8 +48,8 @@ begin
 
     pr2d_Circle(X, Y, 5, $e52b50, 150 ,250, PR2D_FILL);
     {$EndIf}
-  {$EndIf}
 end;
+{$EndIf}
 
 constructor avk_TSkeletPoint.Create(const InParent: avk_TFraim; InName: String);
 begin
