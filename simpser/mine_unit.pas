@@ -144,20 +144,10 @@ end;
 
 procedure Init;
 var
-  TmpLogo: avk_TLogotip;
   TmpBttn: avk_TSimpleButton;
-  SCwight, SChight: Integer;
-  tmpTestForm: avk_TElement;
 begin
   MineForm := TMineForm.Create(nil,'Рабочий стол');
   LoadResourse;
-  //TmpLogo := avk_TLogotip.Create(MineForm,'Логотип');
-  SCwight := Round(MineForm.AreaElement.W / 2);
-  SChight := Round(MineForm.AreaElement.H / 2);
-  //TmpLogo.SetAreaElement(MineForm.AreaElement.W - 100, MineForm.AreaElement.H - 70, 100, 70);
-  //TmpLogo.SetAreaElement(SCwight - 200, SChight - 70, 400, 140);
-  //TmpLogo.texLogo := MineForm.TexManager.TexName['Логотип'];
-
   TmpBttn           := avk_TSimpleButton.Create(MineForm,'Проверка');
   TmpBttn.SetAreaElement(2,2,120,32);
   TmpBttn.TexButton := MineForm.TexManager.TexName['Кнопка'];
@@ -222,9 +212,8 @@ begin
   TmpBttn.LabelCaption.FontColor := $1E90FF;
   TmpBttn.Layer := 120;
   TmpBttn.OnClick := TMineForm.DoClose;
-
-  //TmpLogo.Layer:=TmpLogo.Layer+150;
 end;
+
 //процедуры
 {$INCLUDE TMineForm_proc.inc}
 

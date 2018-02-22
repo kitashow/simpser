@@ -29,7 +29,8 @@ Begin
   randomize();
   timer_Add( @Proc, 2 );
   wnd_SetCaption( 'Набор тестов' + Debug);
-  wnd_ShowCursor( TRUE );
+  //wnd_ShowCursor( TRUE );
+  wnd_ShowCursor( False );
   scr_SetOptions(1280,720, REFRESH_MAXIMUM, false, false );
   zgl_Init();
 End.

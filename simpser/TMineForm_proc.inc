@@ -323,7 +323,7 @@ begin
   TmpBtn.OnClick := MineForm.DoClickOnClosePnl;
   TmpBtn.Layer := 50;
   TmpMap := avk_TSimpleMap.Create(tmpTestForm,'Тайловая карта');
-  TmpMap.CountStage := 2;
+  TmpMap.CountStage := 3;
   TmpMap.SetMapSize(100, 90);
   TmpMap.SetWievPanelAndTileSize(1024, 768, 64, 64);
   for CKL0 := 0 to TmpMap.CountStage - 1 do begin
@@ -350,7 +350,7 @@ begin
           SprTile.W := 64;
           SprTile.H := 64;
           SprTile.StopCadre := 12;
-          SprTile.RateCadre := 20;
+          SprTile.RateCadre := trunc(20 / TmpMap.CountStage);
           SprTile.Angle := Random(3) * 90;
         end else begin
           TmpNameSpr := 'пол' + avk_IntToStr(NumSpr);
@@ -536,11 +536,11 @@ begin
   TmpSklPntSl.StartPoint.Y := 24;
   TmpSklPntSl.Calk;
 
-  TmpSklPntSl := avk_TSkeletSprite.Create(avk_TSkeletPoint(TmpSklPnt.ListName['lo2']), 'lo3');
-  TmpSklPntSl.Host := avk_TSkeletPoint(TmpSklPnt.ListName['lo2']);
-  TmpSklPntSl.StartPoint.X := -42;
-  TmpSklPntSl.StartPoint.Y := -16;
-  TmpSklPntSl.Calk;
+  //TmpSklPntSl := avk_TSkeletSprite.Create(avk_TSkeletPoint(TmpSklPnt.ListName['lo2']), 'lo3');
+  //TmpSklPntSl.Host := avk_TSkeletPoint(TmpSklPnt.ListName['lo2']);
+  //TmpSklPntSl.StartPoint.X := -42;
+  //TmpSklPntSl.StartPoint.Y := -16;
+  //TmpSklPntSl.Calk;
 
 end;
 
@@ -549,9 +549,9 @@ var
   TmpSPnt: avk_TSkeletPoint;
 begin
   if MineForm.ListName['Пример собранного спрайта'] = nil then Exit;
-  TmpSPnt := avk_TSkeletPoint(avk_TElement(MineForm.ListName['Пример собранного спрайта']).ListName['lo1']);
-  TmpSPnt.StartAngle := TmpSPnt.StartAngle + 5;
-  if TmpSPnt.StartAngle > 360 then TmpSPnt.StartAngle := 0;
+  //TmpSPnt := avk_TSkeletPoint(avk_TElement(MineForm.ListName['Пример собранного спрайта']).ListName['lo1']);
+  //TmpSPnt.StartAngle := TmpSPnt.StartAngle + 5;
+  //if TmpSPnt.StartAngle > 360 then TmpSPnt.StartAngle := 0;
 end;
 
 procedure TMineForm.DoPnlSprMove(Sender: TObject);
@@ -561,33 +561,31 @@ var
 begin
   if Sender.ClassName <> 'avk_TSimpleMap' then Exit;
   tempEl := avk_TSimpleMap(Sender);
-  //SpeedLost := 1;
+  SpeedLost := 1;
   with tempEl do begin
-  //  SpeedLostX := 0;
-  //  SpeedLostY := 0;
+    SpeedLostX := 0;
+    SpeedLostY := 0;
     {$IfDef Debug}
     avk_TSimpleButton(GetFraimById(GetIdByName('Производительность'))).LabelCaption.Caption:= 'P - D ' + avk_IntToStr(CalcPrgs - CalcDraw) + '[' + avk_IntToStr(FSFrecvency) + ']';
     {$EndIf}
-  //  if key_Down( K_A ) or key_Down( K_LEFT ) then begin
-  //    SpeedLostX := SpeedLostX - SpeedLost;
-  //  end;
-  //  if key_Down( K_D ) or key_Down( K_RIGHT ) then begin
-  //    SpeedLostX := SpeedLostX + SpeedLost;
-  //  end;
-  //  if key_Down( K_W ) or key_Down( K_UP ) then begin
-  //    SpeedLostY := SpeedLostY - SpeedLost;
-  //  end;
-  //  if key_Down( K_S ) or key_Down( K_DOWN ) then begin
-  //    SpeedLostY := SpeedLostY + SpeedLost;
-  //  end;
-  //  if not ((SpeedLostX = 0) and (SpeedLostY = 0)) then begin
-  //    SpeedLostX := SpeedLostX / 2;
-  //    SpeedLostY := SpeedLostY / 2;
-  //  end;
-  //  if not (SpeedLostX = 0) then
-  //    SetWiewPanelX(WievPanel.X + SpeedLostX);
-  //  if not (SpeedLostY = 0) then
-  //    SetWiewPanelY(WievPanel.Y + SpeedLostY);
+    if key_Down( K_A ) or key_Down( K_LEFT ) then begin
+      SpeedLostX := SpeedLostX - SpeedLost;
+    end;
+    if key_Down( K_D ) or key_Down( K_RIGHT ) then begin
+      SpeedLostX := SpeedLostX + SpeedLost;
+    end;
+    if key_Down( K_W ) or key_Down( K_UP ) then begin
+      SpeedLostY := SpeedLostY - SpeedLost;
+    end;
+    if key_Down( K_S ) or key_Down( K_DOWN ) then begin
+      SpeedLostY := SpeedLostY + SpeedLost;
+    end;
+    if not ((SpeedLostX = 0) and (SpeedLostY = 0)) then begin
+      SpeedLostX := SpeedLostX / 2;
+      SpeedLostY := SpeedLostY / 2;
+    end;
+    if not((SpeedLostX = 0) and (SpeedLostY = 0)) then
+      MoveWievPanelMap(SpeedLostX, SpeedLostY);
   end;
 end;
 

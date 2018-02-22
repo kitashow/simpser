@@ -53,7 +53,9 @@ uses
   , zgl_utils
   , zgl_types
   , zgl_keyboard
-  , zgl_main;
+  , zgl_main
+  , zglChipmunk
+  ;
 
 type
 { avk_TIntegerRect }
@@ -115,7 +117,7 @@ avk_TTileMap = class (TObject)
     FTileBildInWP: avk_TIntegerRect;
     FTileSizeW: Integer;
     FTileSizeH: Integer;
-    procedure FSetWievPanel(AValue: zglTRect);
+    procedure FSetWievPanel(AValue: zglTRect; AAdditionTile: Integer=1);
     procedure DoProcLot;
     procedure SetTileSizeH(AValue: Integer);
     procedure SetTileSizeW(AValue: Integer);
@@ -176,10 +178,10 @@ avk_TSimpleMap = class (avk_TElement)
     property CountStage: Integer read FCountStage write FSetCountStage;
     property Stage[InID: Integer]: avk_TTileMap read FGetStage;
     property CurrentStage: Integer read FCurrentStage;
-    property PercentDistance: Integer read FPercentDistance;
+    //property PercentDistance: Integer read FPercentDistance;
     property TileSizeW: Integer read FGetTileSizeW;
     property TileSizeH: Integer read FGetTileSizeH;
-    property WievPanel: zglTRect read FGetWievPanel;
+    //property WievPanel: zglTRect read FGetWievPanel;
     {$IfDef Debug}
     function CalcPrgs: Integer;
     function CalcDraw: Integer;
@@ -191,6 +193,7 @@ avk_TSimpleMap = class (avk_TElement)
     procedure SetWievPanelAndTileSize(const AWievPanelW, AWievPanelH: Single;
       const ATileSizeW, ATileSizeH: Integer);
     procedure SetStageAndPercentDistance(const ACurrentStage, APercentDistance: Integer);
+    procedure MoveWievPanelMap(const AGrowX, AGrowY: Single);
   public
     procedure DoDraw(Sender: TObject);
     procedure DoProc(Sender: TObject);
@@ -202,7 +205,23 @@ avk_TSimpleMap = class (avk_TElement)
     destructor Destroy; override;
 end;
 
+{ avk_TSkeletPoint }
+
+avk_TSkeletPoint = class (TObject)
+  public
+    Point: zglTPoint2D;
+    Angle: Single;
+    HostPoint: avk_TSkeletPoint;
+    procedure SetPoint(AX, AY: Single);
+    function RealPoint: zglTPoint2D;
+    function RealAngle: Single;
+  public
+    constructor Create;
+    destructor Destroy; override;
+end;
+
 implementation
+
 
 //avk_TSimpleTile
 {$INCLUDE avk_spr2_tsimpletile.inc}
@@ -212,6 +231,9 @@ implementation
 
 //avk_TSimpleMap
 {$INCLUDE avk_spr2_tsimplemap.inc}
+
+//avk_TSkeletPoint
+{$INCLUDE avk_spr2_tskeletpoint.inc}
 
 
 end.

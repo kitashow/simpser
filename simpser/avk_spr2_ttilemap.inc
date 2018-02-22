@@ -60,7 +60,7 @@ begin
       end;
 
       if not(DrawSpr = nil)then begin
-        if NeedToRender or DrawSpr.Animate then
+        if Animate and (NeedToRender or DrawSpr.Animate) then
           DrawSpr.DoProc(Self); // анимация
         if NeedToRender then begin
           DrawSpr.X := STPntX + ((FTD1 - FTileBildInWP.X) * FTileSizeW);
@@ -70,7 +70,6 @@ begin
         end;
         DrawSpr.DoDraw(Self);
       end;
-
     end;//FTD2
 
 end;
@@ -109,21 +108,24 @@ begin
   FSetWievPanel(FWievPanel);
 end;
 
-procedure avk_TTileMap.FSetWievPanel(AValue: zglTRect);
+procedure avk_TTileMap.FSetWievPanel(AValue: zglTRect; AAdditionTile: Integer = 1);
 begin
+  if AAdditionTile = 0 then AAdditionTile := 1;
   //Пересчет при любом вызове т.к. менятся может и размер тайла
+  FTileBildInWP.X := trunc(AValue.X / TileSizeW) - AAdditionTile;
+  FTileBildInWP.W := trunc(AValue.W / TileSizeW) + (AAdditionTile * 2);
+
+  FTileBildInWP.Y := trunc(AValue.Y / TileSizeH) - AAdditionTile;
+  FTileBildInWP.H := trunc(AValue.H / TileSizeH) + (AAdditionTile * 2);
+
+  //if (not ((AValue.W = FWievPanel.W) and (AValue.H = FWievPanel.H))) or (rtSCR1 = nil) then begin
+    if rtSCR1 <> nil then rtarget_Del(rtSCR1);
+    rtSCR1 := rtarget_Add( tex_CreateZero( Trunc(AValue.W), Trunc(AValue.H) ), RT_CLEAR_COLOR );
+    if rtSCR2 <> nil then rtarget_Del(rtSCR2);
+    rtSCR2 := rtarget_Add( tex_CreateZero( Trunc(AValue.W), Trunc(AValue.H) ), RT_CLEAR_COLOR );
+  //end;
+
   FWievPanel:=AValue;
-
-  FTileBildInWP.X := trunc(FWievPanel.X / TileSizeW) - 1;
-  FTileBildInWP.W := trunc(FWievPanel.W / TileSizeW) + 1;
-
-  FTileBildInWP.Y := trunc(FWievPanel.Y / TileSizeH) - 1;
-  FTileBildInWP.H := trunc(FWievPanel.H / TileSizeH) + 1;
-
-  if rtSCR1 <> nil then rtarget_Del(rtSCR1);
-  rtSCR1 := rtarget_Add( tex_CreateZero( Trunc(FWievPanel.W), Trunc(FWievPanel.H) ), RT_CLEAR_COLOR );
-  if rtSCR2 <> nil then rtarget_Del(rtSCR2);
-  rtSCR2 := rtarget_Add( tex_CreateZero( Trunc(FWievPanel.W), Trunc(FWievPanel.H) ), RT_CLEAR_COLOR );
   NeedToRender := true;
 
   FSFrecvency := trunc(max((FTileBildInWP.W * 0.1), (FTileBildInWP.H * 0.1)));

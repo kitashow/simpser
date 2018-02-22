@@ -76,7 +76,6 @@ begin
   if Assigned(FOnBeforeProc) then FOnBeforeProc(Self);
   for CKL := 0 to FCountStage - 1 do begin
     if FCurrentStage > CKL then Continue;
-    //FStage[CKL].NeedToRender := true;
     FStage[CKL].DoProc(Self);
   end;
   if Assigned(FOnAfterProc) then FOnAfterProc(Self);
@@ -117,13 +116,42 @@ begin
 
     CurrStage.FTileSizeW := LocTileSizeW;
     CurrStage.FTileSizeH := LocTileSizeH;
-    CurrStage.FSetWievPanel(FWP);
+    CurrStage.FSetWievPanel(FWP, CKL - ACurrentStage);
+
+    //Этажи ниже анимировать не нужно
+    CurrStage.Animate := CKL = ACurrentStage;
+
+    //После пересчетов ставим задержку побольше, т.к. слоев стало больше
+    CurrStage.FSFrecvency := CurrStage.FSFrecvency * FCountStage;
   end;
 
   //Переключаем
   FCurrentStage := ACurrentStage;
   FPercentDistance := APercentDistance;
 
+end;
+
+procedure avk_TSimpleMap.MoveWievPanelMap(const AGrowX, AGrowY: Single);
+var
+  CKL: Integer;
+  Coef: Single;
+  WHAT: String;
+begin
+  for CKL := 0 to FCountStage - 1 do begin
+    WHAT := IntToStr(FCurrentStage);
+    if CKL < FCurrentStage then Continue;
+    //Перемещение на PercentDistance% меньше на этаже ниже
+    Coef := ((FPercentDistance * (CKL - FCurrentStage)) * 0.01);
+
+    with FStage[CKL] do begin
+      FWievPanel.X := FWievPanel.X + (AGrowX - (AGrowX * Coef));
+      FWievPanel.Y := FWievPanel.Y + (AGrowY - (AGrowY * Coef));
+      FTileBildInWP.X := trunc(FWievPanel.X / TileSizeW) - 1;
+      FTileBildInWP.Y := trunc(FWievPanel.Y / TileSizeH) - 1;
+      NeedToRender := true;
+    end;
+
+  end;
 end;
 
 procedure avk_TSimpleMap.SetWievPanelAndTileSize(const AWievPanelW, AWievPanelH: Single;
@@ -135,7 +163,7 @@ begin
     FWievPanel.W := AWievPanelW;
     FWievPanel.H := AWievPanelH;
   end;
-  SetStageAndPercentDistance(CurrentStage, PercentDistance);
+  SetStageAndPercentDistance(FCurrentStage, FPercentDistance);
 end;
 
 procedure avk_TSimpleMap.SetMapSize(const ACountW, ACountH: Integer;
@@ -163,11 +191,10 @@ begin
   Name := InName;
   FSetCountStage(1);
   FCurrentStage := 0;
-  FPercentDistance := 30;
+  FPercentDistance := 20;
 
   OnProc := DoProc;
   OnDraw := DoDraw;
-
 
 end;
 

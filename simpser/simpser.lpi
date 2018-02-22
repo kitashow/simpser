@@ -34,7 +34,7 @@
         <FormatVersion Value="1"/>
       </local>
     </RunParams>
-    <Units Count="14">
+    <Units Count="15">
       <Unit0>
         <Filename Value="simpser.pas"/>
         <IsPartOfProject Value="True"/>
@@ -91,6 +91,10 @@
         <Filename Value="avk_spr2_tsimplemap.inc"/>
         <IsPartOfProject Value="True"/>
       </Unit13>
+      <Unit14>
+        <Filename Value="avk_spr2_tskeletpoint.inc"/>
+        <IsPartOfProject Value="True"/>
+      </Unit14>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -100,7 +104,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir);../avk-1"/>
-      <OtherUnitFiles Value="../zengl-src-0.3.12;../zengl-src-0.3.12/src;../zengl-src-0.3.12/headers;../zengl-src-0.3.12/lib/jpeg/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/msvcrt/$(TargetCPU);../zengl-src-0.3.12/lib/ogg/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/theora/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/zlib/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/zip/$(TargetCPU)-$(TargetOS);../avk-1;../avk-1/avk_add;../Lnet_lib"/>
+      <OtherUnitFiles Value="../zengl-src-0.3.12;../zengl-src-0.3.12/src;../zengl-src-0.3.12/headers;../zengl-src-0.3.12/extra;../zengl-src-0.3.12/lib/jpeg/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/msvcrt/$(TargetCPU);../zengl-src-0.3.12/lib/ogg/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/theora/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/zlib/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/zip/$(TargetCPU)-$(TargetOS);../avk-1;../avk-1/avk_add;../Lnet_lib;../zengl-src-0.3.12/lib/chipmunk/i386-win32"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Parsing>
@@ -137,7 +141,8 @@
 -dMOUSE3KEY
 -dWINDOWS
 -dNoBlockingSocket
--dLOCALHOST"/>
+-dLOCALHOST
+-dUSE_CHIPMUNK_STATIC"/>
       <OtherDefines Count="6">
         <Define0 Value="Debug"/>
         <Define1 Value="MOUSE3KEY"/>
