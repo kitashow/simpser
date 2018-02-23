@@ -29,8 +29,12 @@ Begin
   randomize();
   timer_Add( @Proc, 2 );
   wnd_SetCaption( 'Набор тестов' + Debug);
-  //wnd_ShowCursor( TRUE );
+  {$IfDef ShowCursor}
+  wnd_ShowCursor( TRUE );
+  {$else}
   wnd_ShowCursor( False );
+  {$endif}
+
   scr_SetOptions(1280,720, REFRESH_MAXIMUM, false, false );
   zgl_Init();
 End.

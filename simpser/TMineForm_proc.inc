@@ -236,7 +236,7 @@ begin
   TmpSpr.AddAdditionalPoint('Вылет пульки', 26, 30);
 
   TmpSpr.StopCadre := 12;
-  TmpSpr.RateCadre := 90;
+  TmpSpr.RateCadre := 15;
   TmpSpr.OnBeforeProc := DoAPforSpr;//чтоб двигать
   TmpSpr.SetCollisionZone(0, 0, 35);
 
@@ -369,6 +369,7 @@ begin
       end;
     end;
   end;
+  TmpMap.SetStageAndPercentDistance(0, 5);
   TmpMap.SetAreaElement(0,0,1000,680);
   TmpMap.GetMouse := false; //Не должен брать мыш
   TmpMap.Layer := 1;
@@ -497,7 +498,7 @@ procedure TMineForm.DoPanelCompSprite(Sender: TObject);
 var
   tmpTestForm: avk_TElement;
   TmpBtn: avk_TSimpleButton;
-  TmpSklPnt, TmpSklPntSl: avk_TSkeletSprite;
+  TmpSklPnt: avk_TSkeletPoint;
 begin
   if MineForm.ListName['Пример собранного спрайта'] <> nil then Exit;
   tmpTestForm := avk_TElement.Create(MineForm,'Пример собранного спрайта');
@@ -519,23 +520,29 @@ begin
   TmpBtn.OnClick := MineForm.DoRotateCompSprite5gr;
 
   //делаем скелет
-  TmpSklPnt := avk_TSkeletSprite.Create(tmpTestForm, 'lo1');
-  TmpSklPnt.StartPoint.X := 756;
-  TmpSklPnt.StartPoint.Y := 271;
-  TmpSklPnt.Calk;
-  TmpSklPnt.SetSprite('шлем', MineForm.TexManager.TexName['спрайт шлем'],
-  0, 0, //если есть вложенные
-  13, 13, // ось
-  25, 25, // ширина высота
-  0, 13, 13,
-  0, 0);
-
-  TmpSklPntSl := avk_TSkeletSprite.Create(TmpSklPnt, 'lo2');
-  TmpSklPntSl.Host := TmpSklPnt;
-  TmpSklPntSl.StartPoint.X := -15;
-  TmpSklPntSl.StartPoint.Y := 24;
-  TmpSklPntSl.Calk;
-
+  TmpSklPnt := avk_TSkeletPoint.Create(tmpTestForm, 'lo1');
+  TmpSklPnt.Point.X := 756;
+  TmpSklPnt.Point.Y := 271;
+  TmpSklPnt.AddSubPoint(-15,  -15);
+  TmpSklPnt.AddSubPoint(-65, -16);
+  TmpSklPnt.SubPoints[TmpSklPnt.CountSubPoints - 1].AddSubPoint(13, 7);
+  //TmpSklPnt := avk_TSkeletSprite.Create(tmpTestForm, 'lo1');
+  //TmpSklPnt.StartPoint.X := 756;
+  //TmpSklPnt.StartPoint.Y := 271;
+  //TmpSklPnt.Calk;
+  //TmpSklPnt.SetSprite('шлем', MineForm.TexManager.TexName['спрайт шлем'],
+  //0, 0, //если есть вложенные
+  //13, 13, // ось
+  //25, 25, // ширина высота
+  //0, 13, 13,
+  //0, 0);
+  //
+  //TmpSklPntSl := avk_TSkeletSprite.Create(TmpSklPnt, 'lo2');
+  //TmpSklPntSl.Host := TmpSklPnt;
+  //TmpSklPntSl.StartPoint.X := -15;
+  //TmpSklPntSl.StartPoint.Y := 24;
+  //TmpSklPntSl.Calk;
+  //
   //TmpSklPntSl := avk_TSkeletSprite.Create(avk_TSkeletPoint(TmpSklPnt.ListName['lo2']), 'lo3');
   //TmpSklPntSl.Host := avk_TSkeletPoint(TmpSklPnt.ListName['lo2']);
   //TmpSklPntSl.StartPoint.X := -42;
@@ -549,8 +556,9 @@ var
   TmpSPnt: avk_TSkeletPoint;
 begin
   if MineForm.ListName['Пример собранного спрайта'] = nil then Exit;
-  //TmpSPnt := avk_TSkeletPoint(avk_TElement(MineForm.ListName['Пример собранного спрайта']).ListName['lo1']);
-  //TmpSPnt.StartAngle := TmpSPnt.StartAngle + 5;
+  TmpSPnt := avk_TSkeletPoint(avk_TElement(MineForm.ListName['Пример собранного спрайта']).ListName['lo1']);
+  TmpSPnt.Angle := TmpSPnt.Angle + 5;
+  TmpSPnt.SubPoints[1].Angle := TmpSPnt.SubPoints[1].Angle + 15;
   //if TmpSPnt.StartAngle > 360 then TmpSPnt.StartAngle := 0;
 end;
 

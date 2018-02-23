@@ -135,10 +135,8 @@ procedure avk_TSimpleMap.MoveWievPanelMap(const AGrowX, AGrowY: Single);
 var
   CKL: Integer;
   Coef: Single;
-  WHAT: String;
 begin
   for CKL := 0 to FCountStage - 1 do begin
-    WHAT := IntToStr(FCurrentStage);
     if CKL < FCurrentStage then Continue;
     //Перемещение на PercentDistance% меньше на этаже ниже
     Coef := ((FPercentDistance * (CKL - FCurrentStage)) * 0.01);

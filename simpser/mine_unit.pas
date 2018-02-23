@@ -148,6 +148,7 @@ var
 begin
   MineForm := TMineForm.Create(nil,'Рабочий стол');
   LoadResourse;
+  MineForm.TextureCursor := MineForm.TexManager.TexName['Cursor'];;
   TmpBttn           := avk_TSimpleButton.Create(MineForm,'Проверка');
   TmpBttn.SetAreaElement(2,2,120,32);
   TmpBttn.TexButton := MineForm.TexManager.TexName['Кнопка'];

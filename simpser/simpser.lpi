@@ -142,14 +142,18 @@
 -dWINDOWS
 -dNoBlockingSocket
 -dLOCALHOST
--dUSE_CHIPMUNK_STATIC"/>
-      <OtherDefines Count="6">
+-dUSE_CHIPMUNK_STATIC
+-dShowCursor"/>
+      <OtherDefines Count="9">
         <Define0 Value="Debug"/>
         <Define1 Value="MOUSE3KEY"/>
         <Define2 Value="WINDOWS"/>
         <Define3 Value="ObjectMode"/>
         <Define4 Value="NoBlockingSocket"/>
         <Define5 Value="DisableUTF8RTL"/>
+        <Define6 Value="LOCALHOST"/>
+        <Define7 Value="USE_CHIPMUNK_STATIC"/>
+        <Define8 Value="ShowCursor"/>
       </OtherDefines>
     </Other>
   </CompilerOptions>

@@ -206,17 +206,37 @@ avk_TSimpleMap = class (avk_TElement)
 end;
 
 { avk_TSkeletPoint }
-
+{$IfDef Debug}
+avk_TSkeletPoint = class (avk_TElement)
+{$Else}
 avk_TSkeletPoint = class (TObject)
+{$EndIf}
+  private
+    function GetAngle: Single;
+    function GetCpvPoint: cpVect;
+    procedure SetAngle(AValue: Single);
   public
+    SubPoints: array of avk_TSkeletPoint;
+    CountSubPoints: Integer;
     Point: zglTPoint2D;
-    Angle: Single;
+    AngleRad: Single;
     HostPoint: avk_TSkeletPoint;
     procedure SetPoint(AX, AY: Single);
     function RealPoint: zglTPoint2D;
-    function RealAngle: Single;
+    function RealAngleRad: Single;
+    procedure AddSubPoint(AX, AY: Single);
+    {$IfDef Debug}
+    procedure DoDraw(Sender: TObject);
+    {$EndIf}
   public
+    property Angle: Single read GetAngle write SetAngle;
+    property cpvPoint: cpVect read GetCpvPoint;
+  public
+    {$IfDef Debug}
+    constructor Create(const InParent: avk_TFraim = nil; InName: String = '');
+    {$Else}
     constructor Create;
+    {$EndIf}
     destructor Destroy; override;
 end;
 

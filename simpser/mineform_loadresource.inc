@@ -14,6 +14,7 @@
    MineForm.LoadResource(TmpPrefix+'swichbutton.png', 'Чекбокс');
    MineForm.LoadResource(TmpPrefix+'bevelpanel.png', 'Панелька');
    MineForm.LoadResource(TmpPrefix+'bevelpanelec.png', 'Панелька пуст');
+   MineForm.LoadResource(TmpPrefix+'cursor.png', 'Cursor');
 {Спрайты}
    MineForm.LoadResource(TmpPrefix+'PersonSteps.png', 'Шагающий стрелок');
    MineForm.LoadResource(TmpPrefix+'leafs.png', 'Листочек');

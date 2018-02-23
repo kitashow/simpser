@@ -2,18 +2,12 @@
 { avk_TTileMap }
 
 procedure avk_TTileMap.Draw(AX, AY, AW, AH: Single);
-var
-  WHAT: String;
 begin
   CalcDraw := CalcDraw + 1;
   if CalcDraw = High(CalcDraw) then CalcDraw := 0;
 
   if Hide then Exit; // скрыт
   if WrtSCR = nil then Exit;//нет рабочей
-  WHAT := FloatToStr(AX);
-  WHAT := FloatToStr(AY);
-  WHAT := FloatToStr(AW);
-  WHAT := FloatToStr(AH);
 
   ssprite2d_Draw( WrtSCR.Surface, AX, AY, AW, AH, Angle, Alpha, FxFlags );
 end;
