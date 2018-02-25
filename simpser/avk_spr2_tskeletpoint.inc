@@ -7,7 +7,7 @@ end;
 
 function avk_TSkeletPoint.GetCpvPoint: cpVect;
 begin
-  Result := cpv(Point.X, Point.Y);
+  Result := cpv(FPoint.X, FPoint.Y);
 end;
 
 procedure avk_TSkeletPoint.SetAngle(AValue: Single);
@@ -21,34 +21,32 @@ begin
   end;
 
   TmpL := cpvlength(cpvPoint);
-  TmpRP := cpvforangle(AValue);
+  TmpRP := cpvforangle(AValue * deg2rad);
   TmpRP.X := TmpRP.X * TmpL;
   TmpRP.Y := TmpRP.Y * TmpL;
 
-  Point.X := TmpRP.X;
-  Point.Y := TmpRP.Y;
+  SetPoint(Round(TmpRP.X), Round(TmpRP.Y));
 end;
 
 procedure avk_TSkeletPoint.SetPoint(AX, AY: Single);
 begin
-  Point.X := AX;
-  Point.Y := AY;
+  FPoint.X := AX;
+  FPoint.Y := AY;
   AngleRad := cpvtoangle(cpvPoint);
 end;
 
 function avk_TSkeletPoint.RealPoint: zglTPoint2D;
 var
-  TmpX, TmpY, TmpZ, TmpAngle: Single;
+  TmpAngle: Single;
   TmpPnt: zglTPoint2D;
   TmpRP: cpVect;
   TmpL: cpFloat;
 begin
   if HostPoint = nil then begin
-     Result := Point;
+     Result := FPoint;
      Exit;
   end;
 
-  //TmpAngle := HostPoint.RealAngleRad;
   TmpAngle := RealAngleRad;
 
   TmpL := cpvlength(cpvPoint);
@@ -78,40 +76,40 @@ begin
   INC(CountSubPoints, 1);
 end;
 
-{$IfDef Debug}
 procedure avk_TSkeletPoint.DoDraw(Sender: TObject);
 var
   LRP: zglTPoint2D;
   CKL: Integer;
+  RADeg: Single;
 begin
   LRP := RealPoint;
-  {$IfDef ShowPoints}
+  RADeg := RealAngleRad * rad2deg;
+  if not (Texture = nil) then
+    if not Hide then begin
+      if Scale <> 0 then fx2d_SetScale(Scale, Scale);
+      //Всегда от точки поворота
+      fx2d_SetRotatingPivot(X * (-1), Y * (-1));
+      asprite2d_Draw( Texture, LRP.X + X, LRP.Y + Y, W, H, RADeg + TexAngle, TexFrame, Alpha, FxFlags or FX2D_RPIVOT);
+    end;
+  for CKL := 0 to CountSubPoints - 1 do
+    SubPoints[CKL].DoDraw(Self);
+  {$IfDef Debug and ShowPoints}
   if HostPoint = nil then
       pr2d_Circle(LRP.X, LRP.Y, 7, $7a250f, 150 ,250, PR2D_FILL)
   else if CountSubPoints > 0 then
       pr2d_Circle(LRP.X, LRP.Y, 6, $7a250f, 150 ,250, PR2D_FILL);
   pr2d_Circle(LRP.X, LRP.Y, 4, $e52b50, 150 ,250, PR2D_FILL);
   {$EndIf}
-  for CKL := 0 to CountSubPoints - 1 do
-    SubPoints[CKL].OnDraw(Self);
 end;
-{$EndIf}
 
-{$IfDef Debug}
-constructor avk_TSkeletPoint.Create(const InParent: avk_TFraim = nil; InName: String = '');
-{$Else}
 constructor avk_TSkeletPoint.Create;
-{$EndIf}
 begin
-  Point.X := 0;
-  Point.Y := 0;
+  FPoint.X := 0;
+  FPoint.Y := 0;
   AngleRad := 0;
   HostPoint := nil;
   CountSubPoints := 0;
-  {$IfDef Debug}
-  inherited Create (InParent, InName);
-  OnDraw := DoDraw;
-  {$EndIf}
+  inherited Create;
 end;
 
 destructor avk_TSkeletPoint.Destroy;

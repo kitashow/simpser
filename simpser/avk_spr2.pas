@@ -68,11 +68,8 @@ end;
 
 avk_TSimpleTile = class (TObject)
   private
-    FAngle: Single;
     FOnAfterProc: TNotifyEvent;
     FOnBeforeProc: TNotifyEvent;
-    function GetAngle: Single;
-    procedure SetAngle(AValue: Single);
   public
     //Расчет кадров
     StartCadre,StopCadre : Integer;//начало и конец отрисовки
@@ -88,12 +85,10 @@ avk_TSimpleTile = class (TObject)
     FxFlags : LongWord;//флаги, для маштаба не забыть!
     TexAngle: Single;//угол внутри текстуры
     Texture : zglPTexture; //текстура
-    Hide    : boolean;
-    Animate : boolean;
+    Hide    : boolean; //скрыть
+    Animate : boolean; //это анимированный тайл
     TexFrame: Word; //номер фрейма внутри текстуры
-    HaveAlpha: boolean;
   public
-    property Angle: Single read GetAngle write SetAngle;//поворот спрайта
     property OnBeforeProc: TNotifyEvent read FOnBeforeProc write FOnBeforeProc;
     property OnAfterProc: TNotifyEvent read FOnAfterProc write FOnAfterProc;
   public
@@ -206,39 +201,31 @@ avk_TSimpleMap = class (avk_TElement)
 end;
 
 { avk_TSkeletPoint }
-{$IfDef Debug}
-avk_TSkeletPoint = class (avk_TElement)
-{$Else}
-avk_TSkeletPoint = class (TObject)
-{$EndIf}
+avk_TSkeletPoint = class (avk_TSimpleTile)
   private
+    FPoint: zglTPoint2D;
     function GetAngle: Single;
     function GetCpvPoint: cpVect;
     procedure SetAngle(AValue: Single);
   public
     SubPoints: array of avk_TSkeletPoint;
     CountSubPoints: Integer;
-    Point: zglTPoint2D;
     AngleRad: Single;
     HostPoint: avk_TSkeletPoint;
     procedure SetPoint(AX, AY: Single);
     function RealPoint: zglTPoint2D;
     function RealAngleRad: Single;
     procedure AddSubPoint(AX, AY: Single);
-    {$IfDef Debug}
     procedure DoDraw(Sender: TObject);
-    {$EndIf}
   public
     property Angle: Single read GetAngle write SetAngle;
+    property Point: zglTPoint2D read FPoint;
     property cpvPoint: cpVect read GetCpvPoint;
   public
-    {$IfDef Debug}
-    constructor Create(const InParent: avk_TFraim = nil; InName: String = '');
-    {$Else}
     constructor Create;
-    {$EndIf}
     destructor Destroy; override;
 end;
+
 
 implementation
 
