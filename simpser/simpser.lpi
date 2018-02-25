@@ -34,7 +34,7 @@
         <FormatVersion Value="1"/>
       </local>
     </RunParams>
-    <Units Count="15">
+    <Units Count="16">
       <Unit0>
         <Filename Value="simpser.pas"/>
         <IsPartOfProject Value="True"/>
@@ -95,6 +95,10 @@
         <Filename Value="avk_spr2_tskeletpoint.inc"/>
         <IsPartOfProject Value="True"/>
       </Unit14>
+      <Unit15>
+        <Filename Value="avk_spr2_tsimplesprite.inc"/>
+        <IsPartOfProject Value="True"/>
+      </Unit15>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -142,8 +146,7 @@
 -dWINDOWS
 -dNoBlockingSocket
 -dLOCALHOST
--dUSE_CHIPMUNK_STATIC
--dShowCursor"/>
+-dUSE_CHIPMUNK_STATIC"/>
       <OtherDefines Count="9">
         <Define0 Value="Debug"/>
         <Define1 Value="MOUSE3KEY"/>

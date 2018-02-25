@@ -226,9 +226,29 @@ avk_TSkeletPoint = class (avk_TSimpleTile)
     destructor Destroy; override;
 end;
 
+{ avk_TSimpleSprite }
+
+avk_TSimpleSprite = class (avk_TFraim)
+  private
+    FOnAfterProc: TNotifyEvent;
+    FOnBeforeProc: TNotifyEvent;
+    FSkeletPoint: avk_TSkeletPoint;
+  public
+    property SkPnt: avk_TSkeletPoint read FSkeletPoint write FSkeletPoint;
+    procedure SetParameters(APntX, APntY, ATexX, ATexY, AWigh, AHeight, AAngle: Single); overload;
+    procedure SetParameters(APntX, APntY, AWigh, AHeight, AAngle: Single); overload;
+  public
+    property OnBeforeProc: TNotifyEvent read FOnBeforeProc write FOnBeforeProc;
+    property OnAfterProc: TNotifyEvent read FOnAfterProc write FOnAfterProc;
+  public
+    procedure DoDraw(Sender: TObject);
+    procedure DoProc(Sender: TObject);
+  public
+    constructor Create(const InParent: avk_TFraim = nil);
+    destructor Destroy; override;
+end;
 
 implementation
-
 
 //avk_TSimpleTile
 {$INCLUDE avk_spr2_tsimpletile.inc}
@@ -241,6 +261,10 @@ implementation
 
 //avk_TSkeletPoint
 {$INCLUDE avk_spr2_tskeletpoint.inc}
+
+//avk_TSimpleSprite
+{$INCLUDE avk_spr2_tsimplesprite.inc}
+
 
 
 end.

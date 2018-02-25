@@ -27,7 +27,7 @@ Begin
   zgl_Reg( SYS_EXIT, @Quit );
   //zgl_Enable(APP_USE_UTF8);
   randomize();
-  timer_Add( @Proc, 2 );
+  timer_Add( @Proc, 4 );
   wnd_SetCaption( 'Набор тестов' + Debug);
   {$IfDef ShowCursor}
   wnd_ShowCursor( TRUE );

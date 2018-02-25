@@ -32,7 +32,8 @@ procedure avk_TSkeletPoint.SetPoint(AX, AY: Single);
 begin
   FPoint.X := AX;
   FPoint.Y := AY;
-  AngleRad := cpvtoangle(cpvPoint);
+  if HostPoint <> nil then
+    AngleRad := cpvtoangle(cpvPoint);
 end;
 
 function avk_TSkeletPoint.RealPoint: zglTPoint2D;
@@ -69,10 +70,10 @@ end;
 
 procedure avk_TSkeletPoint.AddSubPoint(AX, AY: Single);
 begin
-  SetLength(SubPoints, CountSubPoints +1);
+  SetLength(SubPoints, CountSubPoints + 1);
   SubPoints[CountSubPoints] := avk_TSkeletPoint.Create;
-  SubPoints[CountSubPoints].SetPoint(AX, AY);
   SubPoints[CountSubPoints].HostPoint := Self;
+  SubPoints[CountSubPoints].SetPoint(AX, AY);
   INC(CountSubPoints, 1);
 end;
 
@@ -83,16 +84,20 @@ var
   RADeg: Single;
 begin
   LRP := RealPoint;
-  RADeg := RealAngleRad * rad2deg;
   if not (Texture = nil) then
     if not Hide then begin
       if Scale <> 0 then fx2d_SetScale(Scale, Scale);
       //Всегда от точки поворота
+      RADeg := RealAngleRad * rad2deg;
       fx2d_SetRotatingPivot(X * (-1), Y * (-1));
       asprite2d_Draw( Texture, LRP.X + X, LRP.Y + Y, W, H, RADeg + TexAngle, TexFrame, Alpha, FxFlags or FX2D_RPIVOT);
     end;
-  for CKL := 0 to CountSubPoints - 1 do
+
+  for CKL := 0 to CountSubPoints - 1 do begin
     SubPoints[CKL].DoDraw(Self);
+  end;
+
+
   {$IfDef Debug and ShowPoints}
   if HostPoint = nil then
       pr2d_Circle(LRP.X, LRP.Y, 7, $7a250f, 150 ,250, PR2D_FILL)

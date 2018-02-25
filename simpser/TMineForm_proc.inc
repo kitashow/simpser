@@ -31,10 +31,10 @@ begin
   tmpTestForm.GetMouse := false;
 
   for CKL := 1 to 200 do begin
-    TmpSpr := avk_TSimpleSprite.Create(tmpTestForm,'List'+avk_IntToStr(CKL));
+    TmpSpr := avk_TSimpleSprite.Create(tmpTestForm);
     TmpSpr.Layer := Random(100);
     while TmpSpr.Layer < 30 do TmpSpr.Layer := Random(100);
-    TmpSpr.Texture := MineForm.TexManager.TexName['Листочек'];
+    TmpSpr.SkPnt.Texture := MineForm.TexManager.TexName['Листочек'];
     TSX := Random(Trunc(MineForm.AreaElement.W));
     TSY := -1 * Random(100) - 50;
     TSW := 50 + TmpSpr.Layer;
@@ -48,7 +48,7 @@ end;
 procedure TMineForm.DoDropList(Sender: TObject);
 var
   tempPar: avk_TElement;
-  SpeedLost: Single;
+  SpeedLost, CPY, CPX: Single;
 begin
   if Sender.ClassName <> 'avk_TSimpleSprite' then Exit;
 
@@ -56,16 +56,22 @@ begin
     tempPar := avk_TElement(Parent);
     SpeedLost := 0.005 * Layer;
     if SpeedLost < 0.01 then SpeedLost:= 0.01;
+
+    CPY := SkPnt.Point.Y;
+    CPX := SkPnt.Point.X;
+
     CPY := CPY + SpeedLost;
-    if CPY > tempPar.AreaElement.H then begin
-      CPY := -1 * Random(100) - 200;
-      CPX := Random(Trunc(tempPar.AreaElement.W));
-    end;
-    if key_Down( K_A ) or key_Down( K_LEFT ) then begin
-      CPX := CPX - (0.25+ 0.2*SpeedLost);
-    end;
-    if key_Down( K_D ) or key_Down( K_RIGHT ) then begin
-      CPX := CPX + (0.25+ 0.2*SpeedLost);
+    //if key_Down( K_A ) or key_Down( K_LEFT ) then begin
+    //  CPX := CPX - (0.25+ 0.2*SpeedLost);
+    //end;
+    //if key_Down( K_D ) or key_Down( K_RIGHT ) then begin
+    //  CPX := CPX + (0.25+ 0.2*SpeedLost);
+    //end;
+    SkPnt.SetPoint(CPX, CPY);
+
+    if CPY > (tempPar.AreaElement.H + 80) then begin
+      SkPnt.SetPoint(Random(Trunc(tempPar.AreaElement.W)), -1 * Random(100) - 50);
+      SkPnt.Angle := Random(180);
     end;
   end;
 end;
@@ -229,16 +235,15 @@ begin
   TmpPnl.OnProc := DoInspectBullet; //пульки
 
   //теперь делаем спрайтик
-  TmpSpr := avk_TSimpleSprite.Create(TmpPnl,'Шагающий солдатик');
-  TmpSpr.Texture := MineForm.TexManager.TexName['Шагающий стрелок'];
-  tex_SetFrameSize( TmpSpr.Texture, 69, 52);
+  TmpSpr := avk_TSimpleSprite.Create(TmpPnl);
+  TmpSpr.SkPnt.Texture := MineForm.TexManager.TexName['Шагающий стрелок'];
+  tex_SetFrameSize( TmpSpr.SkPnt.Texture, 69, 52);
   TmpSpr.SetParameters(590, 240, 69, 52, 0);
-  TmpSpr.AddAdditionalPoint('Вылет пульки', 26, 30);
+  TmpSpr.SkPnt.AddSubPoint(26, 30);
 
-  TmpSpr.StopCadre := 12;
-  TmpSpr.RateCadre := 15;
+  TmpSpr.SkPnt.StopCadre := 12;
+  TmpSpr.SkPnt.RateCadre := 15;
   TmpSpr.OnBeforeProc := DoAPforSpr;//чтоб двигать
-  TmpSpr.SetCollisionZone(0, 0, 35);
 
 end;
 
@@ -246,12 +251,17 @@ procedure TMineForm.DoAPforSpr(Sender: TObject);
 var
   Nazata: Boolean;
   tempPar: avk_TPanel;
+  CPY, CPX: Single;
 
 begin
   if Sender.ClassName <> 'avk_TSimpleSprite' then Exit;
   Nazata := false;
-  with avk_TSimpleSprite(Sender) do begin
-    tempPar := avk_TPanel(Parent);
+  tempPar := avk_TPanel(avk_TSimpleSprite(Sender).Parent);
+  with avk_TSimpleSprite(Sender).SkPnt do begin
+
+    CPY := Point.Y;
+    CPX := Point.X;
+
     if key_Down( K_W ) or key_Down( K_UP ) then begin
       Angle := - 90;
       CPY := CPY - 0.25;
@@ -279,6 +289,7 @@ begin
     if CPX < tempPar.GetAbsolyteArea.X then CPX := CPX + 1;
     if (CPX + W) > (tempPar.GetAbsolyteArea.X + tempPar.AreaElement.W) then CPX := CPX - 1;
     if (CPY + H) > (tempPar.GetAbsolyteArea.Y + tempPar.AreaElement.H) then CPY := CPY - 1;
+    SetPoint(CPX, CPY);
     Animate := Nazata;
   end;
 end;
@@ -580,14 +591,13 @@ var
 begin
   if avk_MouseIsClick(M_BLEFT) then begin
     //теперь делаем спрайтик
-    TmpPnl := avk_TPanel(Sender);
-    TmpSpr := avk_TSimpleSprite.Create(TmpPnl,'Пулька');
-    TmpSpr.Texture := MineForm.TexManager.TexName['пулька'];
-    //tex_SetFrameSize( TmpSpr.Texture, 69, 52);
-    TmpSpr.SetParameters(80, 80, 6, 14, 0);
-    TmpSpr.StopCadre := 0;
-    TmpSpr.RateCadre := 0;
-    TmpSpr.OnBeforeProc := DoAPforSpr;//чтоб двигать
+    //TmpPnl := avk_TPanel(Sender);
+    //TmpSpr := avk_TSimpleSprite.Create(TmpPnl);
+    //TmpSpr.SkPnt.Texture := MineForm.TexManager.TexName['пулька'];
+    //TmpSpr.SetParameters(80, 80, 6, 14, 0);
+    //TmpSpr.SkPnt.StopCadre := 0;
+    //TmpSpr.SkPnt.RateCadre := 0;
+    //TmpSpr.OnBeforeProc := DoAPforSpr;//чтоб двигать
   end;
 end;
 
