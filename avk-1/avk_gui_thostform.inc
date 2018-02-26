@@ -92,6 +92,9 @@ begin
      text_DrawInRect( Font, avk_TElement(MouseHost).GetAbsolyteArea, 'Id:'+avk_IntToStr(MouseHost.Id)+', L:'+avk_IntToStr(MouseHost.Layer), TEXT_FX_VCA or TEXT_HALIGN_RIGHT or TEXT_VALIGN_TOP);
    end;
   {$EndIf}
+  if TextureCursor <> nil then
+    ssprite2d_Draw( TextureCursor, avk_MouseIsX - 16, avk_MouseIsY - 16, 32, 32, 0);
+
 end;
 
 procedure avk_THostForm.intProc;
@@ -147,6 +150,7 @@ begin
   FSoundManager := nil;
   FileResourses := '';
   FArhiveNowOpen:=false;
+  TextureCursor := nil;
   inherited Create(InParent,InName);
   BorderStyle := BS_NONE;
 end;

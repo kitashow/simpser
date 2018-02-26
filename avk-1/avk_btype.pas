@@ -21,8 +21,7 @@ type
     FError : TNotifyEvent;
     FDraw, FTimer, FProc: TNotifyEvent;
     FAnyOneGotProc: boolean;
-    FNowProc: boolean;
-    FNowPause: boolean;
+    FNowPause: Boolean;
     function GetCount: Integer;
     function GetMaxFID: Integer;
     function GetMinFID: Integer;
@@ -387,8 +386,6 @@ var
   NTH: avk_TFraim;
   NameOf: String;
 begin
-  if FNowProc then Exit; //сейчас идет процесс
-  FNowProc := true;
   FNowPause := false;
   if StopPause > 0 then begin
     if CalcPause < StopPause then begin
@@ -423,7 +420,6 @@ begin
   end;
   intProc;
   FNoDelete := MemDel;
-  FNowProc := false;
 end;
 
 procedure avk_TFraim.intProc;
@@ -451,7 +447,6 @@ begin
   StopPause      := 0;
   CalcPause      := 0;
   FNowPause      := false;
-  FNowProc       := false;
   OnError:=nil;
   OnDraw:=nil;
   OnProc:=nil;

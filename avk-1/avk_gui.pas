@@ -345,6 +345,7 @@ type
     function CalcX2D(const X: Single): Single;
     function CalcY2D(const Y: Single): Single;
   public
+    TextureCursor: zglPTexture;
     property FileResourses: String read FFileResourses write FSetFileResourses;
     property FontManager: avk_TFontManager read FFontManager;
     property TexManager: avk_TTextureManager read FTextureManager;
