@@ -92,8 +92,10 @@ begin
      text_DrawInRect( Font, avk_TElement(MouseHost).GetAbsolyteArea, 'Id:'+avk_IntToStr(MouseHost.Id)+', L:'+avk_IntToStr(MouseHost.Layer), TEXT_FX_VCA or TEXT_HALIGN_RIGHT or TEXT_VALIGN_TOP);
    end;
   {$EndIf}
+  {$IfNDef ShowCursor}
   if TextureCursor <> nil then
     ssprite2d_Draw( TextureCursor, avk_MouseIsX - 16, avk_MouseIsY - 16, 32, 32, 0);
+  {$EndIf}
 
 end;
 
