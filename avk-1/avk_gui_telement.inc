@@ -201,9 +201,7 @@ end;
 
 function avk_TElement.GetMouseState: avk_TMouseState;
 var
-  TmpFraim: avk_TFraim;
   CanBeHost: Boolean;
-  ForBf: avk_TMouseState;
 begin
   if not avk_MouseInRect( GetAbsolyteArea ) then begin
     Result := MsoePassive;
@@ -239,7 +237,6 @@ end;
 
 function avk_TElement.GetCanBeMouseHost: boolean;
 var
-  TmpLayer: Integer;
   CKL: Integer;
   TmpParent: avk_TElement;
   TmpPrevParent: avk_TElement;
@@ -265,7 +262,7 @@ var
 
 begin
   Result := true;
-  TmpLayer := Layer;
+  //TmpLayer := Layer;
   //соседи
   TmpParent := Self;
   while TmpParent.Parent <> nil do begin
@@ -330,7 +327,6 @@ procedure avk_TElement.CreateGeometric;
 var
   TMPRt: zglPRenderTarget;
   InTexture: zglPTexture;
-  TmpArea: zglTRect;
 begin
   if FWallpaperWasSettingManual then Exit;
   FStyleElement := STYLE_GEOMETRIC;

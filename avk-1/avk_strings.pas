@@ -87,9 +87,8 @@ end;
 
 function avk_find(const InStr, SubStr: UTF8String): Integer;
 var
-   TmpStep: Integer;
-   TmpStp1: UTF8String;
-   Len1, Len2 : integer;
+   TmpStep, Len1, Len2: Integer;
+   TmpStp1: String;
 begin
   Result := 0;
   TmpStp1:= '';

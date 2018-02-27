@@ -25,13 +25,13 @@ end;
 
 procedure avk_TSimpleSprite.DoDraw(Sender: TObject);
 begin
-  FSkeletPoint.DoDraw(Sender);
+  FSkeletPoint.DoDraw;
 end;
 
 procedure avk_TSimpleSprite.DoProc(Sender: TObject);
 begin
   if Assigned(FOnBeforeProc) then FOnBeforeProc(Self);
-  FSkeletPoint.DoProc(Sender);
+  FSkeletPoint.DoProc;
   if Assigned(FOnAfterProc) then FOnAfterProc(Self);
 end;
 

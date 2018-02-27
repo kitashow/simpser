@@ -1,3 +1,20 @@
+
+function VcToAngle(AValue: cpVect): Double;
+begin
+  Result := arctan(AValue.Y / AValue.X);
+end;
+
+function VcForAngle(AValue: Single): cpVect;
+begin
+  Result.X := cos(AValue);
+  Result.Y := sin(AValue);
+end;
+
+function VcLength(AValue: cpVect): cpFloat;
+begin
+  Result := sqrt(AValue.Y * AValue.Y + AValue.X * AValue.X);
+end;
+
 { avk_TSkeletPoint }
 
 function avk_TSkeletPoint.GetAngle: Single;
@@ -20,8 +37,11 @@ begin
     Exit;
   end;
 
-  TmpL := cpvlength(cpvPoint);
-  TmpRP := cpvforangle(AValue * deg2rad);
+  //TmpL := cpvlength(cpvPoint);
+  //TmpRP := cpvforangle(AValue * deg2rad);
+  TmpL := VcLength(cpvPoint);
+  TmpRP := VcForAngle(AValue * deg2rad);
+
   TmpRP.X := TmpRP.X * TmpL;
   TmpRP.Y := TmpRP.Y * TmpL;
 
@@ -33,7 +53,8 @@ begin
   FPoint.X := AX;
   FPoint.Y := AY;
   if HostPoint <> nil then
-    AngleRad := cpvtoangle(cpvPoint);
+    //AngleRad := cpvtoangle(cpvPoint);
+    AngleRad := VcToAngle(cpvPoint);
 end;
 
 function avk_TSkeletPoint.RealPoint: zglTPoint2D;
@@ -50,14 +71,17 @@ begin
 
   TmpAngle := RealAngleRad;
 
-  TmpL := cpvlength(cpvPoint);
-  TmpRP := cpvforangle(TmpAngle);
+  //TmpL := cpvlength(cpvPoint);
+  //TmpRP := cpvforangle(TmpAngle);
+  TmpL := VcLength(cpvPoint);
+  TmpRP := VcForAngle(TmpAngle);
+
   TmpRP.X := TmpRP.X * TmpL;
   TmpRP.Y := TmpRP.Y * TmpL;
 
   TmpPnt := HostPoint.RealPoint;
-  Result.X := TmpRP.X + TmpPnt.X;
-  Result.Y := TmpRP.Y + TmpPnt.Y;
+  Result.X := Round(TmpRP.X + TmpPnt.X);
+  Result.Y := Round(TmpRP.Y + TmpPnt.Y);
 end;
 
 function avk_TSkeletPoint.RealAngleRad: Single;
@@ -77,25 +101,27 @@ begin
   INC(CountSubPoints, 1);
 end;
 
-procedure avk_TSkeletPoint.DoDraw(Sender: TObject);
+procedure avk_TSkeletPoint.DoDraw;
 var
   LRP: zglTPoint2D;
   CKL: Integer;
   RADeg: Single;
 begin
   LRP := RealPoint;
+  RADeg := RealAngleRad * rad2deg;
   if not (Texture = nil) then
     if not Hide then begin
       if Scale <> 0 then fx2d_SetScale(Scale, Scale);
       //Всегда от точки поворота
-      RADeg := RealAngleRad * rad2deg;
       fx2d_SetRotatingPivot(X * (-1), Y * (-1));
       asprite2d_Draw( Texture, LRP.X + X, LRP.Y + Y, W, H, RADeg + TexAngle, TexFrame, Alpha, FxFlags or FX2D_RPIVOT);
     end;
 
+  //{$IfDef Debug} //Ломает релиз, БЕДА
   for CKL := 0 to CountSubPoints - 1 do begin
-    SubPoints[CKL].DoDraw(Self);
+    SubPoints[CKL].DoDraw;
   end;
+  //{$EndIf}
 
 
   {$IfDef Debug and ShowPoints}

@@ -19,7 +19,8 @@ type
     FID: Integer;
     FID_child: Integer;
     FError : TNotifyEvent;
-    FDraw, FTimer, FProc: TNotifyEvent;
+    FDraw: TNotifyEvent;
+    FProc: TNotifyEvent;
     FAnyOneGotProc: boolean;
     FNowPause: Boolean;
     function GetCount: Integer;
@@ -275,17 +276,11 @@ end;
 procedure avk_TFraim.DelById(inId: Integer);
 var
   i : Integer;
-  {IfDef Debug}
-  NameTmp: String;
-  {EndIf}
 begin
   if Count < 1 then Exit;
   i := 0;
   while i < Count do
     if avk_TFraim(FList.Objects[i]).FID = inId then begin
-      {IfDef Debug}
-      NameTmp := avk_TFraim(FList.Objects[ i ]).Name ;
-      {EndIf}
       while avk_TFraim(FList.Objects[ i ]).FNoDelete do begin
         //просто ждем
       end;
@@ -354,7 +349,6 @@ procedure avk_TFraim.SetDeleteMe(AValue: boolean);
 begin
   if FDeleteMe=AValue then Exit;
   FDeleteMe:=AValue;
-
 end;
 
 procedure avk_TFraim.Draw;
@@ -381,10 +375,8 @@ end;
 
 procedure avk_TFraim.Proc;
 var
-  TmpCln, TmpCln1: Integer;
+  TmpCln: Integer;
   MemDel: Boolean;
-  NTH: avk_TFraim;
-  NameOf: String;
 begin
   FNowPause := false;
   if StopPause > 0 then begin
@@ -408,12 +400,6 @@ begin
       DelById(avk_TFraim(FList.Objects[TmpCln]).Id);
       TmpCln    := 0;//Дак может так?
     end else begin
-      if FList.Objects[TmpCln].ClassNameIs('avk_TSimpleSprite') then begin
-        NameOf := avk_TFraim(FList.Objects[TmpCln]).Name;
-        if NameOf = 'Шагающий солдатик 2' then begin
-          NTH := avk_TFraim(FList.Objects[TmpCln]);
-        end;
-      end;
       avk_TFraim(FList.Objects[TmpCln]).Proc;
       Inc(TmpCln,1);
     end;

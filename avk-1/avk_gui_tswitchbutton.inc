@@ -17,7 +17,6 @@ end;
 procedure avk_TSwitchButton.DoDraw(Sender: TObject);
 var
   tmpFraimTexture: Word;
-  tmpCheckPlus: Word;
 begin
   tmpFraimTexture := 1;
   if not FChecked then tmpFraimTexture := 4;

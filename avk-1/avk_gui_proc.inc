@@ -1,5 +1,4 @@
 type
-  zglPTGAHeader = ^zglTTGAHeader;
   zglTTGAHeader = packed record
     IDLength  : Byte;
     CPalType  : Byte;

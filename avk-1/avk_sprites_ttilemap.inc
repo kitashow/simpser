@@ -55,14 +55,14 @@ begin
 
       if not(DrawSpr = nil)then begin
         if Animate and (NeedToRender or DrawSpr.Animate) then
-          DrawSpr.DoProc(Self); // анимация
+          DrawSpr.DoProc; // анимация
         if NeedToRender then begin
           DrawSpr.X := STPntX + ((FTD1 - FTileBildInWP.X) * FTileSizeW);
           DrawSpr.Y := STPntY + ((FTD2 - FTileBildInWP.Y) * FTileSizeH);
           DrawSpr.W := FTileSizeW;
           DrawSpr.H := FTileSizeH;
         end;
-        DrawSpr.DoDraw(Self);
+        DrawSpr.DoDraw;
       end;
     end;//FTD2
 
@@ -72,7 +72,6 @@ end;
 procedure avk_TTileMap.DoProcLot;
 var
   TMPRt: zglPRenderTarget;
-  CKL1: Integer;
 begin
   if (WrtSCR = nil) or (rtSCR1 = WrtSCR) then
     TMPRt := rtSCR2 else TMPRt := rtSCR1;

@@ -1,6 +1,6 @@
 { avk_TSimpleTile }
 
-procedure avk_TSimpleTile.DoDraw(Sender: TObject);
+procedure avk_TSimpleTile.DoDraw;
 begin
   if Texture = nil then Exit;
   if Hide then Exit; // скрыт
@@ -8,9 +8,8 @@ begin
   asprite2d_Draw( Texture, X, Y, W, H, TexAngle, TexFrame, Alpha, FxFlags );
 end;
 
-procedure avk_TSimpleTile.DoProc(Sender: TObject);
+procedure avk_TSimpleTile.DoProc;
 begin
-  if Assigned(FOnBeforeProc) then FOnBeforeProc(Self);
   if Animate then begin
     if StopCadre = StartCadre then Exit;//А чего считать то
     INC(CurrentCadreCalk,1);
@@ -21,7 +20,6 @@ begin
     end;
     TexFrame := NowCadre;
   end;
-  if Assigned(FOnAfterProc) then FOnAfterProc(Self);
 end;
 
 constructor avk_TSimpleTile.Create;

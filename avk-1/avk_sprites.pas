@@ -67,9 +67,6 @@ end;
 { avk_TSimpleTile }
 
 avk_TSimpleTile = class (TObject)
-  private
-    FOnAfterProc: TNotifyEvent;
-    FOnBeforeProc: TNotifyEvent;
   public
     //Расчет кадров
     StartCadre,StopCadre : Integer;//начало и конец отрисовки
@@ -89,11 +86,8 @@ avk_TSimpleTile = class (TObject)
     Animate : boolean; //это анимированный тайл
     TexFrame: Word; //номер фрейма внутри текстуры
   public
-    property OnBeforeProc: TNotifyEvent read FOnBeforeProc write FOnBeforeProc;
-    property OnAfterProc: TNotifyEvent read FOnAfterProc write FOnAfterProc;
-  public
-    procedure DoDraw(Sender: TObject);
-    procedure DoProc(Sender: TObject);
+    procedure DoDraw;
+    procedure DoProc;
   public
     constructor Create;
     destructor Destroy; override;
@@ -201,6 +195,7 @@ avk_TSimpleMap = class (avk_TElement)
 end;
 
 { avk_TSkeletPoint }
+
 avk_TSkeletPoint = class (avk_TSimpleTile)
   private
     FPoint: zglTPoint2D;
@@ -210,13 +205,13 @@ avk_TSkeletPoint = class (avk_TSimpleTile)
   public
     SubPoints: array of avk_TSkeletPoint;
     CountSubPoints: Integer;
-    AngleRad: Single;
+    AngleRad: cpFloat;
     HostPoint: avk_TSkeletPoint;
     procedure SetPoint(AX, AY: Single);
     function RealPoint: zglTPoint2D;
     function RealAngleRad: Single;
     procedure AddSubPoint(AX, AY: Single);
-    procedure DoDraw(Sender: TObject);
+    procedure DoDraw;
   public
     property Angle: Single read GetAngle write SetAngle;
     property Point: zglTPoint2D read FPoint;

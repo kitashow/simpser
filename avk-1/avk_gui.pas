@@ -87,7 +87,6 @@ type
 
   avk_TElement = class (avk_TFraim)
   private
-    FIts: boolean;
     FStyleElement: byte;
     FPositionOnScreen: byte;
     FWallpaperColor: LongWord;
@@ -95,7 +94,6 @@ type
     FWallpaperWasSettingManual: Boolean;
     FWallpaper: zglPTexture;
   private
-    MemoryParentArea: zglTRect;
     LastMouseState: avk_TMouseState;
     FAreaElement: zglTRect;//Квадрат формы элемента, задается ОТНОСИТЕЛЬНО ВЛАДЕЛЬЦА
     FTransparence: byte;//прозрачность
