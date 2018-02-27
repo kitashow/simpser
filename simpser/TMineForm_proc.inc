@@ -452,7 +452,6 @@ var
   TmpCHB: avk_TSwitchButton;
   TmpSL: avk_TSimpleLabel;
   TmpInp: avk_TSimpleInput;
-  tmpTestFormkl: avk_TElement;
   FMessagePanel: avk_TMessagePanel;
 begin
   if MineForm.ListName['Пример простого сервера'] <> nil then Exit;

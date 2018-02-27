@@ -20,6 +20,8 @@ const
   Debug = '';
 {$endif}
 
+{$R *.res}
+
 Begin
   zgl_Reg( SYS_LOAD, @Init );
   zgl_Reg( SYS_DRAW, @Draw );
