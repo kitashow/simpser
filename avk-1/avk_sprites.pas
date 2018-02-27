@@ -27,6 +27,7 @@ uses
   , avk_gui
   , avk_input
   , avk_resmanager
+  , avk_vector
   //zgl
   {$IFNDEF ANDROID}   //Не андроид
   , zgl_opengl
@@ -199,23 +200,20 @@ end;
 avk_TSkeletPoint = class (avk_TSimpleTile)
   private
     FPoint: zglTPoint2D;
-    function GetAngle: Single;
-    function GetCpvPoint: cpVect;
     procedure SetAngle(AValue: Single);
   public
     SubPoints: array of avk_TSkeletPoint;
     CountSubPoints: Integer;
-    AngleRad: cpFloat;
+    AngleDeg: Single;
     HostPoint: avk_TSkeletPoint;
     procedure SetPoint(AX, AY: Single);
     function RealPoint: zglTPoint2D;
-    function RealAngleRad: Single;
+    function RealAngle: Single;
     procedure AddSubPoint(AX, AY: Single);
     procedure DoDraw;
   public
-    property Angle: Single read GetAngle write SetAngle;
+    property Angle: Single read AngleDeg write SetAngle;
     property Point: zglTPoint2D read FPoint;
-    property cpvPoint: cpVect read GetCpvPoint;
   public
     constructor Create;
     destructor Destroy; override;
@@ -225,8 +223,8 @@ end;
 
 avk_TSimpleSprite = class (avk_TFraim)
   private
-    FOnAfterProc: TNotifyEvent;
     FOnBeforeProc: TNotifyEvent;
+    FOnAfterProc: TNotifyEvent;
     FSkeletPoint: avk_TSkeletPoint;
   public
     property SkPnt: avk_TSkeletPoint read FSkeletPoint write FSkeletPoint;

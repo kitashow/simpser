@@ -1,46 +1,17 @@
-
-function VcToAngle(AValue: cpVect): Double;
-begin
-  Result := arctan(AValue.Y / AValue.X);
-end;
-
-function VcForAngle(AValue: Single): cpVect;
-begin
-  Result.X := cos(AValue);
-  Result.Y := sin(AValue);
-end;
-
-function VcLength(AValue: cpVect): cpFloat;
-begin
-  Result := sqrt(AValue.Y * AValue.Y + AValue.X * AValue.X);
-end;
-
 { avk_TSkeletPoint }
-
-function avk_TSkeletPoint.GetAngle: Single;
-begin
-  Result := AngleRad * rad2deg;
-end;
-
-function avk_TSkeletPoint.GetCpvPoint: cpVect;
-begin
-  Result := cpv(FPoint.X, FPoint.Y);
-end;
 
 procedure avk_TSkeletPoint.SetAngle(AValue: Single);
 var
-  TmpL: cpFloat;
-  TmpRP: cpVect;
+  TmpL: Single;
+  TmpRP: zglTPoint2D;
 begin
   if HostPoint = nil then begin
-    AngleRad := AValue * deg2rad;
+    AngleDeg := AValue;
     Exit;
   end;
 
-  //TmpL := cpvlength(cpvPoint);
-  //TmpRP := cpvforangle(AValue * deg2rad);
-  TmpL := VcLength(cpvPoint);
-  TmpRP := VcForAngle(AValue * deg2rad);
+  TmpL := VcLength(FPoint);
+  TmpRP := VcForAngle(AValue);
 
   TmpRP.X := TmpRP.X * TmpL;
   TmpRP.Y := TmpRP.Y * TmpL;
@@ -53,27 +24,22 @@ begin
   FPoint.X := AX;
   FPoint.Y := AY;
   if HostPoint <> nil then
-    //AngleRad := cpvtoangle(cpvPoint);
-    AngleRad := VcToAngle(cpvPoint);
+    AngleDeg := VcToAngle(FPoint);
 end;
 
 function avk_TSkeletPoint.RealPoint: zglTPoint2D;
 var
-  TmpAngle: Single;
-  TmpPnt: zglTPoint2D;
-  TmpRP: cpVect;
-  TmpL: cpFloat;
+  TmpAngle, TmpL: Single;
+  TmpRP, TmpPnt: zglTPoint2D;
 begin
   if HostPoint = nil then begin
      Result := FPoint;
      Exit;
   end;
 
-  TmpAngle := RealAngleRad;
+  TmpAngle := RealAngle;
 
-  //TmpL := cpvlength(cpvPoint);
-  //TmpRP := cpvforangle(TmpAngle);
-  TmpL := VcLength(cpvPoint);
+  TmpL := VcLength(FPoint);
   TmpRP := VcForAngle(TmpAngle);
 
   TmpRP.X := TmpRP.X * TmpL;
@@ -84,12 +50,12 @@ begin
   Result.Y := Round(TmpRP.Y + TmpPnt.Y);
 end;
 
-function avk_TSkeletPoint.RealAngleRad: Single;
+function avk_TSkeletPoint.RealAngle: Single;
 begin
   if HostPoint = nil then
-    Result := AngleRad
+    Result := AngleDeg
   else
-    Result := AngleRad + HostPoint.RealAngleRad;
+    Result := AngleDeg + HostPoint.RealAngle;
 end;
 
 procedure avk_TSkeletPoint.AddSubPoint(AX, AY: Single);
@@ -105,24 +71,19 @@ procedure avk_TSkeletPoint.DoDraw;
 var
   LRP: zglTPoint2D;
   CKL: Integer;
-  RADeg: Single;
 begin
   LRP := RealPoint;
-  RADeg := RealAngleRad * rad2deg;
   if not (Texture = nil) then
     if not Hide then begin
       if Scale <> 0 then fx2d_SetScale(Scale, Scale);
       //Всегда от точки поворота
       fx2d_SetRotatingPivot(X * (-1), Y * (-1));
-      asprite2d_Draw( Texture, LRP.X + X, LRP.Y + Y, W, H, RADeg + TexAngle, TexFrame, Alpha, FxFlags or FX2D_RPIVOT);
+      asprite2d_Draw( Texture, LRP.X + X, LRP.Y + Y, W, H, RealAngle + TexAngle, TexFrame, Alpha, FxFlags or FX2D_RPIVOT);
     end;
 
-  //{$IfDef Debug} //Ломает релиз, БЕДА
   for CKL := 0 to CountSubPoints - 1 do begin
     SubPoints[CKL].DoDraw;
   end;
-  //{$EndIf}
-
 
   {$IfDef Debug and ShowPoints}
   if HostPoint = nil then
@@ -137,7 +98,7 @@ constructor avk_TSkeletPoint.Create;
 begin
   FPoint.X := 0;
   FPoint.Y := 0;
-  AngleRad := 0;
+  AngleDeg := 0;
   HostPoint := nil;
   CountSubPoints := 0;
   inherited Create;
