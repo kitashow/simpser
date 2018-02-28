@@ -108,24 +108,17 @@
           <Parsing>
             <SyntaxOptions>
               <SyntaxMode Value="Delphi"/>
-              <IncludeAssertionCode Value="True"/>
             </SyntaxOptions>
           </Parsing>
           <CodeGeneration>
             <SmartLinkUnit Value="True"/>
-            <Checks>
-              <IOChecks Value="True"/>
-              <RangeChecks Value="True"/>
-              <OverflowChecks Value="True"/>
-              <StackChecks Value="True"/>
-            </Checks>
-            <VerifyObjMethodCallValidity Value="True"/>
             <Optimizations>
               <OptimizationLevel Value="3"/>
             </Optimizations>
           </CodeGeneration>
           <Linking>
             <Debugging>
+              <GenerateDebugInfo Value="False"/>
               <StripSymbols Value="True"/>
             </Debugging>
             <LinkSmart Value="True"/>
@@ -136,6 +129,13 @@
             </Options>
           </Linking>
           <Other>
+            <Verbosity>
+              <ShowWarn Value="False"/>
+              <ShowNotes Value="False"/>
+              <ShowHints Value="False"/>
+              <ShowHintsForUnusedUnitsInMainSrc Value="True"/>
+              <ShowHintsForSenderNotUsed Value="True"/>
+            </Verbosity>
             <CustomOptions Value="-dMOUSE3KEY
 -dWINDOWS
 -dNoBlockingSocket

@@ -240,6 +240,14 @@ begin
   tex_SetFrameSize( TmpSpr.SkPnt.Texture, 69, 52);
   TmpSpr.SetParameters(590, 240, 69, 52, 0);
   TmpSpr.SkPnt.AddSubPoint(26, 30);
+  TmpSpr.SkPnt.SubPoints[0].Texture := MineForm.TexManager.TexName['пулька'];
+  TmpSpr.SkPnt.SubPoints[0].TileRotateByHost := false;
+  TmpSpr.SkPnt.SubPoints[0].SetTileParameters(-3, -7, 6, 14, 90);
+
+  TmpSpr.SkPnt.AddSubPoint(26, -30);
+  TmpSpr.SkPnt.SubPoints[1].Texture := MineForm.TexManager.TexName['пулька'];
+  //не меняем TmpSpr.SkPnt.SubPoints[0].TileRotateByHost
+  TmpSpr.SkPnt.SubPoints[1].SetTileParameters(-3, -7, 6, 14, 90);
 
   TmpSpr.SkPnt.StopCadre := 12;
   TmpSpr.SkPnt.RateCadre := 15;
@@ -249,47 +257,64 @@ end;
 
 procedure TMineForm.DoAPforSpr(Sender: TObject);
 var
-  Nazata: Boolean;
-  tempPar: avk_TPanel;
+  Nazata, TmpK_UP, TmpK_DOWN, TmpK_LEFT, TmpK_RIGHT: Boolean;
   CPY, CPX: Single;
-
 begin
   if Sender.ClassName <> 'avk_TSimpleSprite' then Exit;
   Nazata := false;
-  tempPar := avk_TPanel(avk_TSimpleSprite(Sender).Parent);
   with avk_TSimpleSprite(Sender).SkPnt do begin
 
     CPY := Point.Y;
     CPX := Point.X;
 
-    if key_Down( K_W ) or key_Down( K_UP ) then begin
-      Angle := - 90;
-      CPY := CPY - 0.25;
-      Nazata := true;
-    end;
+    Nazata := true;
+    TmpK_UP := key_Down( K_W ) or key_Down( K_UP );
+    TmpK_DOWN := key_Down( K_S ) or key_Down( K_DOWN );
+    TmpK_LEFT := key_Down( K_A ) or key_Down( K_LEFT );
+    TmpK_RIGHT := key_Down( K_D ) or key_Down( K_RIGHT );
 
-    if key_Down( K_S ) or key_Down( K_DOWN ) then begin
-      Angle := 90;
-      CPY := CPY + 0.25;
-      Nazata := true;
-    end;
-    if key_Down( K_A ) or key_Down( K_LEFT ) then begin
-      Angle := 180;
+    if TmpK_UP and TmpK_LEFT then begin
+      Angle := - 135;
       CPX := CPX - 0.25;
-      Nazata := true;
-    end;
-    if key_Down( K_D ) or key_Down( K_RIGHT ) then begin
-      Angle := 0;
+      CPY := CPY - 0.25;
+    end else if TmpK_UP and TmpK_RIGHT then begin
+      Angle := - 45;
       CPX := CPX + 0.25;
-      Nazata := true;
-    end;
+      CPY := CPY - 0.25;
+    end else if TmpK_DOWN and TmpK_RIGHT then begin
+      Angle :=  45;
+      CPX := CPX + 0.25;
+      CPY := CPY + 0.25;
+    end else if TmpK_DOWN and TmpK_LEFT then begin
+      Angle :=  135;
+      CPX := CPX - 0.25;
+      CPY := CPY + 0.25;
+    end else if TmpK_DOWN then begin
+      Angle := 90;
+      CPY := CPY + 0.5;
+    end else if TmpK_UP then begin
+      Angle := - 90;
+      CPY := CPY - 0.5;
+    end else if TmpK_LEFT then begin
+      Angle :=  180;
+      CPX := CPX - 0.5;
+    end else if TmpK_RIGHT then begin
+      Angle :=  0;
+      CPX := CPX + 0.5;
+    end else Nazata := false;
 
     //ограничения
-    if CPY < tempPar.GetAbsolyteArea.Y then CPY := CPY + 1;
-    if CPX < tempPar.GetAbsolyteArea.X then CPX := CPX + 1;
-    if (CPX + W) > (tempPar.GetAbsolyteArea.X + tempPar.AreaElement.W) then CPX := CPX - 1;
-    if (CPY + H) > (tempPar.GetAbsolyteArea.Y + tempPar.AreaElement.H) then CPY := CPY - 1;
+    if CPY < avk_TPanel(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.Y then CPY := CPY + 1;
+    if CPX < avk_TPanel(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.X then CPX := CPX + 1;
+    if (CPX + W) > (avk_TPanel(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.X + avk_TPanel(avk_TSimpleSprite(Sender).Parent).AreaElement.W) then CPX := CPX - 1;
+    if (CPY + H) > (avk_TPanel(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.Y + avk_TPanel(avk_TSimpleSprite(Sender).Parent).AreaElement.H) then CPY := CPY - 1;
     SetPoint(CPX, CPY);
+    begin //вращающаяся вокруг пулька
+      SubPoints[0].Angle := SubPoints[0].Angle - 1;
+      if SubPoints[0].Angle < 0 then SubPoints[0].Angle := 360;
+      SubPoints[1].Angle := SubPoints[1].Angle + 1;
+      if SubPoints[1].Angle > 360 then SubPoints[1].Angle := 0;
+    end; //вращающаяся вокруг пулька ]
     Animate := Nazata;
   end;
 end;
@@ -507,7 +532,7 @@ procedure TMineForm.DoPanelCompSprite(Sender: TObject);
 var
   tmpTestForm: avk_TElement;
   TmpBtn: avk_TSimpleButton;
-  TmpSklPnt: avk_TSkeletPoint;
+  TmpCsp: csp_TTestSpr;
 begin
   if MineForm.ListName['Пример собранного спрайта'] <> nil then Exit;
   tmpTestForm := avk_TElement.Create(MineForm,'Пример собранного спрайта');
@@ -528,13 +553,7 @@ begin
   TmpBtn.LabelCaption.FontColor := $8B0000;
   TmpBtn.OnClick := MineForm.DoRotateCompSprite5gr;
 
-  //делаем скелет
-  //TmpSklPnt := avk_TSkeletPoint.Create(tmpTestForm, 'lo1');
-  //TmpSklPnt.Point.X := 756;
-  //TmpSklPnt.Point.Y := 271;
-  //TmpSklPnt.AddSubPoint(-15,  -15);
-  //TmpSklPnt.AddSubPoint(-65, -16);
-  //TmpSklPnt.SubPoints[TmpSklPnt.CountSubPoints - 1].AddSubPoint(13, 7);
+  TmpCsp := csp_TTestSpr.Create(tmpTestForm);
 
 end;
 

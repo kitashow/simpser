@@ -12,7 +12,9 @@ uses
   avk_btype, avk_gui, avk_addgui,
   avk_server, LNet,
   avk_input, avk_texmanager, avk_sprites,
-
+  //
+  avk_coolspritetest,
+  //
   zgl_main, zgl_timers, zgl_render_2d,
   zgl_textures, zgl_types
   , zgl_textures_png
