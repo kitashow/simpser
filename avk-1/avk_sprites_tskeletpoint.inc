@@ -58,6 +58,14 @@ begin
     Result := AngleDeg + HostPoint.RealAngle;
 end;
 
+function avk_TSkeletPoint.HostAngle: Single;
+begin
+  if HostPoint = nil then
+    Result := AngleDeg
+  else
+    Result := HostPoint.HostAngle;
+end;
+
 procedure avk_TSkeletPoint.AddSubPoint(AX, AY: Single);
 begin
   SetLength(SubPoints, CountSubPoints + 1);
@@ -67,18 +75,35 @@ begin
   INC(CountSubPoints, 1);
 end;
 
+procedure avk_TSkeletPoint.SetTileParameters(ATexX, ATexY, AWigh, AHeight,
+  ATexAngle: Single);
+begin
+  X := ATexX;
+  Y := ATexY;
+  W := AWigh;
+  H := AHeight;
+  TexAngle := ATexAngle;
+end;
+
 procedure avk_TSkeletPoint.DoDraw;
 var
   LRP: zglTPoint2D;
+  CmpAngle: Single;
   CKL: Integer;
 begin
   LRP := RealPoint;
   if not (Texture = nil) then
     if not Hide then begin
-      if Scale <> 0 then fx2d_SetScale(Scale, Scale);
+      if Scale <> 0 then
+        fx2d_SetScale(Scale, Scale);
+
+      if FTileRotateByHost then
+        CmpAngle := HostAngle
+      else
+        CmpAngle := RealAngle;
       //Всегда от точки поворота
       fx2d_SetRotatingPivot(X * (-1), Y * (-1));
-      asprite2d_Draw( Texture, LRP.X + X, LRP.Y + Y, W, H, RealAngle + TexAngle, TexFrame, Alpha, FxFlags or FX2D_RPIVOT);
+      asprite2d_Draw( Texture, LRP.X + X, LRP.Y + Y, W, H, CmpAngle + TexAngle, TexFrame, Alpha, FxFlags or FX2D_RPIVOT);
     end;
 
   for CKL := 0 to CountSubPoints - 1 do begin
@@ -101,6 +126,7 @@ begin
   AngleDeg := 0;
   HostPoint := nil;
   CountSubPoints := 0;
+  FTileRotateByHost := true;
   inherited Create;
 end;
 

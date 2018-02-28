@@ -199,6 +199,7 @@ end;
 
 avk_TSkeletPoint = class (avk_TSimpleTile)
   private
+    FTileRotateByHost: boolean;
     FPoint: zglTPoint2D;
     procedure SetAngle(AValue: Single);
   public
@@ -209,11 +210,14 @@ avk_TSkeletPoint = class (avk_TSimpleTile)
     procedure SetPoint(AX, AY: Single);
     function RealPoint: zglTPoint2D;
     function RealAngle: Single;
+    function HostAngle: Single;
     procedure AddSubPoint(AX, AY: Single);
+    procedure SetTileParameters(ATexX, ATexY, AWigh, AHeight, ATexAngle: Single);
     procedure DoDraw;
   public
     property Angle: Single read AngleDeg write SetAngle;
     property Point: zglTPoint2D read FPoint;
+    property TileRotateByHost: boolean read FTileRotateByHost write FTileRotateByHost;
   public
     constructor Create;
     destructor Destroy; override;
@@ -228,8 +232,9 @@ avk_TSimpleSprite = class (avk_TFraim)
     FSkeletPoint: avk_TSkeletPoint;
   public
     property SkPnt: avk_TSkeletPoint read FSkeletPoint write FSkeletPoint;
-    procedure SetParameters(APntX, APntY, ATexX, ATexY, AWigh, AHeight, AAngle: Single); overload;
-    procedure SetParameters(APntX, APntY, AWigh, AHeight, AAngle: Single); overload;
+    procedure SetParameters(APntX, APntY, ATexX, ATexY, AWigh, AHeight,
+      ATexAngle: Single); overload;
+    procedure SetParameters(APntX, APntY, AWigh, AHeight: Single; ATexAngle: Single = 0); overload;
   public
     property OnBeforeProc: TNotifyEvent read FOnBeforeProc write FOnBeforeProc;
     property OnAfterProc: TNotifyEvent read FOnAfterProc write FOnAfterProc;
