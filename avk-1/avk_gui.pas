@@ -23,6 +23,7 @@ uses
   , avk_btype
   , avk_input
   , avk_resmanager
+  , avk_cls
   //zgl
   , zgl_file
   , zgl_render_2d

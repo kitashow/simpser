@@ -7,6 +7,7 @@ begin
   if not Assigned(FFontManager) then FFontManager := avk_TFontManager.Create(Self);
   if not Assigned(FTextureManager) then FTextureManager := avk_TTextureManager.Create(Self);
   if not Assigned(FSoundManager) then FSoundManager := avk_TSoundManager.Create(Self);
+  if not Assigned(FCoolSpriteManager) then FCoolSpriteManager := avk_TCoolSpriteManager.Create(Self);
   FFileResourses := inNameFile;
 end;
 
@@ -122,24 +123,22 @@ var
   tmpFont: zglPFont;
   ArhOpenBefore: boolean;
   tmpSnd: zglPSound;
-  //TmpHjc: String;
+  tmpCs: clPSprite;
 begin
-  //TmpHjc := '';
   ArhOpenBefore := ArhResNowOpen;
   if not ArhResNowOpen then ArhResNowOpen := true;
-  //TmpHjc := avk_IntToStr(utf8_find(inNameFile,'pt.zfi'));
-  //TmpHjc := avk_IntToStr(Pos('pt.zfi',inNameFile));
   if Pos('pt.zfi',inNameFile) > 0 then begin
     tmpFont := font_LoadFromFile(inNameFile);
     FFontManager.AddFont(inNameRes,tmpFont,inNameFile);
-  end else begin
-    if Pos('.ogg',inNameFile) > 0 then begin
-      tmpSnd := snd_LoadFromFile(  inNameFile, 2 );
-      FSoundManager.AddSound(inNameRes,tmpSnd,inNameFile);
-    end else begin
-      tmpTex := tex_LoadFromFile(inNameFile, $FF000000, TEX_DEFAULT_2D);
-      FTextureManager.AddTexture(inNameRes,tmpTex,inNameFile);
-    end;
+  end else if Pos('.ogg',inNameFile) > 0 then begin
+    tmpSnd := snd_LoadFromFile(  inNameFile, 2 );
+    FSoundManager.AddSound(inNameRes,tmpSnd,inNameFile);
+  end else if Pos('.cls',inNameFile) > 0 then begin
+    tmpCs := clSprite_LoadFromFile(inNameFile);
+    FCoolSpriteManager.AddCoolSprite(inNameRes, tmpCs, inNameFile);
+  end else begin //считаю остальные текстуры
+    tmpTex := tex_LoadFromFile(inNameFile, $FF000000, TEX_DEFAULT_2D);
+    FTextureManager.AddTexture(inNameRes,tmpTex,inNameFile);
   end;
   ArhResNowOpen := ArhOpenBefore;
 end;

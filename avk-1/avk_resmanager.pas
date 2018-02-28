@@ -43,6 +43,8 @@ type
     {$ENDIF}
   end;
 
+  { avk_TCoolSpriteSimple }
+
   avk_TCoolSpriteSimple = class
     CoolSprite: clPSprite;
     {$IFDEF ANDROID}
@@ -205,6 +207,7 @@ var
 begin
   for i:= 0 to FCSList.Count - 1 do avk_TCoolSpriteSimple(FCSList.Objects[i]).Destroy;
   FCSList.Destroy;
+  clSprite_ClearAll;
   inherited Destroy;
 end;
 
