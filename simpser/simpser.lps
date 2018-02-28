@@ -3,12 +3,12 @@
   <ProjectSession>
     <Version Value="10"/>
     <BuildModes Active="Release"/>
-    <Units Count="66">
+    <Units Count="70">
       <Unit0>
         <Filename Value="simpser.pas"/>
         <IsPartOfProject Value="True"/>
-        <TopLine Value="10"/>
-        <CursorPos X="58" Y="14"/>
+        <TopLine Value="23"/>
+        <CursorPos X="26" Y="41"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -16,10 +16,9 @@
       <Unit1>
         <Filename Value="mine_unit.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="4"/>
-        <CursorPos X="11" Y="16"/>
+        <TopLine Value="48"/>
+        <CursorPos Y="58"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -34,19 +33,19 @@
       </Unit2>
       <Unit3>
         <Filename Value="../avk-1/avk_gui.pas"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="338"/>
-        <CursorPos X="21" Y="355"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="346"/>
+        <CursorPos X="19" Y="357"/>
         <UsageCount Value="243"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit3>
       <Unit4>
         <Filename Value="../avk-1/avk_sprites.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="222"/>
-        <CursorPos Y="247"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="223"/>
+        <CursorPos Y="228"/>
         <UsageCount Value="200"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit4>
       <Unit5>
@@ -108,8 +107,8 @@
       <Unit12>
         <Filename Value="mineform_loadresource.inc"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="17"/>
-        <CursorPos X="57" Y="34"/>
+        <TopLine Value="25"/>
+        <CursorPos X="30" Y="34"/>
         <UsageCount Value="79"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit12>
@@ -175,14 +174,15 @@
       </Unit19>
       <Unit20>
         <Filename Value="TMineForm_proc.inc"/>
-        <EditorIndex Value="5"/>
-        <TopLine Value="517"/>
-        <CursorPos X="27" Y="566"/>
-        <FoldState Value=" T3E0V424l"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="649"/>
+        <CursorPos X="5" Y="539"/>
+        <FoldState Value=" T3E0V4 pkPlN0j01451:"/>
         <UsageCount Value="107"/>
         <Bookmarks Count="2">
-          <Item0 X="21" Y="379" ID="1"/>
-          <Item1 Y="557"/>
+          <Item0 X="21" Y="378" ID="1"/>
+          <Item1 Y="551"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -220,14 +220,13 @@
       </Unit24>
       <Unit25>
         <Filename Value="../zengl-src-0.3.12/src/zgl_math_2d.pas"/>
-        <EditorIndex Value="8"/>
-        <TopLine Value="38"/>
-        <CursorPos X="33" Y="58"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="47"/>
+        <CursorPos X="5" Y="388"/>
         <UsageCount Value="55"/>
         <Bookmarks Count="1">
-          <Item0 X="13" Y="367" ID="2"/>
+          <Item0 ID="2"/>
         </Bookmarks>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit25>
       <Unit26>
@@ -241,8 +240,8 @@
       <Unit27>
         <Filename Value="../zengl-src-0.3.12/src/zgl_textures.pas"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="733"/>
-        <CursorPos Y="748"/>
+        <TopLine Value="100"/>
+        <CursorPos X="11" Y="111"/>
         <UsageCount Value="121"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit27>
@@ -376,11 +375,10 @@
       </Unit43>
       <Unit44>
         <Filename Value="../avk-1/avk_gui_thostform.inc"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="120"/>
-        <CursorPos X="58" Y="166"/>
-        <UsageCount Value="15"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="101"/>
+        <CursorPos Y="166"/>
+        <UsageCount Value="16"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit44>
       <Unit45>
@@ -441,18 +439,17 @@
       <Unit52>
         <Filename Value="C:/lazarus/fpc/3.0.4/source/rtl/inc/objpash.inc"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="178"/>
-        <CursorPos X="30" Y="191"/>
-        <UsageCount Value="9"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
+        <TopLine Value="183"/>
+        <CursorPos X="23" Y="194"/>
+        <UsageCount Value="10"/>
       </Unit52>
       <Unit53>
         <Filename Value="../Lnet_lib/lnet.pp"/>
         <UnitName Value="lNet"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="786"/>
-        <CursorPos X="30" Y="799"/>
-        <UsageCount Value="9"/>
+        <TopLine Value="552"/>
+        <CursorPos X="3" Y="503"/>
+        <UsageCount Value="10"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit53>
       <Unit54>
@@ -497,27 +494,26 @@
       </Unit58>
       <Unit59>
         <Filename Value="avk_coolspritetest.pas"/>
-        <EditorIndex Value="6"/>
-        <CursorPos X="24" Y="24"/>
-        <UsageCount Value="25"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="42"/>
+        <CursorPos X="50" Y="54"/>
+        <UsageCount Value="27"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit59>
       <Unit60>
         <Filename Value="avk_cls.pas"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="-1"/>
         <CursorPos X="3" Y="77"/>
         <UsageCount Value="15"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit60>
       <Unit61>
         <Filename Value="../avk-1/avk_resmanager.pas"/>
-        <EditorIndex Value="4"/>
-        <TopLine Value="10"/>
-        <CursorPos X="36" Y="182"/>
-        <UsageCount Value="15"/>
-        <Loaded Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="42"/>
+        <CursorPos Y="53"/>
+        <UsageCount Value="16"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit61>
       <Unit62>
@@ -545,13 +541,45 @@
       </Unit64>
       <Unit65>
         <Filename Value="unit_test_cs.pas"/>
-        <EditorIndex Value="9"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="119"/>
         <CursorPos X="11" Y="23"/>
         <UsageCount Value="12"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit65>
+      <Unit66>
+        <Filename Value="../Lnet_lib/levents.pp"/>
+        <UnitName Value="lEvents"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="59"/>
+        <CursorPos X="5" Y="59"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit66>
+      <Unit67>
+        <Filename Value="C:/lazarus/fpc/3.0.4/source/rtl/inc/ustringh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="118"/>
+        <CursorPos X="23" Y="132"/>
+        <UsageCount Value="10"/>
+      </Unit67>
+      <Unit68>
+        <Filename Value="../avk-1/coder.pas"/>
+        <UnitName Value="Coder"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="13" Y="14"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit68>
+      <Unit69>
+        <Filename Value="../avk-1/avk_cls.pas"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="989"/>
+        <CursorPos X="65" Y="142"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit69>
     </Units>
     <OtherDefines Count="9">
       <Define0 Value="Debug"/>
@@ -564,127 +592,102 @@
       <Define7 Value="USE_CHIPMUNK_STATIC"/>
       <Define8 Value="ShowCursor"/>
     </OtherDefines>
-    <JumpHistory Count="30" HistoryIndex="29">
+    <JumpHistory Count="24" HistoryIndex="23">
       <Position1>
-        <Filename Value="unit_test_cs.pas"/>
-        <Caret Line="120" Column="24" TopLine="96"/>
+        <Filename Value="avk_coolspritetest.pas"/>
+        <Caret Line="24" TopLine="8"/>
       </Position1>
       <Position2>
-        <Filename Value="unit_test_cs.pas"/>
-        <Caret Line="121" Column="24" TopLine="98"/>
+        <Filename Value="avk_coolspritetest.pas"/>
+        <Caret Line="39" Column="24" TopLine="24"/>
       </Position2>
       <Position3>
         <Filename Value="avk_coolspritetest.pas"/>
-        <Caret Line="23" TopLine="26"/>
+        <Caret Line="40" Column="19" TopLine="30"/>
       </Position3>
       <Position4>
         <Filename Value="avk_coolspritetest.pas"/>
-        <Caret Line="24" TopLine="8"/>
+        <Caret Line="39" Column="39" TopLine="27"/>
       </Position4>
       <Position5>
-        <Filename Value="avk_coolspritetest.pas"/>
-        <Caret Line="39" Column="24" TopLine="24"/>
+        <Filename Value="mine_unit.pas"/>
+        <Caret Line="16" Column="11" TopLine="4"/>
       </Position5>
       <Position6>
-        <Filename Value="avk_coolspritetest.pas"/>
-        <Caret Line="40" Column="19" TopLine="30"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="244" Column="29" TopLine="233"/>
       </Position6>
       <Position7>
-        <Filename Value="avk_cls.pas"/>
-        <Caret Line="142" TopLine="129"/>
+        <Filename Value="mine_unit.pas"/>
+        <Caret Line="16" Column="11" TopLine="4"/>
       </Position7>
       <Position8>
-        <Filename Value="avk_cls.pas"/>
-        <Caret Line="143" Column="20" TopLine="127"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="606" Column="3" TopLine="595"/>
       </Position8>
       <Position9>
         <Filename Value="avk_coolspritetest.pas"/>
-        <Caret Line="39" Column="39" TopLine="27"/>
+        <Caret Line="56" Column="46" TopLine="5"/>
       </Position9>
       <Position10>
-        <Filename Value="avk_cls.pas"/>
-        <Caret Line="142" Column="24" TopLine="128"/>
+        <Filename Value="avk_coolspritetest.pas"/>
+        <Caret Line="55" Column="17" TopLine="47"/>
       </Position10>
       <Position11>
-        <Filename Value="unit_test_cs.pas"/>
-        <Caret Line="23" Column="11" TopLine="14"/>
+        <Filename Value="avk_coolspritetest.pas"/>
+        <Caret Line="40" Column="18"/>
       </Position11>
       <Position12>
-        <Filename Value="unit_test_cs.pas"/>
-        <Caret Line="92" Column="55" TopLine="68"/>
+        <Filename Value="../avk-1/avk_cls.pas"/>
       </Position12>
       <Position13>
-        <Filename Value="unit_test_cs.pas"/>
-        <Caret Line="101" Column="19" TopLine="77"/>
+        <Filename Value="../avk-1/avk_cls.pas"/>
+        <Caret Line="146" Column="24" TopLine="135"/>
       </Position13>
       <Position14>
-        <Filename Value="unit_test_cs.pas"/>
-        <Caret Line="102" Column="42" TopLine="78"/>
+        <Filename Value="../avk-1/avk_cls.pas"/>
+        <Caret Line="994" Column="28" TopLine="989"/>
       </Position14>
       <Position15>
-        <Filename Value="unit_test_cs.pas"/>
-        <Caret Line="23" Column="11" TopLine="62"/>
+        <Filename Value="avk_coolspritetest.pas"/>
+        <Caret Line="32" Column="67" TopLine="16"/>
       </Position15>
       <Position16>
-        <Filename Value="unit_test_cs.pas"/>
-        <Caret Line="92" Column="55" TopLine="68"/>
+        <Filename Value="avk_coolspritetest.pas"/>
+        <Caret Line="50" Column="55" TopLine="42"/>
       </Position16>
       <Position17>
-        <Filename Value="unit_test_cs.pas"/>
-        <Caret Line="101" Column="19" TopLine="77"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="562" Column="42" TopLine="557"/>
       </Position17>
       <Position18>
-        <Filename Value="unit_test_cs.pas"/>
-        <Caret Line="102" Column="42" TopLine="78"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="632" TopLine="618"/>
       </Position18>
       <Position19>
-        <Filename Value="unit_test_cs.pas"/>
-        <Caret Line="23" Column="11" TopLine="8"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="628" Column="12" TopLine="616"/>
       </Position19>
       <Position20>
-        <Filename Value="unit_test_cs.pas"/>
-        <Caret Line="92" Column="55" TopLine="68"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="621" Column="21" TopLine="616"/>
       </Position20>
       <Position21>
-        <Filename Value="unit_test_cs.pas"/>
-        <Caret Line="101" Column="19" TopLine="77"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="532" Column="28" TopLine="296"/>
       </Position21>
       <Position22>
-        <Filename Value="unit_test_cs.pas"/>
-        <Caret Line="102" Column="42" TopLine="102"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="628" Column="154" TopLine="612"/>
       </Position22>
       <Position23>
-        <Filename Value="../avk-1/avk_resmanager.pas"/>
-        <Caret Line="47" Column="26" TopLine="37"/>
+        <Filename Value="avk_coolspritetest.pas"/>
+        <Caret Line="53" Column="17" TopLine="40"/>
       </Position23>
       <Position24>
-        <Filename Value="../avk-1/avk_resmanager.pas"/>
-        <Caret Line="296" Column="46" TopLine="274"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="539" Column="5" TopLine="529"/>
       </Position24>
-      <Position25>
-        <Filename Value="../avk-1/avk_resmanager.pas"/>
-        <Caret Line="57" Column="9" TopLine="47"/>
-      </Position25>
-      <Position26>
-        <Filename Value="../avk-1/avk_gui.pas"/>
-        <Caret Line="355" Column="21" TopLine="338"/>
-      </Position26>
-      <Position27>
-        <Filename Value="../avk-1/avk_gui_thostform.inc"/>
-        <Caret Line="166" Column="58" TopLine="138"/>
-      </Position27>
-      <Position28>
-        <Filename Value="../avk-1/avk_resmanager.pas"/>
-        <Caret Line="47" Column="20" TopLine="29"/>
-      </Position28>
-      <Position29>
-        <Filename Value="../avk-1/avk_resmanager.pas"/>
-        <Caret Line="182" Column="20" TopLine="183"/>
-      </Position29>
-      <Position30>
-        <Filename Value="../avk-1/avk_resmanager.pas"/>
-        <Caret Line="68" Column="47" TopLine="52"/>
-      </Position30>
     </JumpHistory>
   </ProjectSession>
   <Debugging>

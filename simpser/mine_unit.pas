@@ -55,7 +55,7 @@ type
     procedure DoSpecPnlSpr(Sender: TObject);
     procedure DoPanelServer(Sender: TObject);
     procedure DoPanelCompSprite(Sender: TObject);
-    procedure DoRotateCompSprite5gr(Sender: TObject);
+    procedure DoMoveCoolSprite(Sender: TObject);
   public
     TCPServer: avk_TServer;
     procedure DoStopStartServer(Sender: TObject);

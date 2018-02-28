@@ -18,12 +18,18 @@ type
   { csp_TTestSpr }
 
   csp_TTestSpr = class (avk_TFraim)
+  private
+    FDoBeforeProc: TNotifyEvent;
   public
     Xmove: Single;
+    Ymove: Single;
+    CSAngle: Single;
+    Animate: boolean;
     ManFrm  : single;
-    ManSpr  : clTSprite;
+    ManSpr  : clPSprite;
     procedure DoDraw(Sender: TObject);
     procedure DoProc(Sender: TObject);
+    property DoBeforeProc: TNotifyEvent read FDoBeforeProc write FDoBeforeProc;
   public
     constructor Create(const InParent: avk_TFraim = nil);
     destructor Destroy; override;
@@ -36,35 +42,36 @@ implementation
 
 procedure csp_TTestSpr.DoDraw(Sender: TObject);
 begin
-  clSprite_Calculate( @ManSpr, Xmove, 120, 0.3, 0.3, ManFrm );
-  clSprite_Draw( @ManSpr );
+  clSprite_Draw( ManSpr );
 end;
 
 procedure csp_TTestSpr.DoProc(Sender: TObject);
 begin
-  ManFrm := ManFrm + ManSpr.AnimFPS * 4 / 1000;
-  if ManFrm > ManSpr.EndFrame then ManFrm := ManSpr.StartFrame;
-  Xmove :=   Xmove + 0.5;
-  if Xmove > 1024 then Xmove := 0;
+  if Assigned(FDoBeforeProc) then FDoBeforeProc(Self);
+  if Animate then begin
+    ManFrm := ManFrm + ManSpr^.AnimFPS * 4 / 1000;
+    if ManFrm > ManSpr^.EndFrame then ManFrm := ManSpr^.StartFrame;
+    clSprite_Calculate( ManSpr, Xmove, Ymove, 0.4, CSAngle, ManFrm );
+  end else ManFrm := ManSpr^.EndFrame;
 end;
 
 
 constructor csp_TTestSpr.Create(const InParent: avk_TFraim);
 begin
   inherited Create(InParent);
-  file_OpenArchive('A_resources.zip');
-  ManSpr  := clSprite_LoadFromFile( 'f.cls' )^;
-  file_CloseArchive();
+  ManSpr  := nil;
   Xmove := 0;
+  Ymove := 0;
   ManFrm := 0;
   OnDraw := DoDraw;
   OnProc := DoProc;
-
+  Animate := false;
+  CSAngle := 0;
+  DoBeforeProc := nil;
 end;
 
 destructor csp_TTestSpr.Destroy;
 begin
-  clSprite_ClearAll;
   inherited Destroy;
 end;
 

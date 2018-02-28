@@ -37,6 +37,10 @@ Begin
   wnd_ShowCursor( False );
   {$endif}
 
-  scr_SetOptions(1280,720, REFRESH_MAXIMUM, false, false );
+  {$IfDef Debug}
+  scr_SetOptions(1280,736, REFRESH_MAXIMUM, false, false );
+  {$else}
+  scr_SetOptions(1280,720, REFRESH_MAXIMUM, false, true );
+  {$endif}
   zgl_Init();
 End.
