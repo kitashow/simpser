@@ -150,6 +150,7 @@ begin
   FFontManager := nil;
   FTextureManager := nil;
   FSoundManager := nil;
+  FCoolSpriteManager := nil;
   FileResourses := '';
   FArhiveNowOpen:=false;
   TextureCursor := nil;
@@ -162,6 +163,7 @@ begin
   if Assigned(FFontManager) then FFontManager.Destroy;
   if Assigned(FTextureManager) then FTextureManager.Destroy;
   if Assigned(FSoundManager) then FSoundManager.Destroy;
+  if Assigned(FCoolSpriteManager) then FCoolSpriteManager.Destroy;
   inherited Destroy;
 end;
 

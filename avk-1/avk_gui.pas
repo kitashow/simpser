@@ -330,6 +330,7 @@ type
     FFontManager: avk_TFontManager;
     FTextureManager: avk_TTextureManager;
     FSoundManager: avk_TSoundManager;
+    FCoolSpriteManager: avk_TCoolSpriteManager;
     procedure FSetFileResourses(inNameFile: String);
     procedure FSetModeArhive(inOpen: boolean);
   protected
@@ -348,6 +349,7 @@ type
     property FontManager: avk_TFontManager read FFontManager;
     property TexManager: avk_TTextureManager read FTextureManager;
     property SoundManager: avk_TSoundManager read FSoundManager;
+    property CoolSpriteManager: avk_TCoolSpriteManager read FCoolSpriteManager;
     property ArhResNowOpen: boolean read FArhiveNowOpen write FSetModeArhive;
   public
     constructor Create(const InParent: avk_TFraim = nil; InName: String = '');

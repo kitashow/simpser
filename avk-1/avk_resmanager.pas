@@ -16,6 +16,8 @@ uses
   //, zgl_file
   //avk
   , avk_btype
+  //coolsprite
+  , avk_cls
   ;
 
 type
@@ -40,6 +42,38 @@ type
     FileName: String;
     {$ENDIF}
   end;
+
+  avk_TCoolSpriteSimple = class
+    CoolSprite: clPSprite;
+    {$IFDEF ANDROID}
+    FileName: String;
+    {$ENDIF}
+  end;
+
+  { avk_TCoolSpriteManager }
+
+  avk_TCoolSpriteManager = class (TObject)
+  private
+    FParent: avk_TFraim;
+    FCSList: TStringList;
+    function GetCSById(InID: Integer): clPSprite;
+    function GetCSByName(InID: String): clPSprite;
+    function FGetCount: Integer;
+    function GetCSSimple(InID : Integer): avk_TCoolSpriteSimple;
+  public
+    procedure AddCoolSprite(InName: String; InCoolSprite: clPSprite; InFName: String
+      );
+  public
+    property Parent: avk_TFraim read FParent;
+    property CoolSpriteList[InID :Integer]: clPSprite read GetCSById;
+    property CoolSpriteName[InID :String]: clPSprite read GetCSByName;
+    property Count: Integer read FGetCount;
+    property ResList[InID :Integer]: avk_TCoolSpriteSimple read GetCSSimple;
+  public
+    constructor Create(inParent: avk_TFraim = nil);
+    destructor Destroy; override;
+  end;
+
 
   { avk_TTextureManager }
 
@@ -112,6 +146,67 @@ type
   end;
 
 implementation
+
+{ avk_TCoolSpriteManager }
+
+function avk_TCoolSpriteManager.GetCSById(InID: Integer): clPSprite;
+begin
+  Result := nil;
+  if InID >= Count then Exit;
+  if InID < 0 then Exit;
+  Result := avk_TCoolSpriteSimple(FCSList.Objects[InId]).CoolSprite;
+end;
+
+function avk_TCoolSpriteManager.GetCSByName(InID: String): clPSprite;
+var
+  OutId: Integer;
+begin
+  Result := nil;
+  if InID = '' then Exit;
+  OutId := -1;
+  FCSList.Find(InID,OutId);
+  Result := GetCSById(OutId);
+end;
+
+function avk_TCoolSpriteManager.FGetCount: Integer;
+begin
+  Result := FCSList.Count;
+end;
+
+function avk_TCoolSpriteManager.GetCSSimple(InID: Integer
+  ): avk_TCoolSpriteSimple;
+begin
+  Result := avk_TCoolSpriteSimple(FCSList.Objects[InId]);
+end;
+
+procedure avk_TCoolSpriteManager.AddCoolSprite(InName: String;
+  InCoolSprite: clPSprite; InFName: String);
+var
+  tmp_CS: avk_TCoolSpriteSimple;
+begin
+  tmp_CS:= avk_TCoolSpriteSimple.Create;
+  tmp_CS.CoolSprite := InCoolSprite;
+  {$IFDEF ANDROID}
+  tmp_CS.FileName := InFName;
+  {$EndIf}
+  FCSList.AddObject(InName, tmp_CS);
+end;
+
+constructor avk_TCoolSpriteManager.Create(inParent: avk_TFraim);
+begin
+  FCSList := TStringList.Create;
+  FCSList.Sorted :=true;
+  FParent := inParent;
+end;
+
+destructor avk_TCoolSpriteManager.Destroy;
+var
+  i: Integer;
+begin
+  for i:= 0 to FCSList.Count - 1 do avk_TCoolSpriteSimple(FCSList.Objects[i]).Destroy;
+  FCSList.Destroy;
+  inherited Destroy;
+end;
 
 { avk_TSoundManager }
 function avk_TSoundManager.FGetCount: Integer;
