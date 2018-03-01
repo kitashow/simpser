@@ -61,12 +61,6 @@ begin
     CPX := SkPnt.Point.X;
 
     CPY := CPY + SpeedLost;
-    //if key_Down( K_A ) or key_Down( K_LEFT ) then begin
-    //  CPX := CPX - (0.25+ 0.2*SpeedLost);
-    //end;
-    //if key_Down( K_D ) or key_Down( K_RIGHT ) then begin
-    //  CPX := CPX + (0.25+ 0.2*SpeedLost);
-    //end;
     SkPnt.SetPoint(CPX, CPY);
 
     if CPY > (tempPar.AreaElement.H + 80) then begin
@@ -236,7 +230,7 @@ begin
   //теперь делаем спрайтик
   TmpSpr := avk_TSimpleSprite.Create(TmpPnl);
   TmpSpr.SkPnt.Texture := MineForm.TexManager.TexName['Шагающий стрелок'];
-  tex_SetFrameSize( TmpSpr.SkPnt.Texture, 69, 52);
+  TmpSpr.SkPnt.SetTexFrameSize(69, 52);
   TmpSpr.SetParameters(590, 240, 69, 52, 0);
   TmpSpr.SkPnt.AddSubPoint(26, 30);
   TmpSpr.SkPnt.SubPoints[0].Texture := MineForm.TexManager.TexName['пулька'];
@@ -369,7 +363,7 @@ begin
         SprTile := avk_TSimpleTile.Create;
         if NumSpr = 7 then begin
           SprTile.Texture := MineForm.TexManager.TexName['пол7'];
-          tex_SetFrameSize( SprTile.Texture, 64, 64);
+          SprTile.SetTexFrameSize(64, 64);
           SprTile.X := 0;
           SprTile.Y := 0;
           SprTile.W := 64;
@@ -378,7 +372,7 @@ begin
           SprTile.RateCadre := 10;
         end else if NumSpr >= 12 then begin
           SprTile.Texture := MineForm.TexManager.TexName['край со стрелкой'];
-          tex_SetFrameSize( SprTile.Texture, 64, 64);
+          SprTile.SetTexFrameSize(64, 64);
           SprTile.X := 0;
           SprTile.Y := 0;
           SprTile.W := 64;
