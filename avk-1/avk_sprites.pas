@@ -28,6 +28,7 @@ uses
   , avk_input
   , avk_resmanager
   , avk_vector
+  , avk_cls
   //zgl
   {$IFNDEF ANDROID}   //Не андроид
   , zgl_opengl
@@ -68,6 +69,12 @@ end;
 { avk_TSimpleTile }
 
 avk_TSimpleTile = class (TObject)
+  private
+    FTexture : zglPTexture; //текстура
+    FCoolSprite: clPSprite;
+    FCoolSpriteFrame: Single; //номер фрейма внутри кулспрайта
+    procedure stSetTexture(AValue: zglPTexture);
+    procedure stSetCoolSprite(AValue: clPSprite);
   public
     //Расчет кадров
     StartCadre,StopCadre : Integer;//начало и конец отрисовки
@@ -82,10 +89,12 @@ avk_TSimpleTile = class (TObject)
     Alpha   : Integer;//прозрачность
     FxFlags : LongWord;//флаги, для маштаба не забыть!
     TexAngle: Single;//угол внутри текстуры
-    Texture : zglPTexture; //текстура
     Hide    : boolean; //скрыть
     Animate : boolean; //это анимированный тайл
     TexFrame: Word; //номер фрейма внутри текстуры
+    property Texture: zglPTexture read FTexture write stSetTexture; //текстура
+    property CoolSprite: clPSprite read FCoolSprite write stSetCoolSprite; //кул спрайт
+    procedure SetTexFrameSize(AValueW, AValueH: Word);
   public
     procedure DoDraw;
     procedure DoProc;
@@ -197,16 +206,16 @@ end;
 
 { avk_TSkeletPoint }
 
-avk_TSkeletPoint = class (avk_TSimpleTile)
+avk_TSkeletTile = class (avk_TSimpleTile)
   private
     FTileRotateByHost: boolean;
     FPoint: zglTPoint2D;
     procedure SetAngle(AValue: Single);
   public
-    SubPoints: array of avk_TSkeletPoint;
+    SubPoints: array of avk_TSkeletTile;
     CountSubPoints: Integer;
     AngleDeg: Single;
-    HostPoint: avk_TSkeletPoint;
+    HostPoint: avk_TSkeletTile;
     procedure SetPoint(AX, AY: Single);
     function RealPoint: zglTPoint2D;
     function RealAngle: Single;
@@ -229,9 +238,9 @@ avk_TSimpleSprite = class (avk_TFraim)
   private
     FOnBeforeProc: TNotifyEvent;
     FOnAfterProc: TNotifyEvent;
-    FSkeletPoint: avk_TSkeletPoint;
+    FSkeletPoint: avk_TSkeletTile;
   public
-    property SkPnt: avk_TSkeletPoint read FSkeletPoint write FSkeletPoint;
+    property SkPnt: avk_TSkeletTile read FSkeletPoint write FSkeletPoint;
     procedure SetParameters(APntX, APntY, ATexX, ATexY, AWigh, AHeight,
       ATexAngle: Single); overload;
     procedure SetParameters(APntX, APntY, AWigh, AHeight: Single; ATexAngle: Single = 0); overload;

@@ -35,7 +35,7 @@ end;
 constructor avk_TSimpleSprite.Create(const InParent: avk_TFraim);
 begin
   inherited Create(InParent);
-  FSkeletPoint := avk_TSkeletPoint.Create;
+  FSkeletPoint := avk_TSkeletTile.Create;
   OnDraw := DoDraw;
   OnProc := DoProc;
 end;

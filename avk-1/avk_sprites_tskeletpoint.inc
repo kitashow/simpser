@@ -1,6 +1,6 @@
-{ avk_TSkeletPoint }
+{ avk_TSkeletTile }
 
-procedure avk_TSkeletPoint.SetAngle(AValue: Single);
+procedure avk_TSkeletTile.SetAngle(AValue: Single);
 var
   TmpL: Single;
   TmpRP: zglTPoint2D;
@@ -19,7 +19,7 @@ begin
   SetPoint(Round(TmpRP.X), Round(TmpRP.Y));
 end;
 
-procedure avk_TSkeletPoint.SetPoint(AX, AY: Single);
+procedure avk_TSkeletTile.SetPoint(AX, AY: Single);
 begin
   FPoint.X := AX;
   FPoint.Y := AY;
@@ -27,7 +27,7 @@ begin
     AngleDeg := VcToAngle(FPoint);
 end;
 
-function avk_TSkeletPoint.RealPoint: zglTPoint2D;
+function avk_TSkeletTile.RealPoint: zglTPoint2D;
 var
   TmpAngle, TmpL: Single;
   TmpRP, TmpPnt: zglTPoint2D;
@@ -50,7 +50,7 @@ begin
   Result.Y := Round(TmpRP.Y + TmpPnt.Y);
 end;
 
-function avk_TSkeletPoint.RealAngle: Single;
+function avk_TSkeletTile.RealAngle: Single;
 begin
   if HostPoint = nil then
     Result := AngleDeg
@@ -58,7 +58,7 @@ begin
     Result := AngleDeg + HostPoint.RealAngle;
 end;
 
-function avk_TSkeletPoint.HostAngle: Single;
+function avk_TSkeletTile.HostAngle: Single;
 begin
   if HostPoint = nil then
     Result := AngleDeg
@@ -66,16 +66,16 @@ begin
     Result := HostPoint.HostAngle;
 end;
 
-procedure avk_TSkeletPoint.AddSubPoint(AX, AY: Single);
+procedure avk_TSkeletTile.AddSubPoint(AX, AY: Single);
 begin
   SetLength(SubPoints, CountSubPoints + 1);
-  SubPoints[CountSubPoints] := avk_TSkeletPoint.Create;
+  SubPoints[CountSubPoints] := avk_TSkeletTile.Create;
   SubPoints[CountSubPoints].HostPoint := Self;
   SubPoints[CountSubPoints].SetPoint(AX, AY);
   INC(CountSubPoints, 1);
 end;
 
-procedure avk_TSkeletPoint.SetTileParameters(ATexX, ATexY, AWigh, AHeight,
+procedure avk_TSkeletTile.SetTileParameters(ATexX, ATexY, AWigh, AHeight,
   ATexAngle: Single);
 begin
   X := ATexX;
@@ -85,7 +85,7 @@ begin
   TexAngle := ATexAngle;
 end;
 
-procedure avk_TSkeletPoint.DoDraw;
+procedure avk_TSkeletTile.DoDraw;
 var
   LRP: zglTPoint2D;
   CmpAngle: Single;
@@ -119,7 +119,7 @@ begin
   {$EndIf}
 end;
 
-constructor avk_TSkeletPoint.Create;
+constructor avk_TSkeletTile.Create;
 begin
   FPoint.X := 0;
   FPoint.Y := 0;
@@ -130,7 +130,7 @@ begin
   inherited Create;
 end;
 
-destructor avk_TSkeletPoint.Destroy;
+destructor avk_TSkeletTile.Destroy;
 var
   CKL: Integer;
 begin
