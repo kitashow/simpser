@@ -5,7 +5,7 @@ var
   TmpL: Single;
   TmpRP: zglTPoint2D;
 begin
-  if HostPoint = nil then begin
+  if (HostPoint = nil) or ZeroPoint(FPoint) then begin
     AngleDeg := AValue;
     Exit;
   end;
@@ -16,7 +16,16 @@ begin
   TmpRP.X := TmpRP.X * TmpL;
   TmpRP.Y := TmpRP.Y * TmpL;
 
-  SetPoint(Round(TmpRP.X), Round(TmpRP.Y));
+  SetPoint(TmpRP.X, TmpRP.Y);
+end;
+
+procedure avk_TSkeletTile.stSetCoolSprite(AValue: clPSprite);
+begin
+  FCoolSprite := AValue;
+  FTexture := nil;
+  FDrawRealisation := DrawCoolSprite;
+  FProcRealisation := ProcCoolSprite;
+  FCoolSpriteFrame := FCoolSprite^.StartFrame;
 end;
 
 procedure avk_TSkeletTile.SetPoint(AX, AY: Single);
@@ -35,6 +44,11 @@ begin
   if HostPoint = nil then begin
      Result := FPoint;
      Exit;
+  end;
+
+  if ZeroPoint(FPoint) then begin
+    Result := HostPoint.RealPoint;
+    Exit;
   end;
 
   TmpAngle := RealAngle;
@@ -85,32 +99,43 @@ begin
   TexAngle := ATexAngle;
 end;
 
+procedure avk_TSkeletTile.DrawTexture(APoint: zglTPoint2D; AAngle: Single);
+begin
+  if Scale <> 0 then
+    fx2d_SetScale(Scale, Scale);
+  //Всегда от точки поворота
+  fx2d_SetRotatingPivot(X * (-1), Y * (-1));
+  asprite2d_Draw( Texture, APoint.X + X, APoint.Y + Y, W, H, AAngle + TexAngle, TexFrame, Alpha, FxFlags or FX2D_RPIVOT);
+end;
+
 procedure avk_TSkeletTile.DoDraw;
 var
   LRP: zglTPoint2D;
   CmpAngle: Single;
   CKL: Integer;
 begin
-  LRP := RealPoint;
-  if not (Texture = nil) then
-    if not Hide then begin
-      if Scale <> 0 then
-        fx2d_SetScale(Scale, Scale);
+  if not Hide then
+    if (Texture <> nil) or (CoolSprite <> nil) then begin
+      LRP := RealPoint;
 
       if FTileRotateByHost then
         CmpAngle := HostAngle
       else
         CmpAngle := RealAngle;
-      //Всегда от точки поворота
-      fx2d_SetRotatingPivot(X * (-1), Y * (-1));
-      asprite2d_Draw( Texture, LRP.X + X, LRP.Y + Y, W, H, CmpAngle + TexAngle, TexFrame, Alpha, FxFlags or FX2D_RPIVOT);
+
+      if CoolSprite = nil then
+        DrawTexture(LRP, CmpAngle)
+      else
+        inherited DoDraw;
     end;
+
 
   for CKL := 0 to CountSubPoints - 1 do begin
     SubPoints[CKL].DoDraw;
   end;
 
   {$IfDef Debug and ShowPoints}
+  LRP := RealPoint;
   if HostPoint = nil then
       pr2d_Circle(LRP.X, LRP.Y, 7, $7a250f, 150 ,250, PR2D_FILL)
   else if CountSubPoints > 0 then
@@ -118,6 +143,31 @@ begin
   pr2d_Circle(LRP.X, LRP.Y, 4, $e52b50, 150 ,250, PR2D_FILL);
   {$EndIf}
 end;
+
+procedure avk_TSkeletTile.ProcCoolSprite;
+var
+  LRP: zglTPoint2D;
+  CmpAngle: Single;
+begin
+  if FCoolSprite = nil then Exit;
+
+  LRP := RealPoint;
+
+  if FTileRotateByHost then
+    CmpAngle := HostAngle
+  else
+    CmpAngle := RealAngle;
+
+  if Animate then begin
+    FCoolSpriteFrame := FCoolSpriteFrame + FCoolSprite^.AnimFPS * 4 / 1000;
+    if FCoolSpriteFrame > FCoolSprite^.EndFrame then FCoolSpriteFrame := FCoolSprite^.StartFrame;
+    clSprite_Calculate( FCoolSprite, LRP.X, LRP.Y, Scale, CmpAngle + TexAngle, FCoolSpriteFrame );
+  end else begin
+    FCoolSpriteFrame := FCoolSprite^.EndFrame;
+    clSprite_Calculate( FCoolSprite, LRP.X, LRP.Y, Scale, CmpAngle + TexAngle, FCoolSpriteFrame );
+  end;
+end;
+
 
 constructor avk_TSkeletTile.Create;
 begin

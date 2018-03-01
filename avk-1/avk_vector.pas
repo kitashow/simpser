@@ -18,6 +18,8 @@ function VcLength(AValue: zglTPoint2D): Single;
 function VcForAngle(AValue: Single): zglTPoint2D;
 
 
+function ZeroPoint(AValue: zglTPoint2D): boolean;
+
 implementation
 
 function VcToAngle(AValue: zglTPoint2D): Single;
@@ -30,6 +32,11 @@ begin
   m_SinCos(AValue * deg2rad, Result.Y, Result.X);
   //Result.X := cos(AValue * deg2rad);
   //Result.Y := sin(AValue * deg2rad);
+end;
+
+function ZeroPoint(AValue: zglTPoint2D): boolean;
+begin
+  Result := (AValue.X = 0) and (AValue.Y = 0);
 end;
 
 function VcLength(AValue: zglTPoint2D): Single;

@@ -70,11 +70,21 @@ end;
 
 avk_TSimpleTile = class (TObject)
   private
+    FProcRealisation: TThreadMethod;
+    FDrawRealisation: TThreadMethod;
     FTexture : zglPTexture; //текстура
-    FCoolSprite: clPSprite;
+    FCoolSprite: clPSprite; //кулспрайт
     FCoolSpriteFrame: Single; //номер фрейма внутри кулспрайта
+    TexFrame: Word; //номер фрейма внутри текстуры
+    procedure FSetFrame(AValue: Word);
+    function FReadFrame: Word;
     procedure stSetTexture(AValue: zglPTexture);
     procedure stSetCoolSprite(AValue: clPSprite);
+  protected //процедуры рисования и пересчета
+    procedure DrawCoolSprite;
+    procedure DrawTexture;
+    procedure ProcCoolSprite;
+    procedure ProcTexture;
   public
     //Расчет кадров
     StartCadre,StopCadre : Integer;//начало и конец отрисовки
@@ -91,13 +101,13 @@ avk_TSimpleTile = class (TObject)
     TexAngle: Single;//угол внутри текстуры
     Hide    : boolean; //скрыть
     Animate : boolean; //это анимированный тайл
-    TexFrame: Word; //номер фрейма внутри текстуры
+    property NowFrame: Word read FReadFrame write FSetFrame;
     property Texture: zglPTexture read FTexture write stSetTexture; //текстура
     property CoolSprite: clPSprite read FCoolSprite write stSetCoolSprite; //кул спрайт
     procedure SetTexFrameSize(AValueW, AValueH: Word);
   public
     procedure DoDraw;
-    procedure DoProc;
+    property DoProc: TThreadMethod read FProcRealisation;
   public
     constructor Create;
     destructor Destroy; override;
@@ -206,15 +216,21 @@ end;
 
 { avk_TSkeletPoint }
 
+{ avk_TSkeletTile }
+
 avk_TSkeletTile = class (avk_TSimpleTile)
   private
     FTileRotateByHost: boolean;
     FPoint: zglTPoint2D;
+    AngleDeg: Single;
     procedure SetAngle(AValue: Single);
+    procedure stSetCoolSprite(AValue: clPSprite);
+  protected
+    procedure ProcCoolSprite;
+    procedure DrawTexture(APoint: zglTPoint2D; AAngle: Single);
   public
     SubPoints: array of avk_TSkeletTile;
     CountSubPoints: Integer;
-    AngleDeg: Single;
     HostPoint: avk_TSkeletTile;
     procedure SetPoint(AX, AY: Single);
     function RealPoint: zglTPoint2D;
@@ -227,6 +243,8 @@ avk_TSkeletTile = class (avk_TSimpleTile)
     property Angle: Single read AngleDeg write SetAngle;
     property Point: zglTPoint2D read FPoint;
     property TileRotateByHost: boolean read FTileRotateByHost write FTileRotateByHost;
+    //нужно переопределить
+    property CoolSprite: clPSprite read FCoolSprite write stSetCoolSprite; //кул спрайт
   public
     constructor Create;
     destructor Destroy; override;
@@ -254,6 +272,7 @@ avk_TSimpleSprite = class (avk_TFraim)
     constructor Create(const InParent: avk_TFraim = nil);
     destructor Destroy; override;
 end;
+
 
 implementation
 
