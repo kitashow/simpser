@@ -297,12 +297,12 @@ begin
     end else Nazata := false;
 
     //ограничения
-    if CPY < avk_TPanel(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.Y then CPY := CPY + 1;
-    if CPX < avk_TPanel(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.X then CPX := CPX + 1;
-    if (CPX + W) > (avk_TPanel(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.X + avk_TPanel(avk_TSimpleSprite(Sender).Parent).AreaElement.W) then CPX := CPX - 1;
-    if (CPY + H) > (avk_TPanel(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.Y + avk_TPanel(avk_TSimpleSprite(Sender).Parent).AreaElement.H) then CPY := CPY - 1;
+    if CPY < avk_TElement(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.Y then CPY := CPY + 1;
+    if CPX < avk_TElement(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.X then CPX := CPX + 1;
+    if (CPX + W) > (avk_TElement(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.X + avk_TElement(avk_TSimpleSprite(Sender).Parent).AreaElement.W) then CPX := CPX - 1;
+    if (CPY + H) > (avk_TElement(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.Y + avk_TElement(avk_TSimpleSprite(Sender).Parent).AreaElement.H) then CPY := CPY - 1;
     SetPoint(CPX, CPY);
-    begin //вращающаяся вокруг пулька
+    begin //вращающаяся вокруг пулька [
       SubPoints[0].Angle := SubPoints[0].Angle - 1;
       if SubPoints[0].Angle < 0 then SubPoints[0].Angle := 360;
       SubPoints[1].Angle := SubPoints[1].Angle + 0.5;
@@ -526,6 +526,7 @@ var
   tmpTestForm: avk_TElement;
   TmpBtn: avk_TSimpleButton;
   TmpCsp: csp_TTestSpr;
+  TmpSpr: avk_TSimpleSprite;
 begin
   if MineForm.ListName['Пример собранного спрайта'] <> nil then Exit;
   tmpTestForm := avk_TElement.Create(MineForm,'Пример собранного спрайта');
@@ -539,6 +540,7 @@ begin
   TmpBtn.LabelCaption.FontColor := $8B0000;
   TmpBtn.OnClick := MineForm.DoClickOnClosePnl;
 
+  //делаем тест кулспрайта
   TmpCsp := csp_TTestSpr.Create(tmpTestForm);
   TmpCsp.ManSpr := MineForm.CoolSpriteManager.CoolSpriteName['пример'];
   TmpCsp.Xmove := 380;
@@ -547,6 +549,28 @@ begin
   TmpCsp.DoProc(Self);
   TmpCsp.Animate := false;
   TmpCsp.DoBeforeProc := DoMoveCoolSprite;
+
+  //теперь делаем спрайтик
+  TmpSpr := avk_TSimpleSprite.Create(tmpTestForm);
+  TmpSpr.SkPnt.CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример1'];
+  TmpSpr.SkPnt.SetTexFrameSize(69, 52);
+  TmpSpr.SkPnt.Scale := 0.4; //Для кулспрайта обязательно
+  TmpSpr.SetParameters(590, 240, 69, 52, 90);
+  TmpSpr.SkPnt.AddSubPoint(26, 30);
+  TmpSpr.SkPnt.SubPoints[0].Texture := MineForm.TexManager.TexName['пулька'];
+  TmpSpr.SkPnt.SubPoints[0].TileRotateByHost := false;
+  TmpSpr.SkPnt.SubPoints[0].SetTileParameters(-3, -7, 6, 14, 90);
+
+  TmpSpr.SkPnt.AddSubPoint(26, -30);
+  TmpSpr.SkPnt.SubPoints[1].Texture := MineForm.TexManager.TexName['пулька'];
+  //не меняем TmpSpr.SkPnt.SubPoints[0].TileRotateByHost
+  TmpSpr.SkPnt.SubPoints[1].SetTileParameters(-3, -7, 6, 14, 90);
+
+  TmpSpr.SkPnt.StopCadre := 12;
+  TmpSpr.SkPnt.RateCadre := 15;
+  TmpSpr.OnBeforeProc := DoAPforSpr;//чтоб двигать
+
+
 end;
 
 

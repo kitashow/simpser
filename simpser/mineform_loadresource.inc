@@ -34,6 +34,7 @@
    MineForm.LoadResource(TmpPrefix+'bullet.png', 'пулька');
 {Разобранный спрайт}
    MineForm.LoadResource(TmpPrefix+'f.cls', 'пример');
+   MineForm.LoadResource(TmpPrefix+'f.cls', 'пример1');
    //MineForm.LoadResource(TmpPrefix+'helmet.png', 'спрайт шлем');
    //MineForm.LoadResource(TmpPrefix+'arrow_head.png', 'спрайт стрелка на шлем');
    //MineForm.LoadResource(TmpPrefix+'right_shoulder.png', 'спрайт правое плечо');
