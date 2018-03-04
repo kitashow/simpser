@@ -33,16 +33,17 @@
    MineForm.LoadResource(TmpPrefix+'m_a_tilefloor01.png', 'пол8');
    MineForm.LoadResource(TmpPrefix+'bullet.png', 'пулька');
 {Разобранный спрайт}
+   MineForm.LoadResource(TmpPrefix+'helmet.png', 'спрайт шлем');
+   MineForm.LoadResource(TmpPrefix+'arrow_head.png', 'спрайт стрелка на шлем');
+   MineForm.LoadResource(TmpPrefix+'right_shoulder.png', 'спрайт правое плечо');
+   MineForm.LoadResource(TmpPrefix+'left_shoulder.png', 'спрайт левое плечо');
+   MineForm.LoadResource(TmpPrefix+'left_hand.png', 'спрайт левая рука');
+   MineForm.LoadResource(TmpPrefix+'right_hand.png', 'спрайт правая рука');
+   MineForm.LoadResource(TmpPrefix+'backpack.png', 'спрайт рюкзак');
+   MineForm.LoadResource(TmpPrefix+'star.png', 'спрайт звездочка');
+   MineForm.LoadResource(TmpPrefix+'left_foot.png', 'спрайт левая нога');
+   MineForm.LoadResource(TmpPrefix+'right_foot.png', 'спрайт правая нога');
+   MineForm.LoadResource(TmpPrefix+'riffle.png', 'винтовка');
+
    MineForm.LoadResource(TmpPrefix+'f.cls', 'пример');
-   MineForm.LoadResource(TmpPrefix+'f.cls', 'пример1');
-   //MineForm.LoadResource(TmpPrefix+'helmet.png', 'спрайт шлем');
-   //MineForm.LoadResource(TmpPrefix+'arrow_head.png', 'спрайт стрелка на шлем');
-   //MineForm.LoadResource(TmpPrefix+'right_shoulder.png', 'спрайт правое плечо');
-   //MineForm.LoadResource(TmpPrefix+'left_shoulder.png', 'спрайт левое плечо');
-   //MineForm.LoadResource(TmpPrefix+'left_hand.png', 'спрайт левая рука');
-   //MineForm.LoadResource(TmpPrefix+'right_hand.png', 'спрайт правая рука');
-   //MineForm.LoadResource(TmpPrefix+'backpack.png', 'спрайт рюкзак');
-   //MineForm.LoadResource(TmpPrefix+'star.png', 'спрайт звездочка');
-   //MineForm.LoadResource(TmpPrefix+'left_foot.png', 'спрайт левая нога');
-   //MineForm.LoadResource(TmpPrefix+'right_foot.png', 'спрайт правая нога');
 

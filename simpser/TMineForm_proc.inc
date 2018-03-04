@@ -552,7 +552,7 @@ begin
 
   //теперь делаем спрайтик
   TmpSpr := avk_TSimpleSprite.Create(tmpTestForm);
-  TmpSpr.SkPnt.CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример1'];
+  TmpSpr.SkPnt.CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример'];
   TmpSpr.SkPnt.SetTexFrameSize(69, 52);
   TmpSpr.SkPnt.Scale := 0.4; //Для кулспрайта обязательно
   TmpSpr.SetParameters(590, 240, 69, 52, 90);
