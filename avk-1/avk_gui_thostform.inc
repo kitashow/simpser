@@ -7,7 +7,7 @@ begin
   if not Assigned(FFontManager) then FFontManager := avk_TFontManager.Create(Self);
   if not Assigned(FTextureManager) then FTextureManager := avk_TTextureManager.Create(Self);
   if not Assigned(FSoundManager) then FSoundManager := avk_TSoundManager.Create(Self);
-  if not Assigned(FCoolSpriteManager) then FCoolSpriteManager := avk_TCoolSpriteManager.Create(Self);
+  if not Assigned(FCoolSpriteManager) then FCoolSpriteManager := avk_TCoolSpriteManager.Create(Self, FTextureManager);
   FFileResourses := inNameFile;
 end;
 
@@ -134,8 +134,7 @@ begin
     tmpSnd := snd_LoadFromFile(  inNameFile, 2 );
     FSoundManager.AddSound(inNameRes,tmpSnd,inNameFile);
   end else if Pos('.cls',inNameFile) > 0 then begin
-    tmpCs := clSprite_LoadFromFile(inNameFile);
-    FCoolSpriteManager.AddCoolSprite(inNameRes, tmpCs, inNameFile);
+    FCoolSpriteManager.AddCoolSprite(inNameRes, inNameFile);
   end else begin //считаю остальные текстуры
     tmpTex := tex_LoadFromFile(inNameFile, $FF000000, TEX_DEFAULT_2D);
     FTextureManager.AddTexture(inNameRes,tmpTex,inNameFile);

@@ -145,11 +145,18 @@ procedure clSprite_Draw( Sprite : clPSprite );
 function clSprite_LoadFromFile( FileName : string ) : clPSprite;
 procedure clSprite_ClearAll;
 
+procedure SetBufferCoolSprite(const AFileName: String; var AValue: String; var AValSize: Integer);
+function clSprite_LoadFromBuffer( AValue: string; AValSize: Integer; ATexManager: TObject) : clPSprite;
+
 var
   clTexList : clPTexture;
   clSprList : clPSprite;
 
 implementation
+
+uses
+  avk_resmanager;
+
 
 function clTexture_Load( FileName : string ) : clPTexture;
 var
@@ -214,6 +221,9 @@ var
   w, h     : single;
 begin
   vertices := nil;
+
+  if Tex = nil then Exit;
+
   tess_Triangulate( @Frame.v[ 0 ], 0, Frame.vCnt - 1 );
   //tess_Triangulate( Frame.v[ 0 ], 0, Frame.vCnt - 1 );
   Frame.tvCnt := tess_GetData( vertices );
@@ -991,6 +1001,7 @@ begin
   cls_Calculate( Result, M_Identity, Result.Frame );
 
 end;
+
 procedure clSprite_ClearAll;
 var
   t, tn : clPTexture;
@@ -1006,6 +1017,185 @@ begin
     t := tn;
   end;
 end;
+
+procedure SetBufferCoolSprite(const AFileName: String; var AValue: String; var AValSize: Integer);
+var
+  FNm: zglTFile;
+  str: String;
+begin
+  file_Open(FNm, AFileName, FOM_OPENR );
+  AValSize := file_GetSize(FNm);
+  SetLength(str, AValSize);
+  SetLength(AValue, AValSize);
+  file_Read(FNm, str[1], AValSize);
+  Move(str[1], AValue[1], AValSize );
+  file_close(FNm);
+end;
+
+function clTexture_fromTexMan( FileName : string;  TexManager: avk_TTextureManager) : clPTexture;
+var
+  ct : clPTexture;
+begin
+  New( ct );
+  ct.FileName := FileName;
+  ct.Tex      := TexManager.TexFileName[FileName];
+  ct.Next     := clTexList;
+  clTexList   := ct;
+  Result      := ct;
+end;
+
+
+function clSprite_LoadFromBuffer(AValue: string; AValSize: Integer;
+  ATexManager: TObject): clPSprite;
+var
+  TexManager: avk_TTextureManager;
+  cs, csp      : clPSprite;
+  str, str2, st: string;
+  Param, Value : string;
+  i, k, p, len : integer;
+  prm          : boolean;
+  id1, id2     : array of word;
+  idc          : integer;
+  frm, lfrm    : clPFrame;
+begin
+
+  Result := clSprite_Create;
+
+  SetLength(str, AValSize);
+  Move(AValue[1], str[1], AValSize );
+
+  myReadLn(str, st);
+
+  if st <> 'CoolSprite' then
+  begin
+    Exit;
+  end;
+
+  TexManager := avk_TTextureManager(ATexManager);
+
+  cs  := nil;
+  idc := 0;
+
+  while not (Length(str) = 0) do
+  begin
+
+    myReadLn(str, st);
+    len := Length( st );
+    prm := true;
+    Param := '';
+    Value := '';
+    for i := 1 to len do
+    begin
+      if st[ i ] = '=' then
+      begin
+        prm := false;
+        Continue;
+      end;
+      if prm = true then Param := Param + st[ i ]
+        else Value := Value + st[ i ];
+    end;
+
+    if cs = nil then
+    begin
+      if Param = 'Frame'      then Result.Frame := u_StrToFloat( Value );
+      if Param = 'StartFrame' then Result.StartFrame := u_StrToINt( Value );
+      if Param = 'EndFrame'   then Result.EndFrame := u_StrToINt( Value );
+      if Param = 'FPS'        then Result.AnimFPS := u_StrToINt( Value );
+    end;
+
+    if Param = 'Sprite' then
+    begin
+      cs := clSprite_Create;
+      clSprite_SetParent( cs, Result );
+      clSprite_SetParentDraw( cs, Result );
+    end;
+
+    if cs <> nil then
+    begin
+      if Param = 'Name'    then cs.Name    := Value;
+      if Param = 'ID'      then cs.ID      := u_StrToINt( Value );
+      if Param = 'Texture' then
+      begin
+        cs.Texture :=  clTexture_fromTexMan(Value, TexManager);
+
+        //if cs.Texture = nil then
+        // cs.Texture := clTexture_Load(Value);
+      end;
+
+      if Param = 'X'       then cs.X       := u_StrToFloat( Value );
+      if Param = 'Y'       then cs.Y       := u_StrToFloat( Value );
+      if Param = 'Angle'   then cs.Angle   := u_StrToFloat( Value );
+      if Param = 'ScaleX'  then cs.ScaleX  := u_StrToFloat( Value );
+      if Param = 'ScaleY'  then cs.ScaleY  := u_StrToFloat( Value );
+      if Param = 'FlipX'   then cs.FlipX   := u_StrToBool( Value );
+      if Param = 'FlipY'   then cs.FlipY   := u_StrToBool( Value );
+      if Param = 'Visible' then cs.Visible := u_StrToBool( Value );
+      if Param = 'InheritVis' then cs.InheritVis := u_StrToBool( Value );
+      if Param = 'ParentID' then
+      begin
+        SetLength( id1, idc + 1 );
+        SetLength( id2, idc + 1 );
+        id1[ idc ] := cs.ID;
+        id2[ idc ] := u_StrToINt( Value );
+        INC( idc );
+      end;
+
+      if Param = 'Frame'    then cs.Frame     := u_StrToFloat( Value );
+      if Param = 'FPS'      then cs.AnimFPS   := u_StrToINt( Value );
+      if Param = 'Animated' then cs.Animated  := u_StrToBool( Value );
+      if Param = 'Speed'    then cs.AnimSpeed := u_StrToFloat( Value );
+      if Param = 'Frames' then
+      begin
+        cs.EndFrame := u_StrToINt( Value );
+        frm := nil;
+        for i := 0 to cs.EndFrame - 1 do
+        begin
+          lfrm := frm;
+          frm := clFrame_Create;
+          if lfrm = nil then cs.Frames := frm
+            else lfrm.Next := frm;
+          myReadLn(str, st);
+          frm.CenterX := u_StrToFloat( st );
+          myReadLn(str, st);
+          frm.CenterY := u_StrToFloat( st );
+          myReadLn(str, st);
+          frm.vCnt := u_StrToINt( st );
+          SetLength( frm.v, frm.vCnt );
+          for k := 0 to frm.vCnt - 1 do
+          begin
+            myReadLn(str, st);
+            p := Pos( ' ', st );
+            str2 := st;
+            Delete( st, p, Length( st ) - p + 1 );
+            Delete( str2, 1, p );
+            frm.v[ k ].X := u_StrToFloat( st );
+            frm.v[ k ].Y := u_StrToFloat( str2 );
+          end;
+          clFrame_Triangulate( frm, cs.Texture.Tex );
+        end;
+      end;
+
+      if Param = 'PosKeys' then cs.PosKF := cls_LoadKF( str, u_StrToINt( Value ) );
+      if Param = 'AngKeys' then cs.AngKF := cls_LoadKF( str, u_StrToINt( Value ) );
+      if Param = 'SclKeys' then cs.SclKF := cls_LoadKF( str, u_StrToINt( Value ) );
+      if Param = 'FlXKeys' then cs.FlXKF := cls_LoadKF( str, u_StrToINt( Value ) );
+      if Param = 'FlYKeys' then cs.FlYKF := cls_LoadKF( str, u_StrToINt( Value ) );
+      if Param = 'VisKeys' then cs.VisKF := cls_LoadKF( str, u_StrToINt( Value ) );
+      if Param = 'FrmKeys' then cs.FrmKF := cls_LoadKF( str, u_StrToINt( Value ) );
+      if Param = 'AnmKeys' then cs.AnmKF := cls_LoadKF( str, u_StrToINt( Value ) );
+    end;
+  end;
+
+  for i := 0 to idc - 1 do
+  begin
+    cs  := clSprite_GetByID( Result, id1[ i ] );
+    csp := clSprite_GetByID( Result, id2[ i ] );
+    clSprite_SetParent( cs, csp );
+  end;
+
+  cls_Calculate( Result, M_Identity, Result.Frame );
+end;
+
 
 end.
 

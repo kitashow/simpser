@@ -24,9 +24,7 @@ type
 
   avk_TTexSimple = class
     Texture: zglPTexture;
-    {$IFDEF ANDROID}
     FileName: String;
-    {$ENDIF}
   end;
 
   avk_TFontSimple = class
@@ -46,10 +44,35 @@ type
   { avk_TCoolSpriteSimple }
 
   avk_TCoolSpriteSimple = class
-    CoolSprite: clPSprite;
-    {$IFDEF ANDROID}
     FileName: String;
-    {$ENDIF}
+    Buffer: String;
+    BufferSize: Integer;
+    destructor Destroy;
+  end;
+
+  { avk_TTextureManager }
+
+  avk_TTextureManager = class (TObject)
+  private
+    FParent: avk_TFraim;
+    FTexList: TStringList;
+    function GetTexById(InID : Integer): zglPTexture;
+    function GetTexByName(InID : String): zglPTexture;
+    function FGetCount: Integer;
+    function GetTexSimple(InID : Integer): avk_TTexSimple;
+    function GetTexByFileName(InID : String): zglPTexture;
+  public
+    procedure AddTexture(InName: String; InTex: zglPTexture; InFName: String = '');
+  public
+    property Parent: avk_TFraim read FParent;
+    property TexList[InID :Integer]: zglPTexture read GetTexById;
+    property TexName[InID :String]: zglPTexture read GetTexByName;
+    property TexFileName[InID :String]: zglPTexture read GetTexByFileName;
+    property Count: Integer read FGetCount;
+    property ResList[InID :Integer]: avk_TTexSimple read GetTexSimple;
+  public
+    constructor Create(inParent: avk_TFraim = nil);
+    destructor Destroy; override;
   end;
 
   { avk_TCoolSpriteManager }
@@ -63,40 +86,16 @@ type
     function FGetCount: Integer;
     function GetCSSimple(InID : Integer): avk_TCoolSpriteSimple;
   public
-    procedure AddCoolSprite(InName: String; InCoolSprite: clPSprite; InFName: String
-      );
+    procedure AddCoolSprite(InName: String; InFName: String);
   public
+    TexManager: avk_TTextureManager;
     property Parent: avk_TFraim read FParent;
     property CoolSpriteList[InID :Integer]: clPSprite read GetCSById;
     property CoolSpriteName[InID :String]: clPSprite read GetCSByName;
     property Count: Integer read FGetCount;
     property ResList[InID :Integer]: avk_TCoolSpriteSimple read GetCSSimple;
   public
-    constructor Create(inParent: avk_TFraim = nil);
-    destructor Destroy; override;
-  end;
-
-
-  { avk_TTextureManager }
-
-  avk_TTextureManager = class (TObject)
-  private
-    FParent: avk_TFraim;
-    FTexList: TStringList;
-    function GetTexById(InID : Integer): zglPTexture;
-    function GetTexByName(InID : String): zglPTexture;
-    function FGetCount: Integer;
-    function GetTexSimple(InID : Integer): avk_TTexSimple;
-  public
-    procedure AddTexture(InName: String; InTex: zglPTexture; InFName: String = '');
-  public
-    property Parent: avk_TFraim read FParent;
-    property TexList[InID :Integer]: zglPTexture read GetTexById;
-    property TexName[InID :String]: zglPTexture read GetTexByName;
-    property Count: Integer read FGetCount;
-    property ResList[InID :Integer]: avk_TTexSimple read GetTexSimple;
-  public
-    constructor Create(inParent: avk_TFraim = nil);
+    constructor Create(inParent: avk_TFraim = nil; ATexManager: avk_TTextureManager = nil);
     destructor Destroy; override;
   end;
 
@@ -149,6 +148,14 @@ type
 
 implementation
 
+{ avk_TCoolSpriteSimple }
+
+destructor avk_TCoolSpriteSimple.Destroy;
+begin
+  //FreeMem(@Buffer);
+  inherited Destroy;
+end;
+
 { avk_TCoolSpriteManager }
 
 function avk_TCoolSpriteManager.GetCSById(InID: Integer): clPSprite;
@@ -156,7 +163,7 @@ begin
   Result := nil;
   if InID >= Count then Exit;
   if InID < 0 then Exit;
-  Result := avk_TCoolSpriteSimple(FCSList.Objects[InId]).CoolSprite;
+  Result := clSprite_LoadFromBuffer(avk_TCoolSpriteSimple(FCSList.Objects[InId]).Buffer, avk_TCoolSpriteSimple(FCSList.Objects[InId]).BufferSize, TexManager);
 end;
 
 function avk_TCoolSpriteManager.GetCSByName(InID: String): clPSprite;
@@ -181,24 +188,23 @@ begin
   Result := avk_TCoolSpriteSimple(FCSList.Objects[InId]);
 end;
 
-procedure avk_TCoolSpriteManager.AddCoolSprite(InName: String;
-  InCoolSprite: clPSprite; InFName: String);
+procedure avk_TCoolSpriteManager.AddCoolSprite(InName: String; InFName: String);
 var
   tmp_CS: avk_TCoolSpriteSimple;
 begin
   tmp_CS:= avk_TCoolSpriteSimple.Create;
-  tmp_CS.CoolSprite := InCoolSprite;
-  {$IFDEF ANDROID}
+  SetBufferCoolSprite(InFName, tmp_CS.Buffer, tmp_CS.BufferSize);
   tmp_CS.FileName := InFName;
-  {$EndIf}
   FCSList.AddObject(InName, tmp_CS);
 end;
 
-constructor avk_TCoolSpriteManager.Create(inParent: avk_TFraim);
+constructor avk_TCoolSpriteManager.Create(inParent: avk_TFraim;
+  ATexManager: avk_TTextureManager);
 begin
   FCSList := TStringList.Create;
   FCSList.Sorted :=true;
   FParent := inParent;
+  TexManager := ATexManager;
 end;
 
 destructor avk_TCoolSpriteManager.Destroy;
@@ -346,9 +352,7 @@ var
 begin
   tmp_Tex:= avk_TTexSimple.Create;
   tmp_Tex.Texture := InTex;
-  {$IFDEF ANDROID}
   tmp_Tex.FileName := InFName;
-  {$EndIf}
   FTexList.AddObject(InName,tmp_Tex);
 end;
 
@@ -369,6 +373,19 @@ begin
   OutId := -1;
   FTexList.Find(InID,OutId);
   Result := GetTexById(OutId);
+end;
+
+function avk_TTextureManager.GetTexByFileName(InID : String): zglPTexture;
+var
+  OutId, CKL: Integer;
+begin
+  Result := nil;
+  if InID = '' then Exit;
+  OutId := -1;
+  for CKL := 0 to FTexList.Count - 1 do begin
+    if avk_TTexSimple(FTexList.Objects[CKL]).FileName = InID then
+      Result := avk_TTexSimple(FTexList.Objects[CKL]).Texture;
+  end;
 end;
 
 constructor avk_TTextureManager.Create(inParent: avk_TFraim);
