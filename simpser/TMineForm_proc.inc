@@ -302,7 +302,7 @@ begin
     if (CPX + W) > (avk_TElement(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.X + avk_TElement(avk_TSimpleSprite(Sender).Parent).AreaElement.W) then CPX := CPX - 1;
     if (CPY + H) > (avk_TElement(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.Y + avk_TElement(avk_TSimpleSprite(Sender).Parent).AreaElement.H) then CPY := CPY - 1;
     SetPoint(CPX, CPY);
-    begin //вращающаяся вокруг пулька [
+    if CountSubPoints > 0 then begin //вращающаяся вокруг пулька [
       SubPoints[0].Angle := SubPoints[0].Angle - 1;
       if SubPoints[0].Angle < 0 then SubPoints[0].Angle := 360;
       SubPoints[1].Angle := SubPoints[1].Angle + 0.5;
@@ -525,8 +525,8 @@ procedure TMineForm.DoPanelCompSprite(Sender: TObject);
 var
   tmpTestForm: avk_TElement;
   TmpBtn: avk_TSimpleButton;
-  TmpCsp: csp_TTestSpr;
   TmpSpr: avk_TSimpleSprite;
+  CKL: Integer;
 begin
   if MineForm.ListName['Пример собранного спрайта'] <> nil then Exit;
   tmpTestForm := avk_TElement.Create(MineForm,'Пример собранного спрайта');
@@ -540,17 +540,7 @@ begin
   TmpBtn.LabelCaption.FontColor := $8B0000;
   TmpBtn.OnClick := MineForm.DoClickOnClosePnl;
 
-  //делаем тест кулспрайта
-  TmpCsp := csp_TTestSpr.Create(tmpTestForm);
-  TmpCsp.ManSpr := MineForm.CoolSpriteManager.CoolSpriteName['пример'];
-  TmpCsp.Xmove := 380;
-  TmpCsp.Ymove := 356;
-  TmpCsp.Animate := true;
-  TmpCsp.DoProc(Self);
-  TmpCsp.Animate := false;
-  TmpCsp.DoBeforeProc := DoMoveCoolSprite;
-
-  //теперь делаем спрайтик
+  //теперь делаем спрайтик кулспрайт
   TmpSpr := avk_TSimpleSprite.Create(tmpTestForm);
   TmpSpr.SkPnt.CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример'];
   TmpSpr.SkPnt.SetTexFrameSize(69, 52);
@@ -570,68 +560,15 @@ begin
   TmpSpr.SkPnt.RateCadre := 15;
   TmpSpr.OnBeforeProc := DoAPforSpr;//чтоб двигать
 
-
-end;
-
-
-procedure TMineForm.DoMoveCoolSprite(Sender: TObject);
-var
-  Nazata, TmpK_UP, TmpK_DOWN, TmpK_LEFT, TmpK_RIGHT: Boolean;
-  CPY, CPX: Single;
-  Angle: Single;
-begin
-  if Sender.ClassName <> 'csp_TTestSpr' then Exit;
-  Nazata := false;
-  with csp_TTestSpr(Sender) do begin
-
-    CPY := Ymove;
-    CPX := Xmove;
-
-    Nazata := true;
-    TmpK_UP := key_Down( K_W ) or key_Down( K_UP );
-    TmpK_DOWN := key_Down( K_S ) or key_Down( K_DOWN );
-    TmpK_LEFT := key_Down( K_A ) or key_Down( K_LEFT );
-    TmpK_RIGHT := key_Down( K_D ) or key_Down( K_RIGHT );
-
-    if TmpK_UP and TmpK_LEFT then begin
-      Angle := 315;
-      CPX := CPX - 0.25;
-      CPY := CPY - 0.25;
-    end else if TmpK_UP and TmpK_RIGHT then begin
-      Angle := 45;
-      CPX := CPX + 0.25;
-      CPY := CPY - 0.25;
-    end else if TmpK_DOWN and TmpK_RIGHT then begin
-      Angle :=  135;
-      CPX := CPX + 0.25;
-      CPY := CPY + 0.25;
-    end else if TmpK_DOWN and TmpK_LEFT then begin
-      Angle :=  225;
-      CPX := CPX - 0.25;
-      CPY := CPY + 0.25;
-    end else if TmpK_DOWN then begin
-      Angle := 180;
-      CPY := CPY + 0.5;
-    end else if TmpK_UP then begin
-      Angle := 0;
-      CPY := CPY - 0.5;
-    end else if TmpK_LEFT then begin
-      Angle :=  270;
-      CPX := CPX - 0.5;
-    end else if TmpK_RIGHT then begin
-      Angle :=  90;
-      CPX := CPX + 0.5;
-    end else Nazata := false;
-
-    //ограничения
-    if CPY < avk_TElement(csp_TTestSpr(Sender).Parent).GetAbsolyteArea.Y then CPY := CPY + 1;
-    if CPX < avk_TElement(csp_TTestSpr(Sender).Parent).GetAbsolyteArea.X then CPX := CPX + 1;
-    if CPX > (avk_TElement(csp_TTestSpr(Sender).Parent).GetAbsolyteArea.X + avk_TElement(csp_TTestSpr(Sender).Parent).AreaElement.W) then CPX := CPX - 1;
-    if CPY > (avk_TElement(csp_TTestSpr(Sender).Parent).GetAbsolyteArea.Y + avk_TElement(csp_TTestSpr(Sender).Parent).AreaElement.H) then CPY := CPY - 1;
-    Xmove := CPX;
-    Ymove := CPY;
-    CSAngle := Angle;
-    Animate := Nazata;
+  //делаем табун
+  for CKL := 0 to 9 do begin
+    TmpSpr := avk_TSimpleSprite.Create(tmpTestForm);
+    TmpSpr.SkPnt.CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример'];
+    TmpSpr.SkPnt.SetTexFrameSize(69, 52);
+    TmpSpr.SkPnt.Scale := 0.4; //Для кулспрайта обязательно
+    TmpSpr.SetParameters(270 + Random(500), 66 + Random(500), 69, 52, 90);
+    TmpSpr.SkPnt.Animate := false;
+    TmpSpr.OnBeforeProc := DoAPforSpr;
   end;
 end;
 

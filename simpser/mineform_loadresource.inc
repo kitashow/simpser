@@ -46,4 +46,6 @@
    MineForm.LoadResource(TmpPrefix+'riffle.png', 'винтовка');
 
    MineForm.LoadResource(TmpPrefix+'f.cls', 'пример');
+{Эмитер}
+   MineForm.LoadResource(TmpPrefix+'emitter_diamond.zei', 'сияние');
 

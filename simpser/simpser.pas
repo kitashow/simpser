@@ -11,7 +11,7 @@ uses
     cthreads,
     cmem, // the c memory manager is on some systems much faster for multi-threading
   {$endif}
-  zgl_main, zgl_screen, zgl_window, zgl_timers, mine_unit;
+  zgl_main, zgl_screen, zgl_window, zgl_timers, mine_unit, avk_emitters;
 
 const
 {$IfDef Debug}
@@ -40,7 +40,7 @@ Begin
   {$IfDef Debug}
   scr_SetOptions(1280,736, REFRESH_MAXIMUM, false, false );
   {$else}
-  scr_SetOptions(1280,720, REFRESH_MAXIMUM, false, true );
+  scr_SetOptions(1280,720, REFRESH_DEFAULT, false, true );
   {$endif}
   zgl_Init();
 End.

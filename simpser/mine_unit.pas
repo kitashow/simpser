@@ -11,9 +11,9 @@ uses
   Classes,
   avk_btype, avk_gui, avk_addgui,
   avk_server, LNet,
-  avk_input, avk_texmanager, avk_sprites,
+  avk_input, avk_sprites,
   //
-  avk_coolspritetest,
+  //avk_coolspritetest,
   //
   zgl_main, zgl_timers, zgl_render_2d,
   zgl_textures, zgl_types
@@ -55,7 +55,6 @@ type
     procedure DoSpecPnlSpr(Sender: TObject);
     procedure DoPanelServer(Sender: TObject);
     procedure DoPanelCompSprite(Sender: TObject);
-    procedure DoMoveCoolSprite(Sender: TObject);
   public
     TCPServer: avk_TServer;
     procedure DoStopStartServer(Sender: TObject);
