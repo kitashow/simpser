@@ -7,3 +7,4 @@ git clone https://github.com/kitashow/simpser.git
 git commit -a -m "20180226.2"
 //сразу просле
 git push --all
+//эти коммиты происходят непонятно отк кого
