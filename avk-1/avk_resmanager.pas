@@ -13,6 +13,7 @@ uses
   , zgl_textures
   , zgl_font
   , zgl_sound
+  , zgl_particles_2d
   //, zgl_file
   //avk
   , avk_btype
@@ -47,7 +48,13 @@ type
     FileName: String;
     Buffer: String;
     BufferSize: Integer;
-    destructor Destroy;
+  end;
+
+  avk_TEmitterSimple = class
+    Emitter: zglPEmitter2D;
+    {$IFDEF ANDROID}
+    FileName: String;
+    {$ENDIF}
   end;
 
   { avk_TTextureManager }
@@ -146,15 +153,90 @@ type
     destructor Destroy; override;
   end;
 
+  { avk_TEmitterManager }
+
+  avk_TEmitterManager = class (TObject)
+  private
+    FParent: avk_TFraim;
+    FEmitterList: TStringList;
+    function GetEmitterById(InID : Integer): zglPEmitter2D;
+    function GetEmitterByName(InID : String): zglPEmitter2D;
+    function FGetCount: Integer;
+    function GetEmitterSimple(InID : Integer): avk_TEmitterSimple;
+  public
+    procedure AddEmitter(InName: String; InEmitter: zglPEmitter2D; InFName: String='');
+  public
+    property Parent: avk_TFraim read FParent;
+    property EmitterList[InID :Integer]: zglPEmitter2D read GetEmitterById;
+    property EmitterName[InID :String]: zglPEmitter2D read GetEmitterByName;
+    property Count: Integer read FGetCount;
+    property ResList[InID :Integer]: avk_TEmitterSimple read GetEmitterSimple;
+  public
+    constructor Create(inParent: avk_TFraim = nil);
+    destructor Destroy; override;
+  end;
 implementation
 
-{ avk_TCoolSpriteSimple }
+{ avk_TEmitterManager }
 
-destructor avk_TCoolSpriteSimple.Destroy;
+function avk_TEmitterManager.GetEmitterById(InID: Integer): zglPEmitter2D;
 begin
-  //FreeMem(@Buffer);
+  Result := avk_TEmitterSimple(FEmitterList.Objects[InId]).Emitter;
+end;
+
+function avk_TEmitterManager.GetEmitterByName(InID: String): zglPEmitter2D;
+var
+  OutId: Integer;
+begin
+  Result := nil;
+  if InID = '' then Exit;
+  OutId := -1;
+  FEmitterList.Find(InID, OutId);
+  Result := GetEmitterById(OutId);
+end;
+
+function avk_TEmitterManager.FGetCount: Integer;
+begin
+  Result := FEmitterList.Count;
+end;
+
+function avk_TEmitterManager.GetEmitterSimple(InID: Integer
+  ): avk_TEmitterSimple;
+begin
+  Result := avk_TEmitterSimple(FEmitterList.Objects[InId]);
+end;
+
+procedure avk_TEmitterManager.AddEmitter(InName: String;
+  InEmitter: zglPEmitter2D; InFName: String);
+var
+  tmp_Emtr: avk_TEmitterSimple;
+begin
+  tmp_Emtr:= avk_TEmitterSimple.Create;
+  tmp_Emtr.Emitter := InEmitter;
+  {$IFDEF ANDROID}
+  tmp_Emtr.FileName := InFName;
+  {$EndIf}
+  FEmitterList.AddObject(InName, tmp_Emtr);
+end;
+
+constructor avk_TEmitterManager.Create(inParent: avk_TFraim);
+begin
+  FEmitterList         := TStringList.Create;
+  FEmitterList.Sorted  := true;
+  FParent              := inParent;
+end;
+
+destructor avk_TEmitterManager.Destroy;
+var
+  i: Integer;
+begin
+  for i:= 0 to FEmitterList.Count - 1 do
+    //emitter2d_Del(avk_TEmitterSimple(FEmitterList.Objects[i]).Emitter);
+    avk_TEmitterSimple(FEmitterList.Objects[i]).Destroy;
+  FEmitterList.Destroy;
   inherited Destroy;
 end;
+
 
 { avk_TCoolSpriteManager }
 

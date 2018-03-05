@@ -38,6 +38,7 @@ uses
   , zgl_textures_png
   , zgl_textures_jpg
   , zgl_sprite_2d
+  , zgl_particles_2d
   , zgl_utils
   //, zgl_types
   , zgl_keyboard
@@ -332,6 +333,7 @@ type
     FTextureManager: avk_TTextureManager;
     FSoundManager: avk_TSoundManager;
     FCoolSpriteManager: avk_TCoolSpriteManager;
+    FEmitterManager: avk_TEmitterManager;
     procedure FSetFileResourses(inNameFile: String);
     procedure FSetModeArhive(inOpen: boolean);
   protected
@@ -351,6 +353,7 @@ type
     property TexManager: avk_TTextureManager read FTextureManager;
     property SoundManager: avk_TSoundManager read FSoundManager;
     property CoolSpriteManager: avk_TCoolSpriteManager read FCoolSpriteManager;
+    property EmitterManager: avk_TEmitterManager read FEmitterManager;
     property ArhResNowOpen: boolean read FArhiveNowOpen write FSetModeArhive;
   public
     constructor Create(const InParent: avk_TFraim = nil; InName: String = '');

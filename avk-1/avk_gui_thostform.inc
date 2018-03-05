@@ -8,6 +8,7 @@ begin
   if not Assigned(FTextureManager) then FTextureManager := avk_TTextureManager.Create(Self);
   if not Assigned(FSoundManager) then FSoundManager := avk_TSoundManager.Create(Self);
   if not Assigned(FCoolSpriteManager) then FCoolSpriteManager := avk_TCoolSpriteManager.Create(Self, FTextureManager);
+  if not Assigned(FEmitterManager) then FEmitterManager := avk_TEmitterManager.Create(Self);
   FFileResourses := inNameFile;
 end;
 
@@ -124,20 +125,24 @@ var
   ArhOpenBefore: boolean;
   tmpSnd: zglPSound;
   tmpCs: clPSprite;
+  tmpEmtr: zglPEmitter2D;
 begin
   ArhOpenBefore := ArhResNowOpen;
   if not ArhResNowOpen then ArhResNowOpen := true;
-  if Pos('pt.zfi',inNameFile) > 0 then begin
+  if Pos('pt.zfi', inNameFile) > 0 then begin
     tmpFont := font_LoadFromFile(inNameFile);
-    FFontManager.AddFont(inNameRes,tmpFont,inNameFile);
-  end else if Pos('.ogg',inNameFile) > 0 then begin
+    FFontManager.AddFont(inNameRes, tmpFont, inNameFile);
+  end else if Pos('.ogg', inNameFile) > 0 then begin
     tmpSnd := snd_LoadFromFile(  inNameFile, 2 );
-    FSoundManager.AddSound(inNameRes,tmpSnd,inNameFile);
-  end else if Pos('.cls',inNameFile) > 0 then begin
+    FSoundManager.AddSound(inNameRes, tmpSnd, inNameFile);
+  end else if Pos('.cls', inNameFile) > 0 then begin
     FCoolSpriteManager.AddCoolSprite(inNameRes, inNameFile);
+  end else if Pos('.zei', inNameFile) > 0 then begin
+    tmpEmtr := emitter2d_LoadFromFile(inNameFile);
+    FEmitterManager.AddEmitter(inNameRes, tmpEmtr, inNameFile);
   end else begin //считаю остальные текстуры
     tmpTex := tex_LoadFromFile(inNameFile, $FF000000, TEX_DEFAULT_2D);
-    FTextureManager.AddTexture(inNameRes,tmpTex,inNameFile);
+    FTextureManager.AddTexture(inNameRes, tmpTex, inNameFile);
   end;
   ArhResNowOpen := ArhOpenBefore;
 end;
@@ -149,6 +154,7 @@ begin
   FTextureManager := nil;
   FSoundManager := nil;
   FCoolSpriteManager := nil;
+  FEmitterManager := nil;
   FileResourses := '';
   FArhiveNowOpen:=false;
   TextureCursor := nil;
@@ -162,6 +168,7 @@ begin
   if Assigned(FTextureManager) then FTextureManager.Destroy;
   if Assigned(FSoundManager) then FSoundManager.Destroy;
   if Assigned(FCoolSpriteManager) then FCoolSpriteManager.Destroy;
+  if Assigned(FEmitterManager) then FEmitterManager.Destroy;
   inherited Destroy;
 end;
 

@@ -214,8 +214,6 @@ avk_TSimpleMap = class (avk_TElement)
     destructor Destroy; override;
 end;
 
-{ avk_TSkeletPoint }
-
 { avk_TSkeletTile }
 
 avk_TSkeletTile = class (avk_TSimpleTile)
