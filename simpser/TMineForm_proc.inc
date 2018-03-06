@@ -527,6 +527,7 @@ var
   TmpBtn: avk_TSimpleButton;
   TmpSpr: avk_TSimpleSprite;
   CKL: Integer;
+  TmpEmmtr: avk_TSimpleEmitter;
 begin
   if MineForm.ListName['Пример собранного спрайта'] <> nil then Exit;
   tmpTestForm := avk_TElement.Create(MineForm,'Пример собранного спрайта');
@@ -562,6 +563,7 @@ begin
 
   //делаем табун
   for CKL := 0 to 9 do begin
+    //кулспрайтов
     TmpSpr := avk_TSimpleSprite.Create(tmpTestForm);
     TmpSpr.SkPnt.CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример'];
     TmpSpr.SkPnt.SetTexFrameSize(69, 52);
@@ -569,7 +571,12 @@ begin
     TmpSpr.SetParameters(270 + Random(500), 66 + Random(500), 69, 52, 90);
     TmpSpr.SkPnt.Animate := false;
     TmpSpr.OnBeforeProc := DoAPforSpr;
+
+    //эмиттеров
+    TmpEmmtr := avk_TSimpleEmitter.Create(tmpTestForm);
+    TmpEmmtr.FSimplePaticle.FSetEmitter(MineForm.EmitterManager.EmitterName['сияние'],320 + Random(500), 70 + Random(500));
   end;
+
 end;
 
 procedure TMineForm.DoPnlSprMove(Sender: TObject);

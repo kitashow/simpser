@@ -13,7 +13,7 @@ uses
   avk_server, LNet,
   avk_input, avk_sprites,
   //
-  //avk_coolspritetest,
+  avk_emitters,
   //
   zgl_main, zgl_timers, zgl_render_2d,
   zgl_textures, zgl_types
