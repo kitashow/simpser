@@ -7,4 +7,10 @@ git clone https://github.com/kitashow/simpser.git
 git commit -a -m "20180226.2"
 //сразу просле
 git push --all
-//эти коммиты происходят непонятно отк кого
+//эти коммиты происходят непонятно от кого
+
+//Для копирования zengl нужен бранч, поэтому
+//Полностью скачать и создать репозиторий у себя
+git clone -b 0.3.x https://github.com/kitashow/zengl.git
+
+
