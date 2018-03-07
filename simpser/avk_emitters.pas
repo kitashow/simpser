@@ -63,6 +63,7 @@ type
   avk_TSimplePaticle = class (TObject)
     FParticles: zglTPEngine2D;
     FEmitter: zglPEmitter2D;
+    FStepTime: Double;
     procedure FSetEmitter(AEmitter: zglPEmitter2D; AValX: Single = 0; AValY: Single = 0);
     procedure Proc;
     procedure Draw;
@@ -115,39 +116,37 @@ procedure avk_TSimplePaticle.FSetEmitter(AEmitter: zglPEmitter2D;
 begin
   pengine2d_Set( @Fparticles );
   pengine2d_AddEmitter(AEmitter, @FEmitter, AValX, AValY);
-  FEmitter^.AsRect.Rect.W := 25;
-  FEmitter^.AsRect.Rect.H := 25;
-  FEmitter^.ParParams.SizeXS := 25;
-  FEmitter^.ParParams.SizeYS := 25;
 end;
 
 procedure avk_TSimplePaticle.Proc;
-var
-  dt:Double;
 begin
-  dt := 0;
   if Assigned(FEmitter) then begin
-    //pengine2d_Set( @Fparticles );
-    pengine2d_Proc(dt);
+    pengine2d_Set( @Fparticles );
+    pengine2d_Proc(FStepTime);
   end;
 end;
 
 procedure avk_TSimplePaticle.Draw;
+{$IfDef Debug}
 var
   i: Integer;
+{$EndIf}
 begin
   if Assigned(FEmitter) then begin
-    //pengine2d_Set( @Fparticles );
+    pengine2d_Set( @Fparticles );
     pengine2d_Draw();
+    {$IfDef Debug}
     for i := 0 to FParticles.Count.Emitters - 1 do
       with FParticles.List[ i ].BBox do
         pr2d_Rect( MinX, MinY, MaxX - MinX, MaxY - MinY, $FF0000, 255 );
+    {$EndIf}
   end;
 end;
 
 constructor avk_TSimplePaticle.Create;
 begin
   pengine2d_Set( @FParticles );
+  FStepTime := 4;
 end;
 
 destructor avk_TSimplePaticle.Destroy;

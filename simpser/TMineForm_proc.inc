@@ -574,7 +574,7 @@ begin
 
     //эмиттеров
     TmpEmmtr := avk_TSimpleEmitter.Create(tmpTestForm);
-    TmpEmmtr.FSimplePaticle.FSetEmitter(MineForm.EmitterManager.EmitterName['сияние'],320 + Random(500), 70 + Random(500));
+    TmpEmmtr.FSimplePaticle.FSetEmitter(MineForm.EmitterManager.EmitterName['дымок'],320 + Random(500), 70 + Random(500));
   end;
 
 end;
