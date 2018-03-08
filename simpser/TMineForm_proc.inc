@@ -303,10 +303,12 @@ begin
     if (CPY + H) > (avk_TElement(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.Y + avk_TElement(avk_TSimpleSprite(Sender).Parent).AreaElement.H) then CPY := CPY - 1;
     SetPoint(CPX, CPY);
     if CountSubPoints > 0 then begin //вращающаяся вокруг пулька [
-      SubPoints[0].Angle := SubPoints[0].Angle - 1;
+      SubPoints[0].Angle := SubPoints[0].Angle - 0.5;
       if SubPoints[0].Angle < 0 then SubPoints[0].Angle := 360;
-      SubPoints[1].Angle := SubPoints[1].Angle + 0.5;
-      if SubPoints[1].Angle > 360 then SubPoints[1].Angle := 0;
+      if CountSubPoints = 2 then begin
+        SubPoints[1].Angle := SubPoints[1].Angle + 1;
+        if SubPoints[1].Angle > 360 then SubPoints[1].Angle := 0;
+      end;
     end; //вращающаяся вокруг пулька ]
     Animate := Nazata;
   end;
@@ -561,8 +563,8 @@ begin
   TmpSpr.SkPnt.RateCadre := 15;
   TmpSpr.OnBeforeProc := DoAPforSpr;//чтоб двигать
 
-  //делаем табун
-  for CKL := 0 to 9 do begin
+  ////делаем табун
+  for CKL := 0 to 3 do begin
     //кулспрайтов
     TmpSpr := avk_TSimpleSprite.Create(tmpTestForm);
     TmpSpr.SkPnt.CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример'];
@@ -573,8 +575,14 @@ begin
     TmpSpr.OnBeforeProc := DoAPforSpr;
 
     //эмиттеров
-    TmpEmmtr := avk_TSimpleEmitter.Create(tmpTestForm);
-    TmpEmmtr.FSimplePaticle.FSetEmitter(MineForm.EmitterManager.EmitterName['дымок'],320 + Random(500), 70 + Random(500));
+    TmpSpr.SkPnt.AddSubPoint(26, 30);
+    TmpSpr.SkPnt.SubPoints[0].Emitter := MineForm.EmitterManager.EmitterName['дымок'];
+    TmpSpr.SkPnt.SubPoints[0].RateCadre := 4;
+    if random(3)= 2 then
+      TmpSpr.SkPnt.SubPoints[0].TileRotateByHost := false;
+    //TmpSpr.SkPnt.AddSubPoint(26, -30);
+    //TmpSpr.SkPnt.SubPoints[1].Emitter := MineForm.EmitterManager.EmitterName['дымок'];
+    //TmpSpr.SkPnt.SubPoints[1].RateCadre := 4;
   end;
 
 end;
