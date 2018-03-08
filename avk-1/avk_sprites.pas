@@ -51,6 +51,7 @@ uses
   , zgl_textures_png
   //, zgl_textures_jpg
   , zgl_sprite_2d
+  , zgl_particles_2d
   , zgl_render_target
   , zgl_utils
   , zgl_types
@@ -58,6 +59,12 @@ uses
   , zgl_main
   , zglChipmunk
   ;
+
+const
+  TILE_EMPITY = 0;
+  TILE_TEXTURE = 1;
+  TILE_COOLSPRITE = 2;
+  TILE_EMITTER = 3;
 
 type
 { avk_TIntegerRect }
@@ -70,21 +77,27 @@ end;
 
 avk_TSimpleTile = class (TObject)
   private
+    FTypeOfTile: byte;
     FProcRealisation: TThreadMethod;
     FDrawRealisation: TThreadMethod;
     FTexture : zglPTexture; //текстура
     FCoolSprite: clPSprite; //кулспрайт
+    FEmitter: zglPEmitter2D; //эмиттер
+    FParticles: zglTPEngine2D; //движек эмиттера
     FCoolSpriteFrame: Single; //номер фрейма внутри кулспрайта
     TexFrame: Word; //номер фрейма внутри текстуры
     procedure FSetFrame(AValue: Word);
     function FReadFrame: Word;
     procedure stSetTexture(AValue: zglPTexture);
     procedure stSetCoolSprite(AValue: clPSprite);
+    procedure stSetEmitter(AValue: zglPEmitter2D);
   protected //процедуры рисования и пересчета
     procedure DrawCoolSprite;
     procedure DrawTexture;
+    procedure DrawEmitter;
     procedure ProcCoolSprite;
     procedure ProcTexture;
+    procedure ProcEmitter;
   public
     //Расчет кадров
     StartCadre,StopCadre : Integer;//начало и конец отрисовки
@@ -102,8 +115,10 @@ avk_TSimpleTile = class (TObject)
     Hide    : boolean; //скрыть
     Animate : boolean; //это анимированный тайл
     property NowFrame: Word read FReadFrame write FSetFrame;
+    property TypeOfTile: byte read FTypeOfTile;
     property Texture: zglPTexture read FTexture write stSetTexture; //текстура
     property CoolSprite: clPSprite read FCoolSprite write stSetCoolSprite; //кул спрайт
+    property Emitter: zglPEmitter2D read FEmitter write stSetEmitter; //эмиттер
     procedure SetTexFrameSize(AValueW, AValueH: Word);
   public
     procedure DoDraw;
@@ -223,8 +238,10 @@ avk_TSkeletTile = class (avk_TSimpleTile)
     AngleDeg: Single;
     procedure SetAngle(AValue: Single);
     procedure stSetCoolSprite(AValue: clPSprite);
+    procedure stSetEmitter(AValue: zglPEmitter2D);
   protected
     procedure ProcCoolSprite;
+    procedure ProcEmitter;
     procedure DrawTexture(APoint: zglTPoint2D; AAngle: Single);
   public
     SubPoints: array of avk_TSkeletTile;
@@ -237,12 +254,14 @@ avk_TSkeletTile = class (avk_TSimpleTile)
     procedure AddSubPoint(AX, AY: Single);
     procedure SetTileParameters(ATexX, ATexY, AWigh, AHeight, ATexAngle: Single);
     procedure DoDraw;
+    procedure DoProc;
   public
     property Angle: Single read AngleDeg write SetAngle;
     property Point: zglTPoint2D read FPoint;
     property TileRotateByHost: boolean read FTileRotateByHost write FTileRotateByHost;
     //нужно переопределить
     property CoolSprite: clPSprite read FCoolSprite write stSetCoolSprite; //кул спрайт
+    property Emitter: zglPEmitter2D read FEmitter write stSetEmitter; //эмиттер
   public
     constructor Create;
     destructor Destroy; override;

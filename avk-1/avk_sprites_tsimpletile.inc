@@ -5,6 +5,8 @@ procedure avk_TSimpleTile.stSetTexture(AValue: zglPTexture);
 begin
   FTexture := AValue;
   FCoolSprite := nil;
+  FEmitter := nil;
+  FTypeOfTile := TILE_TEXTURE;
   FDrawRealisation := DrawTexture;
   FProcRealisation := ProcTexture;
 end;
@@ -13,8 +15,21 @@ procedure avk_TSimpleTile.stSetCoolSprite(AValue: clPSprite);
 begin
   FCoolSprite := AValue;
   FTexture := nil;
+  FEmitter := nil;
+  FTypeOfTile := TILE_COOLSPRITE;
   FDrawRealisation := DrawCoolSprite;
   FProcRealisation := ProcCoolSprite;
+end;
+
+procedure avk_TSimpleTile.stSetEmitter(AValue: zglPEmitter2D);
+begin
+  pengine2d_Set( @Fparticles );
+  pengine2d_AddEmitter(AValue, @FEmitter, X + trunc(W / 2), Y + trunc(H / 2));
+  FCoolSprite := nil;
+  FTexture := nil;
+  FTypeOfTile := TILE_EMITTER;
+  FDrawRealisation := DrawEmitter;
+  FProcRealisation := ProcEmitter;
 end;
 
 procedure avk_TSimpleTile.FSetFrame(AValue: Word);
@@ -47,6 +62,23 @@ begin
   end;
 end;
 
+procedure avk_TSimpleTile.DrawEmitter;
+{$IfDef Debug}
+var
+  i: Integer;
+{$EndIf}
+begin
+  if Assigned(FEmitter) then begin
+    pengine2d_Set( @Fparticles );
+    pengine2d_Draw();
+    {$IfDef Debug}
+    for i := 0 to FParticles.Count.Emitters - 1 do
+      with FParticles.List[ i ].BBox do
+        pr2d_Rect( MinX, MinY, MaxX - MinX, MaxY - MinY, $FF0000, 255 );
+    {$EndIf}
+  end;
+end;
+
 procedure avk_TSimpleTile.DrawCoolSprite;
 begin
   if not(FCoolSprite = nil) then
@@ -56,7 +88,7 @@ end;
 procedure avk_TSimpleTile.DoDraw;
 begin
   if Hide then Exit; // скрыт
-  if (FTexture = nil) and (FCoolSprite = nil) then Exit;
+  if (FTexture = nil) and (FCoolSprite = nil) and (FEmitter = nil) then Exit;
   FDrawRealisation;
 end;
 
@@ -72,6 +104,17 @@ begin
        CurrentCadreCalk := 0;
     end;
     TexFrame := NowCadre;
+  end;
+end;
+
+procedure avk_TSimpleTile.ProcEmitter;
+begin
+  if Assigned(FEmitter) then begin
+    pengine2d_Set( @Fparticles );
+    FEmitter.AsLine.Direction := TexAngle;
+    FEmitter.Params.Position.X := X + trunc(W / 2);
+    FEmitter.Params.Position.Y := Y + trunc(H / 2);
+    pengine2d_Proc(RateCadre);
   end;
 end;
 
@@ -106,6 +149,8 @@ begin
   Animate  := true;
   FTexture := nil;
   FCoolSprite := nil;
+  FEmitter := nil;
+  FTypeOfTile := TILE_EMPITY;
   FCoolSpriteFrame := 0;
   FProcRealisation := nil;
   FDrawRealisation := nil;
@@ -114,6 +159,10 @@ end;
 destructor avk_TSimpleTile.Destroy;
 begin
   //if Assigned(FCoolSprite) then Dispose(FCoolSprite);
+  if FTypeOfTile = TILE_EMITTER then begin
+    pengine2d_Set( @FParticles );
+    pengine2d_ClearAll();
+  end;
   inherited Destroy;
 end;
 

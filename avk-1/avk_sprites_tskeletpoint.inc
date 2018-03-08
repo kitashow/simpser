@@ -23,9 +23,22 @@ procedure avk_TSkeletTile.stSetCoolSprite(AValue: clPSprite);
 begin
   FCoolSprite := AValue;
   FTexture := nil;
+  FEmitter := nil;
+  FTypeOfTile := TILE_COOLSPRITE;
   FDrawRealisation := DrawCoolSprite;
   FProcRealisation := ProcCoolSprite;
   FCoolSpriteFrame := FCoolSprite^.StartFrame;
+end;
+
+procedure avk_TSkeletTile.stSetEmitter(AValue: zglPEmitter2D);
+begin
+  pengine2d_Set( @Fparticles );
+  pengine2d_AddEmitter(AValue, @FEmitter, X + trunc(W / 2), Y + trunc(H / 2));
+  FCoolSprite := nil;
+  FTexture := nil;
+  FTypeOfTile := TILE_EMITTER;
+  FDrawRealisation := DrawEmitter;
+  FProcRealisation := ProcEmitter;
 end;
 
 procedure avk_TSkeletTile.SetPoint(AX, AY: Single);
@@ -115,7 +128,7 @@ var
   CKL: Integer;
 begin
   if not Hide then
-    if (Texture <> nil) or (CoolSprite <> nil) then begin
+    if (Texture <> nil) or (CoolSprite <> nil) or (Emitter <> nil) then begin
       LRP := RealPoint;
 
       if FTileRotateByHost then
@@ -123,7 +136,10 @@ begin
       else
         CmpAngle := RealAngle;
 
-      if CoolSprite = nil then
+      if Emitter <> nil then
+         LRP := LRP;
+
+      if Texture <> nil then
         DrawTexture(LRP, CmpAngle)
       else
         inherited DoDraw;
@@ -142,6 +158,16 @@ begin
       pr2d_Circle(LRP.X, LRP.Y, 6, $7a250f, 150 ,250, PR2D_FILL);
   pr2d_Circle(LRP.X, LRP.Y, 4, $e52b50, 150 ,250, PR2D_FILL);
   {$EndIf}
+end;
+
+procedure avk_TSkeletTile.DoProc;
+var
+  CKL: Integer;
+begin
+  inherited DoProc;
+  for CKL := 0 to CountSubPoints - 1 do begin
+    SubPoints[CKL].DoProc;
+  end;
 end;
 
 procedure avk_TSkeletTile.ProcCoolSprite;
@@ -166,6 +192,27 @@ begin
     FCoolSpriteFrame := FCoolSprite^.EndFrame;
     clSprite_Calculate( FCoolSprite, LRP.X, LRP.Y, Scale, CmpAngle + TexAngle, FCoolSpriteFrame );
   end;
+end;
+
+procedure avk_TSkeletTile.ProcEmitter;
+var
+  LRP: zglTPoint2D;
+  CmpAngle: Single;
+begin
+  if FEmitter = nil then Exit;
+
+  LRP := RealPoint;
+
+  if FTileRotateByHost then
+    CmpAngle := HostAngle
+  else
+    CmpAngle := RealAngle;
+
+  pengine2d_Set( @Fparticles );
+  FEmitter.AsLine.Direction := CmpAngle + TexAngle;
+  FEmitter.Params.Position.X := LRP.X;
+  FEmitter.Params.Position.Y := LRP.Y;
+  pengine2d_Proc(RateCadre);
 end;
 
 
