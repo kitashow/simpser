@@ -1,24 +1,5 @@
 { avk_TSimpleSprite }
 
-procedure avk_TSimpleSprite.SetParameters(APntX, APntY, ATexX, ATexY, AWigh,
-  AHeight, ATexAngle: Single);
-begin
-  with FSkeletPoint do begin
-    SetPoint(APntX, APntY);
-    SetTileParameters(ATexX, ATexY, AWigh, AHeight, ATexAngle);
-  end;
-end;
-
-procedure avk_TSimpleSprite.SetParameters(APntX, APntY, AWigh, AHeight: Single;
-  ATexAngle: Single = 0);
-var
-  ASquareX, ASquareY: Single;
-begin
-  ASquareX := -AWigh / 2;
-  ASquareY := -AHeight / 2;
-  SetParameters(APntX, APntY, ASquareX, ASquareY, AWigh, AHeight, ATexAngle);
-end;
-
 procedure avk_TSimpleSprite.DoDraw(Sender: TObject);
 begin
   FSkeletPoint.DoDraw;

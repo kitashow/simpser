@@ -91,6 +91,8 @@ avk_TSimpleTile = class (TObject)
     procedure stSetTexture(AValue: zglPTexture);
     procedure stSetCoolSprite(AValue: clPSprite);
     procedure stSetEmitter(AValue: zglPEmitter2D);
+    procedure DrawNothing;
+    procedure ProcNothing;
   protected //процедуры рисования и пересчета
     procedure DrawCoolSprite;
     procedure DrawTexture;
@@ -239,6 +241,8 @@ avk_TSkeletTile = class (avk_TSimpleTile)
     procedure SetAngle(AValue: Single);
     procedure stSetCoolSprite(AValue: clPSprite);
     procedure stSetEmitter(AValue: zglPEmitter2D);
+    procedure SetTileParameters(ATexX, ATexY, AWigh, AHeight, ATexAngle: Single);
+    function FHostAnimate: Boolean;
   protected
     procedure ProcCoolSprite;
     procedure ProcEmitter;
@@ -251,8 +255,10 @@ avk_TSkeletTile = class (avk_TSimpleTile)
     function RealPoint: zglTPoint2D;
     function RealAngle: Single;
     function HostAngle: Single;
-    procedure AddSubPoint(AX, AY: Single);
-    procedure SetTileParameters(ATexX, ATexY, AWigh, AHeight, ATexAngle: Single);
+    procedure AddSubPoint(const AX: Single = 0; const AY: Single = 0; const AA: Single = 0);
+    procedure SetInternalParameters(const APar1: Single = 0; const APar2: Single = 0;
+      const APar3: Single = 0; const APar4: Single = 0; const APar5: Single = 0;
+      const APar6: Single = 0; const APar7: Single = 0);
     procedure DoDraw;
     procedure DoProc;
   public
@@ -276,9 +282,6 @@ avk_TSimpleSprite = class (avk_TFraim)
     FSkeletPoint: avk_TSkeletTile;
   public
     property SkPnt: avk_TSkeletTile read FSkeletPoint write FSkeletPoint;
-    procedure SetParameters(APntX, APntY, ATexX, ATexY, AWigh, AHeight,
-      ATexAngle: Single); overload;
-    procedure SetParameters(APntX, APntY, AWigh, AHeight: Single; ATexAngle: Single = 0); overload;
   public
     property OnBeforeProc: TNotifyEvent read FOnBeforeProc write FOnBeforeProc;
     property OnAfterProc: TNotifyEvent read FOnAfterProc write FOnAfterProc;

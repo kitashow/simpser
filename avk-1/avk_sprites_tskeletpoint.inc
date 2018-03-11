@@ -41,6 +41,14 @@ begin
   FProcRealisation := ProcEmitter;
 end;
 
+function avk_TSkeletTile.FHostAnimate: Boolean;
+begin
+  if HostPoint = nil then
+    Result := Animate
+  else
+    Result := HostPoint.FHostAnimate;
+end;
+
 procedure avk_TSkeletTile.SetPoint(AX, AY: Single);
 begin
   FPoint.X := AX;
@@ -93,12 +101,14 @@ begin
     Result := HostPoint.HostAngle;
 end;
 
-procedure avk_TSkeletTile.AddSubPoint(AX, AY: Single);
+procedure avk_TSkeletTile.AddSubPoint(const AX: Single; const AY: Single;
+  const AA: Single);
 begin
   SetLength(SubPoints, CountSubPoints + 1);
   SubPoints[CountSubPoints] := avk_TSkeletTile.Create;
   SubPoints[CountSubPoints].HostPoint := Self;
   SubPoints[CountSubPoints].SetPoint(AX, AY);
+  SubPoints[CountSubPoints].TexAngle := AA;
   INC(CountSubPoints, 1);
 end;
 
@@ -110,6 +120,32 @@ begin
   W := AWigh;
   H := AHeight;
   TexAngle := ATexAngle;
+end;
+
+procedure avk_TSkeletTile.SetInternalParameters(const APar1: Single;
+  const APar2: Single; const APar3: Single; const APar4: Single;
+  const APar5: Single; const APar6: Single; const APar7: Single);
+begin
+  case TypeOfTile of
+    TILE_EMPITY: begin //просто точка
+      SetPoint(APar1, APar2); //координаты
+      TexAngle := APar3; //угол внутри
+    end;
+    TILE_TEXTURE: begin //текстура
+      SetPoint(APar1, APar2); //координаты
+      SetTileParameters(APar4, APar5, APar6, APar7, APar3);//
+    end;
+    TILE_COOLSPRITE: begin
+      SetPoint(APar1, APar2); //координаты
+      TexAngle := APar3; //угол внутри
+      Scale := APar4; //увеличение
+    end;
+    TILE_EMITTER: begin
+      SetPoint(APar1, APar2); //координаты
+      TexAngle := APar3; //угол внутри
+      Scale := APar4; //увеличение
+    end;
+  end;
 end;
 
 procedure avk_TSkeletTile.DrawTexture(APoint: zglTPoint2D; AAngle: Single);
@@ -184,7 +220,7 @@ begin
   else
     CmpAngle := RealAngle;
 
-  if Animate then begin
+  if Animate and FHostAnimate then begin
     FCoolSpriteFrame := FCoolSpriteFrame + FCoolSprite^.AnimFPS * 4 / 1000;
     if FCoolSpriteFrame > FCoolSprite^.EndFrame then FCoolSpriteFrame := FCoolSprite^.StartFrame;
     clSprite_Calculate( FCoolSprite, LRP.X, LRP.Y, Scale, CmpAngle + TexAngle, FCoolSpriteFrame );

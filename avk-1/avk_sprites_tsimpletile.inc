@@ -131,6 +131,16 @@ begin
   end;
 end;
 
+procedure avk_TSimpleTile.DrawNothing;
+begin
+  //заглушка
+end;
+
+procedure avk_TSimpleTile.ProcNothing;
+begin
+  //заглушка
+end;
+
 constructor avk_TSimpleTile.Create;
 begin
   TexFrame := 1;
@@ -152,8 +162,8 @@ begin
   FEmitter := nil;
   FTypeOfTile := TILE_EMPITY;
   FCoolSpriteFrame := 0;
-  FProcRealisation := nil;
-  FDrawRealisation := nil;
+  FProcRealisation := ProcNothing;
+  FDrawRealisation := DrawNothing;
 end;
 
 destructor avk_TSimpleTile.Destroy;
