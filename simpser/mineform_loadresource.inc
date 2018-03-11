@@ -4,6 +4,8 @@
    MineForm.LoadResource(TmpPrefix+'Calibri Light-Regular-10pt.zfi','Calibri Light-Regular-10');
    MineForm.LoadResource(TmpPrefix+'Calibri Light-Regular-20pt.zfi','Calibri Light-Regular-20');
    MineForm.LoadResource(TmpPrefix+'Calibri Light-Regular-36pt.zfi','Calibri Light-Regular-36');
+   MineForm.LoadResource(TmpPrefix+'Bicubik-Bold-9pt.zfi','Bicubik-Bold-9pt');
+   MineForm.LoadResource(TmpPrefix+'Bicubik-Bold-12pt.zfi','Bicubik-Bold-12pt');
 {Базовые картинки}
    MineForm.LoadResource(TmpPrefix+'main.png','Логотип');
    MineForm.LoadResource(TmpPrefix+'ErrorImg.png','for error');
@@ -44,8 +46,12 @@
    MineForm.LoadResource(TmpPrefix+'left_foot.png', 'спрайт левая нога');
    MineForm.LoadResource(TmpPrefix+'right_foot.png', 'спрайт правая нога');
    MineForm.LoadResource(TmpPrefix+'riffle.png', 'винтовка');
+   MineForm.LoadResource(TmpPrefix+'riffle_fire.png', 'огонь выстрела');
 
    MineForm.LoadResource(TmpPrefix+'f.cls', 'пример');
+   MineForm.LoadResource(TmpPrefix+'f_go.cls', 'пример тело');
+   MineForm.LoadResource(TmpPrefix+'f_leg.cls', 'пример ноги');
+   MineForm.LoadResource(TmpPrefix+'f_fire.cls', 'пример выстрела');
 {Эмитер}
    MineForm.LoadResource(TmpPrefix+'emitter_diamond.zei', 'сияние');
    MineForm.LoadResource(TmpPrefix+'emitter_fire00.zei', 'горение');

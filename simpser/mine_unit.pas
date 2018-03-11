@@ -12,11 +12,12 @@ uses
   avk_btype, avk_gui, avk_addgui,
   avk_server, LNet,
   avk_input, avk_sprites,
+  avk_vector,
   //
-  avk_emitters,
+  //avk_emitters,
   //
   zgl_main, zgl_timers, zgl_render_2d,
-  zgl_textures, zgl_types
+  zgl_textures, zgl_types, zgl_math_2d
   , zgl_textures_png
   , zgl_textures_jpg
   , zgl_textures_tga
@@ -55,6 +56,8 @@ type
     procedure DoSpecPnlSpr(Sender: TObject);
     procedure DoPanelServer(Sender: TObject);
     procedure DoPanelCompSprite(Sender: TObject);
+    procedure DoPanelGamer(Sender: TObject);
+    procedure DoMoveGamer(Sender: TObject);
   public
     TCPServer: avk_TServer;
     procedure DoStopStartServer(Sender: TObject);
@@ -205,11 +208,20 @@ begin
   TmpBttn.Layer := 120;
   TmpBttn.OnClick := TMineForm.DoPanelCompSprite;
 
+  TmpBttn := avk_TSimpleButton.Create(MineForm,'Спрайт игрок');
+  TmpBttn.SetAreaElement(857,2,120,32);
+  TmpBttn.TexButton := MineForm.TexManager.TexName['Кнопка'];
+  TmpBttn.LabelCaption.Font := MineForm.FontManager.FontName['Bicubik-Bold-12pt'];
+  TmpBttn.LabelCaption.Caption := 'Игрок';
+  TmpBttn.LabelCaption.FontColor := $1E90FF;
+  TmpBttn.Layer := 120;
+  TmpBttn.OnClick := TMineForm.DoPanelGamer;
 
   TmpBttn := avk_TSimpleButton.Create(MineForm,'Выход');
   TmpBttn.SetAreaElement(MineForm.AreaElement.W - 121,1,120,32);
   TmpBttn.TexButton := MineForm.TexManager.TexName['Кнопка'];
   TmpBttn.LabelCaption.Caption := 'Выход';
+  TmpBttn.LabelCaption.Font := MineForm.FontManager.FontName['Bicubik-Bold-12pt'];
   TmpBttn.LabelCaption.FontColor := $1E90FF;
   TmpBttn.Layer := 120;
   TmpBttn.OnClick := TMineForm.DoClose;

@@ -40,7 +40,7 @@ begin
     TSW := 50 + TmpSpr.Layer;
     TSH := 50 + TmpSpr.Layer;
     TSAngle := Random(180);
-    TmpSpr.SetParameters(TSX, TSY, TSW, TSH, TSAngle);
+    TmpSpr.SkPnt.SetInternalParameters(TSX + (TSW / 2), TSY + (TSH / 2), TSX, TSY, TSW, TSH, TSAngle);
     TmpSpr.OnBeforeProc := TMineForm.DoDropList;
   end;
 end;
@@ -231,16 +231,16 @@ begin
   TmpSpr := avk_TSimpleSprite.Create(TmpPnl);
   TmpSpr.SkPnt.Texture := MineForm.TexManager.TexName['Шагающий стрелок'];
   TmpSpr.SkPnt.SetTexFrameSize(69, 52);
-  TmpSpr.SetParameters(590, 240, 69, 52, 0);
-  TmpSpr.SkPnt.AddSubPoint(26, 30);
+  TmpSpr.SkPnt.SetInternalParameters(590, 240, -34, -26, 69, 52, 0);
+  TmpSpr.SkPnt.AddSubPoint;
   TmpSpr.SkPnt.SubPoints[0].Texture := MineForm.TexManager.TexName['пулька'];
   TmpSpr.SkPnt.SubPoints[0].TileRotateByHost := false;
-  TmpSpr.SkPnt.SubPoints[0].SetTileParameters(-3, -7, 6, 14, 90);
+  TmpSpr.SkPnt.SubPoints[0].SetInternalParameters(26, 30, 90, -3, -7, 6, 14);
 
   TmpSpr.SkPnt.AddSubPoint(26, -30);
   TmpSpr.SkPnt.SubPoints[1].Texture := MineForm.TexManager.TexName['пулька'];
   //не меняем TmpSpr.SkPnt.SubPoints[0].TileRotateByHost
-  TmpSpr.SkPnt.SubPoints[1].SetTileParameters(-3, -7, 6, 14, 90);
+  TmpSpr.SkPnt.SubPoints[1].SetInternalParameters(26, -30, 90, -3, -7, 6, 14);
 
   TmpSpr.SkPnt.StopCadre := 12;
   TmpSpr.SkPnt.RateCadre := 15;
@@ -302,14 +302,15 @@ begin
     if (CPX + W) > (avk_TElement(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.X + avk_TElement(avk_TSimpleSprite(Sender).Parent).AreaElement.W) then CPX := CPX - 1;
     if (CPY + H) > (avk_TElement(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.Y + avk_TElement(avk_TSimpleSprite(Sender).Parent).AreaElement.H) then CPY := CPY - 1;
     SetPoint(CPX, CPY);
-    if CountSubPoints > 0 then begin //вращающаяся вокруг пулька [
-      SubPoints[0].Angle := SubPoints[0].Angle - 0.5;
-      if SubPoints[0].Angle < 0 then SubPoints[0].Angle := 360;
-      if CountSubPoints = 2 then begin
-        SubPoints[1].Angle := SubPoints[1].Angle + 1;
-        if SubPoints[1].Angle > 360 then SubPoints[1].Angle := 0;
+    if CountSubPoints > 0 then //вращающийся вокруг эмиттер
+      if SubPoints[0].TypeOfTile = TILE_EMITTER then begin
+        SubPoints[0].Angle := SubPoints[0].Angle - 0.5;
+        if SubPoints[0].Angle < 0 then SubPoints[0].Angle := 360;
+        if CountSubPoints = 2 then begin
+          SubPoints[1].Angle := SubPoints[1].Angle + 1;
+          if SubPoints[1].Angle > 360 then SubPoints[1].Angle := 0;
+        end;
       end;
-    end; //вращающаяся вокруг пулька ]
     Animate := Nazata;
   end;
 end;
@@ -529,12 +530,10 @@ var
   TmpBtn: avk_TSimpleButton;
   TmpSpr: avk_TSimpleSprite;
   CKL: Integer;
-  TmpEmmtr: avk_TSimpleEmitter;
 begin
   if MineForm.ListName['Пример собранного спрайта'] <> nil then Exit;
   tmpTestForm := avk_TElement.Create(MineForm,'Пример собранного спрайта');
   tmpTestForm.SetAreaElement(270,66,760,580);
-  //tmpTestForm.Wallpaper := MineForm.TexManager.TexName['Обои фрейма'];
 
   TmpBtn := avk_TSimpleButton.Create(tmpTestForm,'Закрыть');
   TmpBtn.TexButton := MineForm.TexManager.TexName['Кнопка'];
@@ -543,40 +542,25 @@ begin
   TmpBtn.LabelCaption.FontColor := $8B0000;
   TmpBtn.OnClick := MineForm.DoClickOnClosePnl;
 
-  //теперь делаем спрайтик кулспрайт
-  TmpSpr := avk_TSimpleSprite.Create(tmpTestForm);
-  TmpSpr.SkPnt.CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример'];
-  TmpSpr.SkPnt.SetTexFrameSize(69, 52);
-  TmpSpr.SkPnt.Scale := 0.4; //Для кулспрайта обязательно
-  TmpSpr.SetParameters(590, 240, 69, 52, 90);
-  TmpSpr.SkPnt.AddSubPoint(26, 30);
-  TmpSpr.SkPnt.SubPoints[0].Texture := MineForm.TexManager.TexName['пулька'];
-  TmpSpr.SkPnt.SubPoints[0].TileRotateByHost := false;
-  TmpSpr.SkPnt.SubPoints[0].SetTileParameters(-3, -7, 6, 14, 90);
-
-  TmpSpr.SkPnt.AddSubPoint(26, -30);
-  TmpSpr.SkPnt.SubPoints[1].Texture := MineForm.TexManager.TexName['пулька'];
-  //не меняем TmpSpr.SkPnt.SubPoints[0].TileRotateByHost
-  TmpSpr.SkPnt.SubPoints[1].SetTileParameters(-3, -7, 6, 14, 90);
-
-  TmpSpr.SkPnt.StopCadre := 12;
-  TmpSpr.SkPnt.RateCadre := 15;
-  TmpSpr.OnBeforeProc := DoAPforSpr;//чтоб двигать
-
-  ////делаем табун
-  for CKL := 0 to 3 do begin
+  //делаем табун
+  for CKL := 0 to 4 do begin
     //кулспрайтов
     TmpSpr := avk_TSimpleSprite.Create(tmpTestForm);
     TmpSpr.SkPnt.CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример'];
     TmpSpr.SkPnt.SetTexFrameSize(69, 52);
     TmpSpr.SkPnt.Scale := 0.4; //Для кулспрайта обязательно
-    TmpSpr.SetParameters(270 + Random(500), 66 + Random(500), 69, 52, 90);
+    TmpSpr.SkPnt.SetInternalParameters(270 + Random(500), 66 + Random(500), 90);
     TmpSpr.SkPnt.Animate := false;
     TmpSpr.OnBeforeProc := DoAPforSpr;
 
     //эмиттеров
     TmpSpr.SkPnt.AddSubPoint(26, 30);
-    TmpSpr.SkPnt.SubPoints[0].Emitter := MineForm.EmitterManager.EmitterName['дымок'];
+    case random(3) of
+      0: TmpSpr.SkPnt.SubPoints[0].Emitter := MineForm.EmitterManager.EmitterName['дымок'];
+      1: TmpSpr.SkPnt.SubPoints[0].Emitter := MineForm.EmitterManager.EmitterName['горение'];
+      2: TmpSpr.SkPnt.SubPoints[0].Emitter := MineForm.EmitterManager.EmitterName['сияние'];
+      3: TmpSpr.SkPnt.SubPoints[0].Emitter := MineForm.EmitterManager.EmitterName['дымок'];
+    end;
     TmpSpr.SkPnt.SubPoints[0].RateCadre := 4;
     if random(3)= 2 then
       TmpSpr.SkPnt.SubPoints[0].TileRotateByHost := false;
@@ -586,6 +570,103 @@ begin
   end;
 
 end;
+
+procedure TMineForm.DoPanelGamer(Sender: TObject);
+var
+  tmpTestForm: avk_TElement;
+  TmpBtn: avk_TSimpleButton;
+  TmpSpr: avk_TSimpleSprite;
+begin
+  if MineForm.ListName['Пример игрок'] <> nil then Exit;
+  tmpTestForm := avk_TElement.Create(MineForm,'Пример игрок');
+  tmpTestForm.SetAreaElement(270,66,760,580);
+
+  TmpBtn := avk_TSimpleButton.Create(tmpTestForm,'Закрыть');
+  TmpBtn.TexButton := MineForm.TexManager.TexName['Кнопка'];
+  TmpBtn.SetAreaElement(663,2,95,30);
+  TmpBtn.LabelCaption.Caption := 'Закрыть панель';
+  TmpBtn.LabelCaption.FontColor := $8B0000;
+  TmpBtn.OnClick := MineForm.DoClickOnClosePnl;
+
+  TmpSpr := avk_TSimpleSprite.Create(tmpTestForm);
+  TmpSpr.SkPnt.CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример ноги'];
+  TmpSpr.SkPnt.SetInternalParameters(470, 266, 0, 0.4);
+  TmpSpr.SkPnt.Animate := false;
+  TmpSpr.OnBeforeProc := DoMoveGamer;
+
+  TmpSpr.SkPnt.AddSubPoint;
+  TmpSpr.SkPnt.SubPoints[0].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример тело'];
+  TmpSpr.SkPnt.SubPoints[0].SetInternalParameters(0, 0, 0, 0.4);
+
+  TmpSpr.SkPnt.AddSubPoint(22, -85);//вылет пульки
+
+end;
+
+procedure TMineForm.DoMoveGamer(Sender: TObject);
+var
+  Nazata, TmpK_UP, TmpK_DOWN, TmpK_LEFT, TmpK_RIGHT: Boolean;
+  CPY, CPX: Single;
+begin
+  if Sender.ClassName <> 'avk_TSimpleSprite' then Exit;
+  Nazata := false;
+  with avk_TSimpleSprite(Sender).SkPnt do begin
+
+    CPY := Point.Y;
+    CPX := Point.X;
+
+    Nazata := true;
+    TmpK_UP := key_Down( K_W ) or key_Down( K_UP );
+    TmpK_DOWN := key_Down( K_S ) or key_Down( K_DOWN );
+    TmpK_LEFT := key_Down( K_A ) or key_Down( K_LEFT );
+    TmpK_RIGHT := key_Down( K_D ) or key_Down( K_RIGHT );
+
+    if TmpK_UP and TmpK_LEFT then begin
+      Angle := -45;
+      CPX := CPX - 0.25;
+      CPY := CPY - 0.25;
+    end else if TmpK_UP and TmpK_RIGHT then begin
+      Angle := 45;
+      CPX := CPX + 0.25;
+      CPY := CPY - 0.25;
+    end else if TmpK_DOWN and TmpK_RIGHT then begin
+      Angle :=  135;
+      CPX := CPX + 0.25;
+      CPY := CPY + 0.25;
+    end else if TmpK_DOWN and TmpK_LEFT then begin
+      Angle :=  -135;
+      CPX := CPX - 0.25;
+      CPY := CPY + 0.25;
+    end else if TmpK_DOWN then begin
+      Angle := 180;
+      CPY := CPY + 0.5;
+    end else if TmpK_UP then begin
+      Angle := 0;
+      CPY := CPY - 0.5;
+    end else if TmpK_LEFT then begin
+      Angle :=  -90;
+      CPX := CPX - 0.5;
+    end else if TmpK_RIGHT then begin
+      Angle :=  90;
+      CPX := CPX + 0.5;
+    end else Nazata := false;
+
+    //ограничения
+    if CPY < avk_TElement(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.Y then CPY := CPY + 1;
+    if CPX < avk_TElement(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.X then CPX := CPX + 1;
+    if (CPX + W) > (avk_TElement(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.X + avk_TElement(avk_TSimpleSprite(Sender).Parent).AreaElement.W) then CPX := CPX - 1;
+    if (CPY + H) > (avk_TElement(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.Y + avk_TElement(avk_TSimpleSprite(Sender).Parent).AreaElement.H) then CPY := CPY - 1;
+    SetPoint(CPX, CPY);
+
+    //теперь угол тела никак в зависимом блоке
+    //SubPoints[0].TexAngle := VcToAngle( (CPX - avk_MouseIsX), (CPY - avk_MouseIsY) );
+    //SubPoints[0].TexAngle :=  m_Angle(avk_MouseIsX, avk_MouseIsY, CPX, CPY);
+    SubPoints[0].TexAngle :=  m_Angle(CPX, CPY, avk_MouseIsX, avk_MouseIsY) - Angle - 90;
+
+    Animate := Nazata;
+  end;
+end;
+
+
 
 procedure TMineForm.DoPnlSprMove(Sender: TObject);
 var
