@@ -40,7 +40,7 @@ begin
     TSW := 50 + TmpSpr.Layer;
     TSH := 50 + TmpSpr.Layer;
     TSAngle := Random(180);
-    TmpSpr.SkPnt.SetInternalParameters(TSX + (TSW / 2), TSY + (TSH / 2), TSX, TSY, TSW, TSH, TSAngle);
+    TmpSpr.SkPnt.SetInternalParameters(TSX, TSY, TSAngle, -(TSW / 2),  -(TSH / 2), TSW, TSH);
     TmpSpr.OnBeforeProc := TMineForm.DoDropList;
   end;
 end;
@@ -231,7 +231,7 @@ begin
   TmpSpr := avk_TSimpleSprite.Create(TmpPnl);
   TmpSpr.SkPnt.Texture := MineForm.TexManager.TexName['Шагающий стрелок'];
   TmpSpr.SkPnt.SetTexFrameSize(69, 52);
-  TmpSpr.SkPnt.SetInternalParameters(590, 240, -34, -26, 69, 52, 0);
+  TmpSpr.SkPnt.SetInternalParameters(590, 240, 0, -34, -26, 69, 52);
   TmpSpr.SkPnt.AddSubPoint;
   TmpSpr.SkPnt.SubPoints[0].Texture := MineForm.TexManager.TexName['пулька'];
   TmpSpr.SkPnt.SubPoints[0].TileRotateByHost := false;
@@ -548,8 +548,7 @@ begin
     TmpSpr := avk_TSimpleSprite.Create(tmpTestForm);
     TmpSpr.SkPnt.CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример'];
     TmpSpr.SkPnt.SetTexFrameSize(69, 52);
-    TmpSpr.SkPnt.Scale := 0.4; //Для кулспрайта обязательно
-    TmpSpr.SkPnt.SetInternalParameters(270 + Random(500), 66 + Random(500), 90);
+    TmpSpr.SkPnt.SetInternalParameters(270 + Random(500), 66 + Random(500), 90, 0.4);
     TmpSpr.SkPnt.Animate := false;
     TmpSpr.OnBeforeProc := DoAPforSpr;
 
@@ -590,19 +589,18 @@ begin
   TmpBtn.OnClick := MineForm.DoClickOnClosePnl;
 
   TmpSpr := TGamer1.Create(tmpTestForm);
+  //ноги
+  TmpSpr.Sprite[0, 0].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример ноги'];
+  //тело
+  TmpSpr.Sprite[1, 0].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример тело'];
+  TmpSpr.Sprite[1, 1].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример тело выстрел'];
+
   //общие настройки
   TmpSpr.Position.X := 470;
   TmpSpr.Position.Y := 266;
   TmpSpr.PosAngle := 0;
-  TmpSpr.PosSkale := 0.4;
-  //ноги
-  TmpSpr.FLegSprite[0].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример ноги'];
-  TmpSpr.FLegSprite[1].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример ноги'];
-  TmpSpr.FLegSprite[2].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример ноги'];
-  TmpSpr.FLegSprite[3].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример ноги'];
-  //тело
-  TmpSpr.FBodySprite[0].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример тело'];
-  TmpSpr.FBodySprite[1].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример тело выстрел'];
+  TmpSpr.PosScale := 0.4;
+  TmpSpr.SetPosForAll;
 
   //TmpSpr.SkPnt.SetInternalParameters(470, 266, 0, 0.4);
   //TmpSpr.SkPnt.Animate := false;
