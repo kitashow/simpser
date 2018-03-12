@@ -564,6 +564,7 @@ begin
     TmpSpr.SkPnt.SubPoints[0].RateCadre := 4;
     if random(3)= 2 then
       TmpSpr.SkPnt.SubPoints[0].TileRotateByHost := false;
+    //TmpSpr.SkPnt.SubPoints[0].Hide := true;
     //TmpSpr.SkPnt.AddSubPoint(26, -30);
     //TmpSpr.SkPnt.SubPoints[1].Emitter := MineForm.EmitterManager.EmitterName['дымок'];
     //TmpSpr.SkPnt.SubPoints[1].RateCadre := 4;
@@ -575,7 +576,7 @@ procedure TMineForm.DoPanelGamer(Sender: TObject);
 var
   tmpTestForm: avk_TElement;
   TmpBtn: avk_TSimpleButton;
-  TmpSpr: avk_TSimpleSprite;
+  TmpSpr: TGamer1;
 begin
   if MineForm.ListName['Пример игрок'] <> nil then Exit;
   tmpTestForm := avk_TElement.Create(MineForm,'Пример игрок');
@@ -588,17 +589,30 @@ begin
   TmpBtn.LabelCaption.FontColor := $8B0000;
   TmpBtn.OnClick := MineForm.DoClickOnClosePnl;
 
-  TmpSpr := avk_TSimpleSprite.Create(tmpTestForm);
-  TmpSpr.SkPnt.CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример ноги'];
-  TmpSpr.SkPnt.SetInternalParameters(470, 266, 0, 0.4);
-  TmpSpr.SkPnt.Animate := false;
-  TmpSpr.OnBeforeProc := DoMoveGamer;
+  TmpSpr := TGamer1.Create(tmpTestForm);
+  //общие настройки
+  TmpSpr.Position.X := 470;
+  TmpSpr.Position.Y := 266;
+  TmpSpr.PosAngle := 0;
+  TmpSpr.PosSkale := 0.4;
+  //ноги
+  TmpSpr.FLegSprite[0].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример ноги'];
+  TmpSpr.FLegSprite[1].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример ноги'];
+  TmpSpr.FLegSprite[2].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример ноги'];
+  TmpSpr.FLegSprite[3].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример ноги'];
+  //тело
+  TmpSpr.FBodySprite[0].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример тело'];
+  TmpSpr.FBodySprite[1].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример тело выстрел'];
 
-  TmpSpr.SkPnt.AddSubPoint;
-  TmpSpr.SkPnt.SubPoints[0].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример тело'];
-  TmpSpr.SkPnt.SubPoints[0].SetInternalParameters(0, 0, 0, 0.4);
-
-  TmpSpr.SkPnt.AddSubPoint(22, -85);//вылет пульки
+  //TmpSpr.SkPnt.SetInternalParameters(470, 266, 0, 0.4);
+  //TmpSpr.SkPnt.Animate := false;
+  //TmpSpr.OnBeforeProc := DoMoveGamer;
+  //
+  //TmpSpr.SkPnt.AddSubPoint;
+  //TmpSpr.SkPnt.SubPoints[0].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример тело'];
+  //TmpSpr.SkPnt.SubPoints[0].SetInternalParameters(0, 0, 0, 0.4);
+  //
+  //TmpSpr.SkPnt.AddSubPoint(22, -85);//вылет пульки
 
 end;
 

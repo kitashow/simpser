@@ -35,7 +35,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir);../avk-1"/>
-            <OtherUnitFiles Value="../zengl-src-0.3.12;../zengl-src-0.3.12/src;../zengl-src-0.3.12/headers;../zengl-src-0.3.12/extra;../zengl-src-0.3.12/lib/jpeg/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/msvcrt/$(TargetCPU);../zengl-src-0.3.12/lib/ogg/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/theora/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/zlib/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/zip/$(TargetCPU)-$(TargetOS);../avk-1/avk_add;../Lnet_lib;../zengl-src-0.3.12/lib/chipmunk/i386-win32;../avk-1"/>
+            <OtherUnitFiles Value="../zengl;../zengl/src;../zengl/headers;../zengl/extra;../zengl/lib/jpeg/$(TargetCPU)-$(TargetOS);../zengl/lib/msvcrt/$(TargetCPU);../zengl/lib/ogg/$(TargetCPU)-$(TargetOS);../zengl/lib/theora/$(TargetCPU)-$(TargetOS);../zengl/lib/zlib/$(TargetCPU)-$(TargetOS);../zengl/lib/zip/$(TargetCPU)-$(TargetOS);../avk-1/avk_add;../Lnet_lib;../zengl/lib/chipmunk/$(TargetCPU)-$(TargetOS);../avk-1;../zengl/headers"/>
             <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
@@ -102,7 +102,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir);../avk-1"/>
-            <OtherUnitFiles Value="../zengl-src-0.3.12;../zengl-src-0.3.12/src;../zengl-src-0.3.12/headers;../zengl-src-0.3.12/extra;../zengl-src-0.3.12/lib/jpeg/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/msvcrt/$(TargetCPU);../zengl-src-0.3.12/lib/ogg/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/theora/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/zlib/$(TargetCPU)-$(TargetOS);../zengl-src-0.3.12/lib/zip/$(TargetCPU)-$(TargetOS);../avk-1/avk_add;../Lnet_lib;../zengl-src-0.3.12/lib/chipmunk/i386-win32;../avk-1"/>
+            <OtherUnitFiles Value="../zengl;../zengl/src;../zengl/headers;../zengl/extra;../zengl/lib/jpeg/$(TargetCPU)-$(TargetOS);../zengl/lib/msvcrt/$(TargetCPU);../zengl/lib/ogg/$(TargetCPU)-$(TargetOS);../zengl/lib/theora/$(TargetCPU)-$(TargetOS);../zengl/lib/zlib/$(TargetCPU)-$(TargetOS);../zengl/lib/zip/$(TargetCPU)-$(TargetOS);../avk-1/avk_add;../Lnet_lib;../zengl/lib/chipmunk/$(TargetCPU)-$(TargetOS);../avk-1;../zengl/headers"/>
             <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
@@ -167,7 +167,7 @@
         <FormatVersion Value="1"/>
       </local>
     </RunParams>
-    <Units Count="3">
+    <Units Count="4">
       <Unit0>
         <Filename Value="simpser.pas"/>
         <IsPartOfProject Value="True"/>
@@ -180,6 +180,10 @@
         <Filename Value="avk_emitters.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit2>
+      <Unit3>
+        <Filename Value="sg_unit.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit3>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

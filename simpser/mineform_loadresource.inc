@@ -51,7 +51,7 @@
    MineForm.LoadResource(TmpPrefix+'f.cls', 'пример');
    MineForm.LoadResource(TmpPrefix+'f_go.cls', 'пример тело');
    MineForm.LoadResource(TmpPrefix+'f_leg.cls', 'пример ноги');
-   MineForm.LoadResource(TmpPrefix+'f_fire.cls', 'пример выстрела');
+   MineForm.LoadResource(TmpPrefix+'f_fire.cls', 'пример тело выстрел');
 {Эмитер}
    MineForm.LoadResource(TmpPrefix+'emitter_diamond.zei', 'сияние');
    MineForm.LoadResource(TmpPrefix+'emitter_fire00.zei', 'горение');

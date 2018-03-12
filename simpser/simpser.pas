@@ -11,7 +11,7 @@ uses
     cthreads,
     cmem, // the c memory manager is on some systems much faster for multi-threading
   {$endif}
-  zgl_main, zgl_screen, zgl_window, zgl_timers, mine_unit, avk_emitters;
+  zgl_main, zgl_screen, zgl_window, zgl_timers, mine_unit;
 
 const
 {$IfDef Debug}
