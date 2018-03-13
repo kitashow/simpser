@@ -256,9 +256,10 @@ avk_TSkeletTile = class (avk_TSimpleTile)
     function RealAngle: Single;
     function HostAngle: Single;
     procedure AddSubPoint(const AX: Single = 0; const AY: Single = 0; const AA: Single = 0);
-    procedure SetInternalParameters(const APar1: Single = 0; const APar2: Single = 0;
-      const APar3: Single = 0; const APar4: Single = 0; const APar5: Single = 0;
-      const APar6: Single = 0; const APar7: Single = 0);
+    procedure SetInternalParameters(const APositionX: Single = 0;
+      const APositionY: Single = 0; const AInternalAngle: Single = 0;
+      const AScale: Single = 0; const ATextureX: Single = 0; const ATextureY: Single = 0;
+      const ATextureW: Single = 0; const ATextureH: Single = 0);
     procedure DoDraw;
     procedure DoProc;
   public

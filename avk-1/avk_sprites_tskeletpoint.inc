@@ -122,28 +122,31 @@ begin
   TexAngle := ATexAngle;
 end;
 
-procedure avk_TSkeletTile.SetInternalParameters(const APar1: Single;
-  const APar2: Single; const APar3: Single; const APar4: Single;
-  const APar5: Single; const APar6: Single; const APar7: Single);
+procedure avk_TSkeletTile.SetInternalParameters(const APositionX: Single;
+  const APositionY: Single; const AInternalAngle: Single; const AScale: Single;
+  const ATextureX: Single; const ATextureY: Single; const ATextureW: Single;
+  const ATextureH: Single);
 begin
   case TypeOfTile of
     TILE_EMPITY: begin //просто точка
-      SetPoint(APar1, APar2); //координаты
-      TexAngle := APar3; //угол внутри
+      SetPoint(APositionX, APositionY); //координаты
+      TexAngle := AInternalAngle; //угол внутри
     end;
     TILE_TEXTURE: begin //текстура
-      SetPoint(APar1, APar2); //координаты
-      SetTileParameters(APar4, APar5, APar6, APar7, APar3);//
+      SetPoint(APositionX, APositionY); //координаты
+      SetTileParameters(ATextureX, ATextureY, ATextureW, ATextureH, AInternalAngle); //параметры текстуры
     end;
     TILE_COOLSPRITE: begin
-      SetPoint(APar1, APar2); //координаты
-      TexAngle := APar3; //угол внутри
-      Scale := APar4; //увеличение
+      SetPoint(APositionX, APositionY); //координаты
+      TexAngle := AInternalAngle; //угол внутри
+      Scale := AScale; //увеличение
+      ProcCoolSprite;
     end;
     TILE_EMITTER: begin
-      SetPoint(APar1, APar2); //координаты
-      TexAngle := APar3; //угол внутри
-      Scale := APar4; //увеличение
+      SetPoint(APositionX, APositionY); //координаты
+      TexAngle := AInternalAngle; //угол внутри
+      Scale := AScale; //увеличение
+      ProcEmitter;
     end;
   end;
 end;
