@@ -35,7 +35,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir);../avk-1"/>
-            <OtherUnitFiles Value="../zengl;../zengl/src;../zengl/headers;../zengl/extra;../zengl/lib/jpeg/$(TargetCPU)-$(TargetOS);../zengl/lib/msvcrt/$(TargetCPU);../zengl/lib/ogg/$(TargetCPU)-$(TargetOS);../zengl/lib/theora/$(TargetCPU)-$(TargetOS);../zengl/lib/zlib/$(TargetCPU)-$(TargetOS);../zengl/lib/zip/$(TargetCPU)-$(TargetOS);../avk-1/avk_add;../Lnet_lib;../zengl/lib/chipmunk/$(TargetCPU)-$(TargetOS);../avk-1;../zengl/headers"/>
+            <OtherUnitFiles Value="../zengl;../zengl/src;../zengl/headers;../zengl/extra;../zengl/lib/jpeg/$(TargetCPU)-$(TargetOS);../zengl/lib/msvcrt/$(TargetCPU);../zengl/lib/ogg/$(TargetCPU)-$(TargetOS);../zengl/lib/theora/$(TargetCPU)-$(TargetOS);../zengl/lib/zlib/$(TargetCPU)-$(TargetOS);../zengl/lib/zip/$(TargetCPU)-$(TargetOS);../avk-1/avk_add;../Lnet_lib;../zengl/lib/chipmunk/$(TargetCPU)-$(TargetOS);../avk-1"/>
             <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>
@@ -102,7 +102,7 @@
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir);../avk-1"/>
-            <OtherUnitFiles Value="../zengl;../zengl/src;../zengl/headers;../zengl/extra;../zengl/lib/jpeg/$(TargetCPU)-$(TargetOS);../zengl/lib/msvcrt/$(TargetCPU);../zengl/lib/ogg/$(TargetCPU)-$(TargetOS);../zengl/lib/theora/$(TargetCPU)-$(TargetOS);../zengl/lib/zlib/$(TargetCPU)-$(TargetOS);../zengl/lib/zip/$(TargetCPU)-$(TargetOS);../avk-1/avk_add;../Lnet_lib;../zengl/lib/chipmunk/$(TargetCPU)-$(TargetOS);../avk-1;../zengl/headers"/>
+            <OtherUnitFiles Value="../zengl;../zengl/src;../zengl/headers;../zengl/extra;../zengl/lib/jpeg/$(TargetCPU)-$(TargetOS);../zengl/lib/msvcrt/$(TargetCPU);../zengl/lib/ogg/$(TargetCPU)-$(TargetOS);../zengl/lib/theora/$(TargetCPU)-$(TargetOS);../zengl/lib/zlib/$(TargetCPU)-$(TargetOS);../zengl/lib/zip/$(TargetCPU)-$(TargetOS);../avk-1/avk_add;../Lnet_lib;../zengl/lib/chipmunk/$(TargetCPU)-$(TargetOS);../avk-1"/>
             <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
           <Parsing>

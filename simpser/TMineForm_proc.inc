@@ -624,6 +624,7 @@ procedure TMineForm.DoMoveGamer(Sender: TObject);
 var
   Nazata, TmpK_UP, TmpK_DOWN, TmpK_LEFT, TmpK_RIGHT: Boolean;
   CPY, CPX: Single;
+  FlP: Byte;
 begin
   if Sender.ClassName <> 'TGamer1' then Exit;
   Nazata := false;
@@ -633,6 +634,16 @@ begin
     CPX := Point.X;
 
     Nazata := true;
+
+    //собираем нажатия
+    FlP := FLAG_K_NO;
+
+    if key_Down( K_W ) or key_Down( K_UP ) then FlP := FlP or FLAG_K_UP;
+    if key_Down( K_S ) or key_Down( K_DOWN ) then FlP := FlP or FLAG_K_DOWN;
+    if key_Down( K_A ) or key_Down( K_LEFT ) then FlP := FlP or FLAG_K_LEFT;
+    if key_Down( K_D ) or key_Down( K_RIGHT ) then FlP := FlP or FLAG_K_RIGHT;
+
+
     TmpK_UP := key_Down( K_W ) or key_Down( K_UP );
     TmpK_DOWN := key_Down( K_S ) or key_Down( K_DOWN );
     TmpK_LEFT := key_Down( K_A ) or key_Down( K_LEFT );

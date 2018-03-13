@@ -58,6 +58,15 @@ Classes
 , zglChipmunk
 ;
 
+const
+  FLAG_K_NO = $00;
+  FLAG_K_UP = $01;
+  FLAG_K_DOWN = $02;
+  FLAG_K_LEFT = $04;
+  FLAG_K_RIGHT = $08;
+  FLAG_M_RIGHT_Cl = $10;
+  FLAG_M_LEFT_Cl = $20;
+
 type
 
 { TGamer1 }
@@ -101,6 +110,9 @@ public
 public
   constructor Create(const InParent: avk_TFraim = nil);
   destructor Destroy; override;
+public
+  MoveSpeed: Single;
+  procedure MoveSprite(AFlag: byte; AValX, AValY, AValMX, AValMY: Single);
 end;
 
 implementation
@@ -256,6 +268,11 @@ begin
     end;
 
   inherited Destroy;
+end;
+
+procedure TGamer1.MoveSprite(AFlag: byte; AValX, AValY, AValMX, AValMY: Single);
+begin
+
 end;
 
 end.
