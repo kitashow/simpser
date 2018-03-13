@@ -40,7 +40,7 @@ begin
     TSW := 50 + TmpSpr.Layer;
     TSH := 50 + TmpSpr.Layer;
     TSAngle := Random(180);
-    TmpSpr.SkPnt.SetInternalParameters(TSX, TSY, TSAngle, -(TSW / 2),  -(TSH / 2), TSW, TSH);
+    TmpSpr.SkPnt.SetInternalParameters(TSX, TSY, TSAngle, 1, -(TSW / 2),  -(TSH / 2), TSW, TSH);
     TmpSpr.OnBeforeProc := TMineForm.DoDropList;
   end;
 end;
@@ -231,16 +231,16 @@ begin
   TmpSpr := avk_TSimpleSprite.Create(TmpPnl);
   TmpSpr.SkPnt.Texture := MineForm.TexManager.TexName['Шагающий стрелок'];
   TmpSpr.SkPnt.SetTexFrameSize(69, 52);
-  TmpSpr.SkPnt.SetInternalParameters(590, 240, 0, -34, -26, 69, 52);
+  TmpSpr.SkPnt.SetInternalParameters(590, 240, 0, 1, -34, -26, 69, 52);
   TmpSpr.SkPnt.AddSubPoint;
   TmpSpr.SkPnt.SubPoints[0].Texture := MineForm.TexManager.TexName['пулька'];
   TmpSpr.SkPnt.SubPoints[0].TileRotateByHost := false;
-  TmpSpr.SkPnt.SubPoints[0].SetInternalParameters(26, 30, 90, -3, -7, 6, 14);
+  TmpSpr.SkPnt.SubPoints[0].SetInternalParameters(26, 30, 90, 1, -3, -7, 6, 14);
 
   TmpSpr.SkPnt.AddSubPoint(26, -30);
   TmpSpr.SkPnt.SubPoints[1].Texture := MineForm.TexManager.TexName['пулька'];
   //не меняем TmpSpr.SkPnt.SubPoints[0].TileRotateByHost
-  TmpSpr.SkPnt.SubPoints[1].SetInternalParameters(26, -30, 90, -3, -7, 6, 14);
+  TmpSpr.SkPnt.SubPoints[1].SetInternalParameters(26, -30, 90, 1, -3, -7, 6, 14);
 
   TmpSpr.SkPnt.StopCadre := 12;
   TmpSpr.SkPnt.RateCadre := 15;
@@ -605,94 +605,45 @@ begin
 
   TmpSpr.ColVisible[0] := 0;
   TmpSpr.ColAnimate[0, 0] := false;
-  TmpSpr.ColVisible[1] := 1;
-  TmpSpr.ColAnimate[1, 1] := true;
+  TmpSpr.ColVisible[1] := 0;
+  TmpSpr.ColAnimate[1, 1] := false;
+  TmpSpr.MoveSpeed := 0.5;
 
-  //TmpSpr.SkPnt.SetInternalParameters(470, 266, 0, 0.4);
-  //TmpSpr.SkPnt.Animate := false;
-  //TmpSpr.OnBeforeProc := DoMoveGamer;
-  //
-  //TmpSpr.SkPnt.AddSubPoint;
-  //TmpSpr.SkPnt.SubPoints[0].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример тело'];
-  //TmpSpr.SkPnt.SubPoints[0].SetInternalParameters(0, 0, 0, 0.4);
-  //
-  //TmpSpr.SkPnt.AddSubPoint(22, -85);//вылет пульки
+  TmpSpr.OnBeforeProc := DoMoveGamer;
 
 end;
 
 procedure TMineForm.DoMoveGamer(Sender: TObject);
 var
-  Nazata, TmpK_UP, TmpK_DOWN, TmpK_LEFT, TmpK_RIGHT: Boolean;
+  FlP: byte;
   CPY, CPX: Single;
-  FlP: Byte;
+  FTG: TGamer1;
 begin
   if Sender.ClassName <> 'TGamer1' then Exit;
-  Nazata := false;
-  with avk_TSimpleSprite(Sender).SkPnt do begin
+  FTG := TGamer1(Sender);
 
-    CPY := Point.Y;
-    CPX := Point.X;
+  //собираем нажатия
+  FlP := FLAG_K_NO;
+  if key_Down( K_W ) or key_Down( K_UP ) then FlP := FlP or FLAG_K_UP;
+  if key_Down( K_S ) or key_Down( K_DOWN ) then FlP := FlP or FLAG_K_DOWN;
+  if key_Down( K_A ) or key_Down( K_LEFT ) then FlP := FlP or FLAG_K_LEFT;
+  if key_Down( K_D ) or key_Down( K_RIGHT ) then FlP := FlP or FLAG_K_RIGHT;
+  if avk_MouseIsClick(M_BLEFT) then FlP := FlP or FLAG_M_LEFT_Cl;
+  if avk_MouseIsClick(M_BRIGHT) then FlP := FlP or FLAG_M_RIGHT_Cl;
+  FTG.MoveSprite(FlP, avk_MouseIsX, avk_MouseIsY);
 
-    Nazata := true;
+  //ограничения
+  CPY := FTG.Position.Y;
+  CPX := FTG.Position.X;
 
-    //собираем нажатия
-    FlP := FLAG_K_NO;
+  if CPY < avk_TElement(FTG.Parent).GetAbsolyteArea.Y then CPY := CPY + 1;
+  if CPX < avk_TElement(FTG.Parent).GetAbsolyteArea.X then CPX := CPX + 1;
+  if CPX > (avk_TElement(FTG.Parent).GetAbsolyteArea.X + avk_TElement(FTG.Parent).AreaElement.W) then CPX := CPX - 1;
+  if CPY > (avk_TElement(FTG.Parent).GetAbsolyteArea.Y + avk_TElement(FTG.Parent).AreaElement.H) then CPY := CPY - 1;
 
-    if key_Down( K_W ) or key_Down( K_UP ) then FlP := FlP or FLAG_K_UP;
-    if key_Down( K_S ) or key_Down( K_DOWN ) then FlP := FlP or FLAG_K_DOWN;
-    if key_Down( K_A ) or key_Down( K_LEFT ) then FlP := FlP or FLAG_K_LEFT;
-    if key_Down( K_D ) or key_Down( K_RIGHT ) then FlP := FlP or FLAG_K_RIGHT;
+  FTG.Position.X := CPX;
+  FTG.Position.Y := CPY;
 
-
-    TmpK_UP := key_Down( K_W ) or key_Down( K_UP );
-    TmpK_DOWN := key_Down( K_S ) or key_Down( K_DOWN );
-    TmpK_LEFT := key_Down( K_A ) or key_Down( K_LEFT );
-    TmpK_RIGHT := key_Down( K_D ) or key_Down( K_RIGHT );
-
-    if TmpK_UP and TmpK_LEFT then begin
-      Angle := -45;
-      CPX := CPX - 0.25;
-      CPY := CPY - 0.25;
-    end else if TmpK_UP and TmpK_RIGHT then begin
-      Angle := 45;
-      CPX := CPX + 0.25;
-      CPY := CPY - 0.25;
-    end else if TmpK_DOWN and TmpK_RIGHT then begin
-      Angle :=  135;
-      CPX := CPX + 0.25;
-      CPY := CPY + 0.25;
-    end else if TmpK_DOWN and TmpK_LEFT then begin
-      Angle :=  -135;
-      CPX := CPX - 0.25;
-      CPY := CPY + 0.25;
-    end else if TmpK_DOWN then begin
-      Angle := 180;
-      CPY := CPY + 0.5;
-    end else if TmpK_UP then begin
-      Angle := 0;
-      CPY := CPY - 0.5;
-    end else if TmpK_LEFT then begin
-      Angle :=  -90;
-      CPX := CPX - 0.5;
-    end else if TmpK_RIGHT then begin
-      Angle :=  90;
-      CPX := CPX + 0.5;
-    end else Nazata := false;
-
-    //ограничения
-    if CPY < avk_TElement(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.Y then CPY := CPY + 1;
-    if CPX < avk_TElement(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.X then CPX := CPX + 1;
-    if (CPX + W) > (avk_TElement(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.X + avk_TElement(avk_TSimpleSprite(Sender).Parent).AreaElement.W) then CPX := CPX - 1;
-    if (CPY + H) > (avk_TElement(avk_TSimpleSprite(Sender).Parent).GetAbsolyteArea.Y + avk_TElement(avk_TSimpleSprite(Sender).Parent).AreaElement.H) then CPY := CPY - 1;
-    SetPoint(CPX, CPY);
-
-    //теперь угол тела никак в зависимом блоке
-    //SubPoints[0].TexAngle := VcToAngle( (CPX - avk_MouseIsX), (CPY - avk_MouseIsY) );
-    //SubPoints[0].TexAngle :=  m_Angle(avk_MouseIsX, avk_MouseIsY, CPX, CPY);
-    SubPoints[0].TexAngle :=  m_Angle(CPX, CPY, avk_MouseIsX, avk_MouseIsY) - Angle - 90;
-
-    Animate := Nazata;
-  end;
 end;
 
 procedure TMineForm.DoPnlSprMove(Sender: TObject);

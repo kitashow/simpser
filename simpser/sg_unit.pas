@@ -112,7 +112,7 @@ public
   destructor Destroy; override;
 public
   MoveSpeed: Single;
-  procedure MoveSprite(AFlag: byte; AValX, AValY, AValMX, AValMY: Single);
+  procedure MoveSprite(AFlag: byte; AValMX, AValMY: Single);
 end;
 
 implementation
@@ -121,7 +121,7 @@ implementation
 
 function TGamer1.GetColAngle(const ACol: Integer): Single;
 begin
-  Result := FSprites[ACol, 1].Angle; //первый и все
+  Result := FSprites[ACol, 0].Angle; //первый и все
 end;
 
 procedure TGamer1.SetColAngle(const ACol: Integer; AValue: Single);
@@ -149,7 +149,7 @@ end;
 
 function TGamer1.GetColPosition(const ACol: Integer): zglTPoint2D;
 begin
-  Result := FSprites[ACol, 1].Point; //первый и все
+  Result := FSprites[ACol, 0].Point; //первый и все
 end;
 
 procedure TGamer1.SetColPosition(const ACol: Integer; AValue: zglTPoint2D);
@@ -270,8 +270,80 @@ begin
   inherited Destroy;
 end;
 
-procedure TGamer1.MoveSprite(AFlag: byte; AValX, AValY, AValMX, AValMY: Single);
+procedure TGamer1.MoveSprite(AFlag: byte; AValMX, AValMY: Single);
+var
+  Leg, Bdy: avk_TSkeletTile;
+  CPY, CPX: Single;
+  TmpK_UP, TmpK_DOWN, TmpK_LEFT, TmpK_RIGHT: Boolean;
+  LegAngle, Speed45: Single;
 begin
+
+  CPY := Position.Y;
+  CPX := Position.X;
+
+  Speed45 := MoveSpeed / 2;
+
+  TmpK_UP := (AFlag and FLAG_K_UP) > 0;
+  TmpK_DOWN := (AFlag and FLAG_K_DOWN) > 0;
+  TmpK_LEFT := (AFlag and FLAG_K_LEFT) > 0;
+  TmpK_RIGHT := (AFlag and FLAG_K_RIGHT) > 0;
+
+  LegAngle := GetColAngle(0);
+
+  if TmpK_UP and TmpK_LEFT then begin
+    LegAngle := -45;
+    CPX := CPX - Speed45;
+    CPY := CPY - Speed45;
+  end else if TmpK_UP and TmpK_RIGHT then begin
+    LegAngle := 45;
+    CPX := CPX + Speed45;
+    CPY := CPY - Speed45;
+  end else if TmpK_DOWN and TmpK_RIGHT then begin
+    LegAngle :=  135;
+    CPX := CPX + Speed45;
+    CPY := CPY + Speed45;
+  end else if TmpK_DOWN and TmpK_LEFT then begin
+    LegAngle :=  -135;
+    CPX := CPX - Speed45;
+    CPY := CPY + Speed45;
+  end else if TmpK_DOWN then begin
+    LegAngle := 180;
+    CPY := CPY + MoveSpeed;
+  end else if TmpK_UP then begin
+    LegAngle := 0;
+    CPY := CPY - MoveSpeed;
+  end else if TmpK_LEFT then begin
+    LegAngle :=  -90;
+    CPX := CPX - MoveSpeed;
+  end else if TmpK_RIGHT then begin
+    LegAngle :=  90;
+    CPX := CPX + MoveSpeed;
+  end;
+
+  Position.X := CPX;
+  Position.Y := CPY;
+
+  SetColAngle(0, LegAngle);
+  SetColPosition(0, Position);
+
+  SetColAngle(1, m_Angle(CPX, CPY, AValMX, AValMY) - 90);
+  SetColPosition(1, Position);
+
+  Leg := FSprites[0, GetColVisible(0)];
+  Bdy := FSprites[1, GetColVisible(1)];
+
+  if AFlag = $00 then begin
+    Leg.CoolSprite.Frame := Leg.CoolSprite.StartFrame;
+    Leg.DoProc;
+    Leg.Animate := false;
+    Bdy.CoolSprite.Frame := Bdy.CoolSprite.StartFrame;
+    Bdy.DoProc;
+    Bdy.Animate := false;
+    Exit;
+  end;
+
+  Leg.Animate := true;
+  Bdy.Animate := true;
 
 end;
 
