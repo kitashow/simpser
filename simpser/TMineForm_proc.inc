@@ -594,6 +594,7 @@ begin
   //тело
   TmpSpr.Sprite[1, 0].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример тело'];
   TmpSpr.Sprite[1, 1].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример тело выстрел'];
+  TmpSpr.Sprite[1, 1].AddSubPoint(22, -85);
 
   //общие настройки
   TmpSpr.Position.X := 470;
@@ -601,6 +602,11 @@ begin
   TmpSpr.PosAngle := 0;
   TmpSpr.PosScale := 0.4;
   TmpSpr.SetPosForAll;
+
+  TmpSpr.ColVisible[0] := 0;
+  TmpSpr.ColAnimate[0, 0] := false;
+  TmpSpr.ColVisible[1] := 1;
+  TmpSpr.ColAnimate[1, 1] := true;
 
   //TmpSpr.SkPnt.SetInternalParameters(470, 266, 0, 0.4);
   //TmpSpr.SkPnt.Animate := false;
@@ -619,7 +625,7 @@ var
   Nazata, TmpK_UP, TmpK_DOWN, TmpK_LEFT, TmpK_RIGHT: Boolean;
   CPY, CPX: Single;
 begin
-  if Sender.ClassName <> 'avk_TSimpleSprite' then Exit;
+  if Sender.ClassName <> 'TGamer1' then Exit;
   Nazata := false;
   with avk_TSimpleSprite(Sender).SkPnt do begin
 
@@ -677,8 +683,6 @@ begin
     Animate := Nazata;
   end;
 end;
-
-
 
 procedure TMineForm.DoPnlSprMove(Sender: TObject);
 var

@@ -66,14 +66,24 @@ TGamer1 = class(avk_TFraim)
 private
   FSprites: array of array of avk_TSkeletTile;
 private
+  FOnAfterProc: TNotifyEvent;
+  FOnBeforeProc: TNotifyEvent;
   function GetColAngle(const ACol: Integer): Single;
+  function GetColAnimate(const ACol, ARow: Integer): boolean;
   function GetColPosition(const ACol: Integer): zglTPoint2D;
   function GetColVisible(const ACol: Integer): Integer;
   function GetSprite(const ACol, ARow: Integer): avk_TSkeletTile;
   procedure SetColAngle(const ACol: Integer; AValue: Single);
+  procedure SetColAnimate(const ACol, ARow: Integer; AValue: boolean);
   procedure SetColPosition(const ACol: Integer; AValue: zglTPoint2D);
   procedure SetColVisible(const ACol: Integer; ARow: Integer);
   procedure SetSprite(const ACol, ARow: Integer; AValue: avk_TSkeletTile = nil);
+public
+  property ColPosition[const ACol: Integer]: zglTPoint2D read GetColPosition write SetColPosition;
+  property ColAngle[const ACol: Integer]: Single read GetColAngle write SetColAngle;
+  property ColVisible[const ACol: Integer]: Integer read GetColVisible write SetColVisible;
+  property ColAnimate[const ACol, ARow: Integer]: boolean read GetColAnimate write SetColAnimate;
+  property Sprite[const ACol, ARow: Integer]: avk_TSkeletTile read GetSprite write SetSprite;
 public
   Position: zglTPoint2D;
   PosAngle: Single;
@@ -83,10 +93,11 @@ public
   PosHide: boolean;
   PosAnimate: boolean;
 public
-  property ColPosition[const ACol: Integer]: zglTPoint2D read GetColPosition write SetColPosition;
-  property ColAngle[const ACol: Integer]: Single read GetColAngle write SetColAngle;
-  property ColVisible[const ACol: Integer]: Integer read GetColVisible write SetColVisible;
-  property Sprite[const ACol, ARow: Integer]: avk_TSkeletTile read GetSprite write SetSprite;
+  property OnBeforeProc: TNotifyEvent read FOnBeforeProc write FOnBeforeProc;
+  property OnAfterProc: TNotifyEvent read FOnAfterProc write FOnAfterProc;
+public
+  procedure DoDraw(Sender: TObject);
+  procedure DoProc(Sender: TObject);
 public
   constructor Create(const InParent: avk_TFraim = nil);
   destructor Destroy; override;
@@ -107,6 +118,21 @@ var
 begin
   for CKL := 0 to Length(FSprites[ACol]) - 1 do
     FSprites[ACol, CKL].Angle := AValue;
+end;
+
+function TGamer1.GetColAnimate(const ACol, ARow: Integer): boolean;
+begin
+  Result := FSprites[ACol, ARow].Animate;
+end;
+
+
+procedure TGamer1.SetColAnimate(const ACol, ARow: Integer; AValue: boolean);
+var
+  CKL: Integer;
+begin
+  for CKL := 0 to Length(FSprites[ACol]) - 1 do
+    FSprites[ACol, CKL].Animate := false;
+  FSprites[ACol, ARow].Animate := AValue;
 end;
 
 function TGamer1.GetColPosition(const ACol: Integer): zglTPoint2D;
@@ -162,7 +188,7 @@ function TGamer1.GetColVisible(const ACol: Integer): Integer;
 var
   CKL: Integer;
 begin
-  Result := -1;
+  Result := 0; //мало ли все скрыты
   for CKL := 0 to Length(FSprites[ACol]) - 1 do
     if not FSprites[ACol, CKL].Hide then Result := CKL;
 end;
@@ -181,18 +207,43 @@ var
 begin
   for CKL1 := 0 to Length(FSprites) - 1 do
     for CKL2 := 0 to Length(FSprites[CKL1]) - 1 do begin
-      FSprites[CKL1, CKL2].SetPoint(Position.X, Position.Y);
-      FSprites[CKL1, CKL2].Angle := PosAngle;
-      FSprites[CKL1, CKL2].Scale := PosScale;
+      FSprites[CKL1, CKL2].SetInternalParameters(Position.X, Position.Y, PosAngle, PosScale);
     end;
+end;
+
+procedure TGamer1.DoDraw(Sender: TObject);
+var
+  CKL1, CKL2: Integer;
+begin
+  if not PosHide then
+    for CKL1 := 0 to Length(FSprites) - 1 do
+      for CKL2 := 0 to Length(FSprites[CKL1]) - 1 do
+        if not FSprites[CKL1, CKL2].Hide then
+          FSprites[CKL1, CKL2].DoDraw;
+end;
+
+procedure TGamer1.DoProc(Sender: TObject);
+var
+  CKL1, CKL2: Integer;
+begin
+  if Assigned(FOnBeforeProc) then FOnBeforeProc(Self);
+
+  if PosAnimate then
+    for CKL1 := 0 to Length(FSprites) - 1 do
+      for CKL2 := 0 to Length(FSprites[CKL1]) - 1 do
+        if FSprites[CKL1, CKL2].Animate then
+          FSprites[CKL1, CKL2].DoProc;
+
+  if Assigned(FOnAfterProc) then FOnAfterProc(Self);
 end;
 
 constructor TGamer1.Create(const InParent: avk_TFraim);
 begin
   inherited Create(InParent);
   SetLength(FSprites, 0);
-  //OnDraw := DoDraw;
-  //OnProc := DoProc;
+  PosAnimate := true;
+  OnDraw := DoDraw;
+  OnProc := DoProc;
 end;
 
 destructor TGamer1.Destroy;
