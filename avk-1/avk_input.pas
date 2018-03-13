@@ -79,7 +79,7 @@ begin
   Result:=touch_X(inFinger);
   {$endif}
   {$ifdef MOUSE3KEY}
-  if Result = 0 then Result:=mouse_X;
+  if Result = 0 then Result:= mouse_X;
   {$endif}
 end;
 
