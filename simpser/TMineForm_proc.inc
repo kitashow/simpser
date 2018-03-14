@@ -547,7 +547,7 @@ begin
     //кулспрайтов
     TmpSpr := avk_TSimpleSprite.Create(tmpTestForm);
     TmpSpr.SkPnt.CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример'];
-    TmpSpr.SkPnt.SetTexFrameSize(69, 52);
+    //TmpSpr.SkPnt.SetTexFrameSize(69, 52);
     TmpSpr.SkPnt.SetInternalParameters(270 + Random(500), 66 + Random(500), 90, 0.4);
     TmpSpr.SkPnt.Animate := false;
     TmpSpr.OnBeforeProc := DoAPforSpr;
@@ -607,9 +607,12 @@ begin
   TmpSpr.ColAnimate[0, 0] := false;
   TmpSpr.ColVisible[1] := 0;
   TmpSpr.ColAnimate[1, 1] := false;
-  TmpSpr.MoveSpeed := 0.5;
+  TmpSpr.MoveSpeed := 1;
+
+  TmpSpr.BulletPause := 7;
 
   TmpSpr.OnBeforeProc := DoMoveGamer;
+  TmpSpr.OnRelizeShot := DoShotBullet;
 
   {$IfDef Debug}
   TmpBtn := avk_TSimpleButton.Create(tmpTestForm,'Кадры');
@@ -653,9 +656,36 @@ begin
 
   {$IfDef Debug}
   with avk_TElement(FTG.Parent) do
-    avk_TSimpleButton(GetFraimById(GetIdByName('Кадры'))).LabelCaption.Caption:= 'L: ' + avk_IntToStr(Round(FTG.Sprite[0, FTG.ColVisible[0]].NowFrame)) + ', B:' + avk_IntToStr(Round(FTG.Sprite[1, FTG.ColVisible[1]].NowFrame));
+    avk_TSimpleButton(GetFraimById(GetIdByName('Кадры'))).LabelCaption.Caption:= 'Н: ' + avk_IntToStr(Round(FTG.Sprite[0, FTG.ColVisible[0]].NowFrame)) + ', Т:' + avk_IntToStr(Round(FTG.Sprite[1, FTG.ColVisible[1]].NowFrame));
   {$EndIf}
 
+end;
+
+procedure TMineForm.DoShotBullet(const Sender: avk_TFraim; const AStartPoint,
+  ATargetPoint: zglTPoint2D);
+var
+  Pnl: avk_TElement;
+  AlM: Single;
+  TmpSpr: avk_TSimpleSprite;
+begin
+  Pnl := avk_TElement(Sender.Parent);
+  AlM := m_Angle(AStartPoint.X, AStartPoint.Y, ATargetPoint.X, ATargetPoint.Y) - 90;
+  //в рамках родителя создаем дым
+  TmpSpr := avk_TSimpleSprite.Create(Pnl);
+  TmpSpr.SkPnt.Emitter := MineForm.EmitterManager.EmitterName['дымок'];
+  TmpSpr.SkPnt.Emitter.Params.Loop := false;
+  TmpSpr.SkPnt.RateCadre := 4;
+  TmpSpr.SkPnt.SetInternalParameters(AStartPoint.X, AStartPoint.Y, 0, 0.4);
+  TmpSpr.SkPnt.Angle := AlM;
+  TmpSpr.OnAfterProc := DoCloseBullet;
+end;
+
+procedure TMineForm.DoCloseBullet(Sender: TObject);
+var
+  Blt: avk_TSimpleSprite;
+begin
+  Blt := avk_TSimpleSprite(Sender);
+  if Blt.SkPnt.Emitter = nil then Blt.DeleteMe := true;
 end;
 
 procedure TMineForm.DoPnlSprMove(Sender: TObject);

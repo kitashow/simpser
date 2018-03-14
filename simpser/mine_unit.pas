@@ -58,6 +58,9 @@ type
     procedure DoPanelCompSprite(Sender: TObject);
     procedure DoPanelGamer(Sender: TObject);
     procedure DoMoveGamer(Sender: TObject);
+    procedure DoShotBullet(const Sender: avk_TFraim; const AStartPoint,
+      ATargetPoint: zglTPoint2D);
+    procedure DoCloseBullet(Sender: TObject);
   public
     TCPServer: avk_TServer;
     procedure DoStopStartServer(Sender: TObject);

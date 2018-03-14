@@ -69,7 +69,7 @@ const
 
 type
 
-TShotEvent = procedure (const AStartPoint, ATargetPoint: zglTPoint2D) of object;
+TShotEvent = procedure (const Sender: avk_TFraim; const AStartPoint, ATargetPoint: zglTPoint2D) of object;
 
 { TGamer1 }
 
@@ -116,6 +116,10 @@ public
   destructor Destroy; override;
 public
   MoveSpeed: Single;
+
+  BulletPause :Integer;
+  FBulletStep :Integer;
+
   procedure MoveSprite(AFlag: byte; AValMX, AValMY: Single);
   property OnRelizeShot: TShotEvent read FOnRelizeShot write SetOnRelizeShot;
 end;
@@ -264,6 +268,7 @@ begin
   inherited Create(InParent);
   SetLength(FSprites, 0);
   PosAnimate := true;
+  FBulletStep := 0;
   OnDraw := DoDraw;
   OnProc := DoProc;
 end;
@@ -362,16 +367,20 @@ begin
   end;
 
   if ItIsFire then begin
-    if (Bdy.NowFrame = 6) or (Bdy.NowFrame = 7) then begin//момент выстрела
+    if (Bdy.NowFrame = 6) and (FBulletStep = 0) then begin//момент выстрела
       TmpMousePoint.X := AValMX;
       TmpMousePoint.Y := AValMY;
-      //OnRelizeShot(Bdy.SubPoints[0].RealPoint, TmpMousePoint);
+      if Assigned(FOnRelizeShot) then FOnRelizeShot(Self, Bdy.SubPoints[0].RealPoint, TmpMousePoint);
+      FBulletStep := 1;
     end;
     if Round(Bdy.NowFrame) = Bdy.CoolSprite.EndFrame then begin // стрельба окончена
       Bdy.NowFrame := Bdy.CoolSprite.StartFrame;
       SetColVisible(1, 0);
     end;
   end;
+
+  if FBulletStep > 0 then INC(FBulletStep, 1);
+  if FBulletStep > BulletPause then FBulletStep := 0;
 
 end;
 
