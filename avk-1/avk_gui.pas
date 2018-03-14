@@ -177,7 +177,7 @@ type
 
   avk_TSimpleLabel = class (avk_TElement)
   private
-    FCaption: String;
+    FCaption: UTF8String;
     FOnClick: TNotifyEvent;
     FZglTextFlags: LongWord;
     procedure DoInspectClick(Sender: TObject);
@@ -185,7 +185,7 @@ type
   public
     Step       : Single;
     Scale      : Single;
-    property Caption: String read FCaption write FCaption;
+    property Caption: UTF8String read FCaption write FCaption;
     property ZglTextFlags: LongWord read FZglTextFlags write FZglTextFlags;
   public
     property OnClick: TNotifyEvent read FOnClick write FOnClick;

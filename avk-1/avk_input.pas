@@ -118,12 +118,11 @@ end;
 
 function avk_MouseIsClick(Button: Byte; inFinger: Byte = 0): Boolean;
 begin
-  Result:=false;
   {$ifdef TOUCHSCREEN}
   Result:=loc_UserTap(inFinger);
   {$endif}
   {$ifdef MOUSE3KEY}
-  Result:=Result or mouse_Click( Button );
+  Result:= mouse_Click( Button );
   {$endif}
 end;
 
@@ -133,7 +132,7 @@ begin
   Result:=false;
   {$endif}
   {$ifdef MOUSE3KEY}
-  Result:=mouse_DblClick( Button );
+  Result:= mouse_DblClick( Button );
   {$endif}
 end;
 
