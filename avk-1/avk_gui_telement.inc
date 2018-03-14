@@ -274,18 +274,19 @@ begin
 
     for CKL:= 0 to (TmpParent.Count - 1) do begin
       if (TmpParent.ListNom[CKL] <> TmpPrevParent) then
-        if TmpParent.ListNom[CKL].Layer >= TmpPrevParent.Layer then
-          if TmpParent.ListNom[CKL] is avk_TElement then
-            if avk_MouseInRect( avk_TElement(TmpParent.ListNom[CKL]).GetAbsolyteArea ) then
-              if avk_TElement(TmpParent.ListNom[CKL]).GetMouse then begin
-                Result := false;
-                Exit;//кто то из соседей перехватил
-              end else if TmpParent.ListNom[CKL].Count > 0 then
-                //у соседа тоже ж дети
-                if AnyBodyHasMouseInChild(avk_TElement(TmpParent.ListNom[CKL])) then begin
+        if Assigned(TmpParent.ListNom[CKL]) then //может быть убит в этот момент
+          if TmpParent.ListNom[CKL].Layer >= TmpPrevParent.Layer then
+            if TmpParent.ListNom[CKL] is avk_TElement then
+              if avk_MouseInRect( avk_TElement(TmpParent.ListNom[CKL]).GetAbsolyteArea ) then
+                if avk_TElement(TmpParent.ListNom[CKL]).GetMouse then begin
                   Result := false;
-                  Exit;//кто то из детей соседей перехватил
-                end;
+                  Exit;//кто то из соседей перехватил
+                end else if TmpParent.ListNom[CKL].Count > 0 then
+                  //у соседа тоже ж дети
+                  if AnyBodyHasMouseInChild(avk_TElement(TmpParent.ListNom[CKL])) then begin
+                    Result := false;
+                    Exit;//кто то из детей соседей перехватил
+                  end;
     end;
   end;
 end;

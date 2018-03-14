@@ -347,8 +347,8 @@ end;
 
 procedure avk_TFraim.SetDeleteMe(AValue: boolean);
 begin
-  if FDeleteMe=AValue then Exit;
-  FDeleteMe:=AValue;
+  if FDeleteMe = AValue then Exit;
+  FDeleteMe := AValue;
 end;
 
 procedure avk_TFraim.Draw;
@@ -424,9 +424,9 @@ begin
   FParent        := InParent;
   FLayer         := 1;
   FName          := Self.ClassName + '1';
-  Drawing        := true;
-  Timing         := true;
-  DeleteMe       := false;
+  FDrawing        := true;
+  FTiming         := true;
+  FDeleteMe      := false;
   FAnyOneGotProc := false;
   FInputText     := nil;
   FNoDelete      := false;
