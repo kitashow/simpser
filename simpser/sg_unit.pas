@@ -69,6 +69,8 @@ const
 
 type
 
+TShotEvent = procedure (const AStartPoint, ATargetPoint: zglTPoint2D) of object;
+
 { TGamer1 }
 
 TGamer1 = class(avk_TFraim)
@@ -77,6 +79,7 @@ private
 private
   FOnAfterProc: TNotifyEvent;
   FOnBeforeProc: TNotifyEvent;
+  FOnRelizeShot: TShotEvent;
   function GetColAngle(const ACol: Integer): Single;
   function GetColAnimate(const ACol, ARow: Integer): boolean;
   function GetColPosition(const ACol: Integer): zglTPoint2D;
@@ -86,6 +89,7 @@ private
   procedure SetColAnimate(const ACol, ARow: Integer; AValue: boolean);
   procedure SetColPosition(const ACol: Integer; AValue: zglTPoint2D);
   procedure SetColVisible(const ACol: Integer; ARow: Integer);
+  procedure SetOnRelizeShot(AValue: TShotEvent);
   procedure SetSprite(const ACol, ARow: Integer; AValue: avk_TSkeletTile = nil);
 public
   property ColPosition[const ACol: Integer]: zglTPoint2D read GetColPosition write SetColPosition;
@@ -113,6 +117,7 @@ public
 public
   MoveSpeed: Single;
   procedure MoveSprite(AFlag: byte; AValMX, AValMY: Single);
+  property OnRelizeShot: TShotEvent read FOnRelizeShot write SetOnRelizeShot;
 end;
 
 implementation
@@ -213,6 +218,11 @@ begin
     FSprites[ACol, CKL].Hide := not(CKL = ARow);
 end;
 
+procedure TGamer1.SetOnRelizeShot(AValue: TShotEvent);
+begin
+  FOnRelizeShot := AValue;
+end;
+
 procedure TGamer1.SetPosForAll;
 var
   CKL1, CKL2: Integer;
@@ -274,9 +284,12 @@ procedure TGamer1.MoveSprite(AFlag: byte; AValMX, AValMY: Single);
 var
   Leg, Bdy: avk_TSkeletTile;
   CPY, CPX: Single;
-  TmpK_UP, TmpK_DOWN, TmpK_LEFT, TmpK_RIGHT: Boolean;
+  TmpK_UP, TmpK_DOWN, TmpK_LEFT, TmpK_RIGHT, ItIsFire: Boolean;
   LegAngle, Speed45: Single;
+  TmpMousePoint: zglTPoint2D;
 begin
+
+  ItIsFire := GetColVisible(1) = 1; //это стрельба
 
   CPY := Position.Y;
   CPX := Position.X;
@@ -329,21 +342,36 @@ begin
   SetColAngle(1, m_Angle(CPX, CPY, AValMX, AValMY) - 90);
   SetColPosition(1, Position);
 
+  if not ItIsFire then
+    if (AFlag and FLAG_M_LEFT_Cl) > 0 then begin//стреляем
+      SetColVisible(1, 1);
+      FSprites[1, 1].NowFrame := FSprites[1, 1].CoolSprite.StartFrame;
+    end;
+
   Leg := FSprites[0, GetColVisible(0)];
   Bdy := FSprites[1, GetColVisible(1)];
 
-  if AFlag = $00 then begin
-    Leg.CoolSprite.Frame := Leg.CoolSprite.StartFrame;
-    Leg.DoProc;
-    Leg.Animate := false;
-    Bdy.CoolSprite.Frame := Bdy.CoolSprite.StartFrame;
-    Bdy.DoProc;
-    Bdy.Animate := false;
-    Exit;
-  end;
-
   Leg.Animate := true;
   Bdy.Animate := true;
+
+  if AFlag = $00 then begin
+    Leg.NowFrame := Leg.CoolSprite.StartFrame;
+    if not ItIsFire then begin
+      Bdy.NowFrame := Bdy.CoolSprite.StartFrame;
+    end;
+  end;
+
+  if ItIsFire then begin
+    if (Bdy.NowFrame = 6) or (Bdy.NowFrame = 7) then begin//момент выстрела
+      TmpMousePoint.X := AValMX;
+      TmpMousePoint.Y := AValMY;
+      //OnRelizeShot(Bdy.SubPoints[0].RealPoint, TmpMousePoint);
+    end;
+    if Round(Bdy.NowFrame) = Bdy.CoolSprite.EndFrame then begin // стрельба окончена
+      Bdy.NowFrame := Bdy.CoolSprite.StartFrame;
+      SetColVisible(1, 0);
+    end;
+  end;
 
 end;
 

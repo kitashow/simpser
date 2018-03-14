@@ -611,6 +611,13 @@ begin
 
   TmpSpr.OnBeforeProc := DoMoveGamer;
 
+  {$IfDef Debug}
+  TmpBtn := avk_TSimpleButton.Create(tmpTestForm,'Кадры');
+  TmpBtn.TexButton := MineForm.TexManager.TexName['Кнопка'];
+  TmpBtn.SetAreaElement(1,549,100,30);
+  TmpBtn.LabelCaption.Caption := '000000';
+  TmpBtn.LabelCaption.FontColor := $8B0000;
+  {$EndIf}
 end;
 
 procedure TMineForm.DoMoveGamer(Sender: TObject);
@@ -643,6 +650,11 @@ begin
 
   FTG.Position.X := CPX;
   FTG.Position.Y := CPY;
+
+  {$IfDef Debug}
+  with avk_TElement(FTG.Parent) do
+    avk_TSimpleButton(GetFraimById(GetIdByName('Кадры'))).LabelCaption.Caption:= 'L: ' + avk_IntToStr(Round(FTG.Sprite[0, FTG.ColVisible[0]].NowFrame)) + ', B:' + avk_IntToStr(Round(FTG.Sprite[1, FTG.ColVisible[1]].NowFrame));
+  {$EndIf}
 
 end;
 
