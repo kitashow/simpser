@@ -71,15 +71,12 @@ type
 
 TShotEvent = procedure (const Sender: avk_TFraim; const AStartPoint, ATargetPoint: zglTPoint2D) of object;
 
-{ TGamer1 }
-
-TGamer1 = class(avk_TFraim)
+TSprite = class(avk_TFraim)
 private
   FSprites: array of array of avk_TSkeletTile;
 private
   FOnAfterProc: TNotifyEvent;
   FOnBeforeProc: TNotifyEvent;
-  FOnRelizeShot: TShotEvent;
   function GetColAngle(const ACol: Integer): Single;
   function GetColAnimate(const ACol, ARow: Integer): boolean;
   function GetColPosition(const ACol: Integer): zglTPoint2D;
@@ -89,7 +86,6 @@ private
   procedure SetColAnimate(const ACol, ARow: Integer; AValue: boolean);
   procedure SetColPosition(const ACol: Integer; AValue: zglTPoint2D);
   procedure SetColVisible(const ACol: Integer; ARow: Integer);
-  procedure SetOnRelizeShot(AValue: TShotEvent);
   procedure SetSprite(const ACol, ARow: Integer; AValue: avk_TSkeletTile = nil);
 public
   property ColPosition[const ACol: Integer]: zglTPoint2D read GetColPosition write SetColPosition;
@@ -114,275 +110,46 @@ public
 public
   constructor Create(const InParent: avk_TFraim = nil);
   destructor Destroy; override;
-public
-  MoveSpeed: Single;
-
-  BulletPause :Integer;
-  FBulletStep :Integer;
-
-  procedure MoveSprite(AFlag: byte; AValMX, AValMY: Single);
-  property OnRelizeShot: TShotEvent read FOnRelizeShot write SetOnRelizeShot;
 end;
 
-implementation
 
 { TGamer1 }
 
-function TGamer1.GetColAngle(const ACol: Integer): Single;
-begin
-  Result := FSprites[ACol, 0].Angle; //первый и все
+TGamer1 = class(TSprite)
+private
+  FBulletStep :Integer;
+  FOnRelizeShot: TShotEvent;
+  procedure SetOnRelizeShot(AValue: TShotEvent);
+public
+  MoveSpeed: Single;
+  BulletPause :Integer;
+  procedure MoveSprite(AFlag: byte; AMousePosition: zglTPoint2D);
+public
+  property OnRelizeShot: TShotEvent read FOnRelizeShot write SetOnRelizeShot;
+public
+  constructor Create(const InParent: avk_TFraim = nil);
+  destructor Destroy; override;
 end;
 
-procedure TGamer1.SetColAngle(const ACol: Integer; AValue: Single);
-var
-  CKL: Integer;
-begin
-  for CKL := 0 to Length(FSprites[ACol]) - 1 do
-    FSprites[ACol, CKL].Angle := AValue;
-end;
+{ TBullet1 }
 
-function TGamer1.GetColAnimate(const ACol, ARow: Integer): boolean;
-begin
-  Result := FSprites[ACol, ARow].Animate;
+TBullet1 = class(TSprite)
+public
+  FStartPoint, FFinishPoint: zglTPoint2D;
+  FCurAngle: Single;
 end;
 
 
-procedure TGamer1.SetColAnimate(const ACol, ARow: Integer; AValue: boolean);
-var
-  CKL: Integer;
-begin
-  for CKL := 0 to Length(FSprites[ACol]) - 1 do
-    FSprites[ACol, CKL].Animate := false;
-  FSprites[ACol, ARow].Animate := AValue;
-end;
+implementation
 
-function TGamer1.GetColPosition(const ACol: Integer): zglTPoint2D;
-begin
-  Result := FSprites[ACol, 0].Point; //первый и все
-end;
+//TSprite
+{$INCLUDE tsprite.inc}
 
-procedure TGamer1.SetColPosition(const ACol: Integer; AValue: zglTPoint2D);
-var
-  CKL: Integer;
-begin
-  for CKL := 0 to Length(FSprites[ACol]) - 1 do
-    FSprites[ACol, CKL].SetPoint(AValue.X, AValue.Y);
-end;
+//TGamer1
+{$INCLUDE tgamer1.inc}
 
-function TGamer1.GetSprite(const ACol, ARow: Integer): avk_TSkeletTile;
-begin
-  if ACol > (Length(FSprites) - 1) then
-    SetSprite(ACol, ARow);
-
-  if ARow > (Length(FSprites[ACol]) - 1) then
-    SetSprite(ACol, ARow);
-
-  Result := FSprites[ACol, ARow];
-end;
-
-procedure TGamer1.SetSprite(const ACol, ARow: Integer; AValue: avk_TSkeletTile);
-var
-  PrevSize, CKL: Integer;
-begin
-  if ACol > (Length(FSprites) - 1) then
-    SetLength(FSprites, ACol + 1);
-
-  if ARow > (Length(FSprites[ACol]) - 1) then begin
-    PrevSize := Length(FSprites[ACol]) + 1;
-    for CKL := PrevSize to ARow - 1 do begin
-      SetLength(FSprites[ACol], CKL);
-      FSprites[ACol, CKL - 1] := avk_TSkeletTile.Create;
-    end;
-    SetLength(FSprites[ACol], ARow + 1);
-  end;
-
-  if Assigned(FSprites[ACol, ARow]) then
-    FSprites[ACol, ARow].Destroy;
-
-  FSprites[ACol, ARow] := AValue;
-
-  if not Assigned(FSprites[ACol, ARow]) then
-    FSprites[ACol, ARow] := avk_TSkeletTile.Create;
-end;
-
-function TGamer1.GetColVisible(const ACol: Integer): Integer;
-var
-  CKL: Integer;
-begin
-  Result := 0; //мало ли все скрыты
-  for CKL := 0 to Length(FSprites[ACol]) - 1 do
-    if not FSprites[ACol, CKL].Hide then Result := CKL;
-end;
-
-procedure TGamer1.SetColVisible(const ACol: Integer; ARow: Integer);
-var
-  CKL: Integer;
-begin
-  for CKL := 0 to Length(FSprites[ACol]) - 1 do
-    FSprites[ACol, CKL].Hide := not(CKL = ARow);
-end;
-
-procedure TGamer1.SetOnRelizeShot(AValue: TShotEvent);
-begin
-  FOnRelizeShot := AValue;
-end;
-
-procedure TGamer1.SetPosForAll;
-var
-  CKL1, CKL2: Integer;
-begin
-  for CKL1 := 0 to Length(FSprites) - 1 do
-    for CKL2 := 0 to Length(FSprites[CKL1]) - 1 do begin
-      FSprites[CKL1, CKL2].SetInternalParameters(Position.X, Position.Y, PosAngle, PosScale);
-    end;
-end;
-
-procedure TGamer1.DoDraw(Sender: TObject);
-var
-  CKL1, CKL2: Integer;
-begin
-  if not PosHide then
-    for CKL1 := 0 to Length(FSprites) - 1 do
-      for CKL2 := 0 to Length(FSprites[CKL1]) - 1 do
-        if not FSprites[CKL1, CKL2].Hide then
-          FSprites[CKL1, CKL2].DoDraw;
-end;
-
-procedure TGamer1.DoProc(Sender: TObject);
-var
-  CKL1, CKL2: Integer;
-begin
-  if Assigned(FOnBeforeProc) then FOnBeforeProc(Self);
-
-  if PosAnimate then
-    for CKL1 := 0 to Length(FSprites) - 1 do
-      for CKL2 := 0 to Length(FSprites[CKL1]) - 1 do
-        if FSprites[CKL1, CKL2].Animate then
-          FSprites[CKL1, CKL2].DoProc;
-
-  if Assigned(FOnAfterProc) then FOnAfterProc(Self);
-end;
-
-constructor TGamer1.Create(const InParent: avk_TFraim);
-begin
-  inherited Create(InParent);
-  SetLength(FSprites, 0);
-  PosAnimate := true;
-  FBulletStep := 0;
-  OnDraw := DoDraw;
-  OnProc := DoProc;
-end;
-
-destructor TGamer1.Destroy;
-var
-  CKL0, CKL1: Integer;
-begin
-  for CKL0 := 0 to Length(FSprites) - 1 do
-    for CKL1 := 0 to Length(FSprites[CKL0]) - 1 do begin
-      FSprites[CKL0, CKL1].Destroy;
-    end;
-
-  inherited Destroy;
-end;
-
-procedure TGamer1.MoveSprite(AFlag: byte; AValMX, AValMY: Single);
-var
-  Leg, Bdy: avk_TSkeletTile;
-  CPY, CPX: Single;
-  TmpK_UP, TmpK_DOWN, TmpK_LEFT, TmpK_RIGHT, ItIsFire: Boolean;
-  LegAngle, Speed45: Single;
-  TmpMousePoint: zglTPoint2D;
-begin
-
-  ItIsFire := GetColVisible(1) = 1; //это стрельба
-
-  CPY := Position.Y;
-  CPX := Position.X;
-
-  Speed45 := MoveSpeed / 2;
-
-  TmpK_UP := (AFlag and FLAG_K_UP) > 0;
-  TmpK_DOWN := (AFlag and FLAG_K_DOWN) > 0;
-  TmpK_LEFT := (AFlag and FLAG_K_LEFT) > 0;
-  TmpK_RIGHT := (AFlag and FLAG_K_RIGHT) > 0;
-
-  LegAngle := GetColAngle(0);
-
-  if TmpK_UP and TmpK_LEFT then begin
-    LegAngle := -45;
-    CPX := CPX - Speed45;
-    CPY := CPY - Speed45;
-  end else if TmpK_UP and TmpK_RIGHT then begin
-    LegAngle := 45;
-    CPX := CPX + Speed45;
-    CPY := CPY - Speed45;
-  end else if TmpK_DOWN and TmpK_RIGHT then begin
-    LegAngle :=  135;
-    CPX := CPX + Speed45;
-    CPY := CPY + Speed45;
-  end else if TmpK_DOWN and TmpK_LEFT then begin
-    LegAngle :=  -135;
-    CPX := CPX - Speed45;
-    CPY := CPY + Speed45;
-  end else if TmpK_DOWN then begin
-    LegAngle := 180;
-    CPY := CPY + MoveSpeed;
-  end else if TmpK_UP then begin
-    LegAngle := 0;
-    CPY := CPY - MoveSpeed;
-  end else if TmpK_LEFT then begin
-    LegAngle :=  -90;
-    CPX := CPX - MoveSpeed;
-  end else if TmpK_RIGHT then begin
-    LegAngle :=  90;
-    CPX := CPX + MoveSpeed;
-  end;
-
-  Position.X := CPX;
-  Position.Y := CPY;
-
-  SetColAngle(0, LegAngle);
-  SetColPosition(0, Position);
-
-  SetColAngle(1, m_Angle(CPX, CPY, AValMX, AValMY) - 90);
-  SetColPosition(1, Position);
-
-  if not ItIsFire then
-    if (AFlag and FLAG_M_LEFT_Cl) > 0 then begin//стреляем
-      SetColVisible(1, 1);
-      FSprites[1, 1].NowFrame := FSprites[1, 1].CoolSprite.StartFrame;
-    end;
-
-  Leg := FSprites[0, GetColVisible(0)];
-  Bdy := FSprites[1, GetColVisible(1)];
-
-  Leg.Animate := true;
-  Bdy.Animate := true;
-
-  if AFlag = $00 then begin
-    Leg.NowFrame := Leg.CoolSprite.StartFrame;
-    if not ItIsFire then begin
-      Bdy.NowFrame := Bdy.CoolSprite.StartFrame;
-    end;
-  end;
-
-  if ItIsFire then begin
-    if (Bdy.NowFrame = 6) and (FBulletStep = 0) then begin//момент выстрела
-      TmpMousePoint.X := AValMX;
-      TmpMousePoint.Y := AValMY;
-      if Assigned(FOnRelizeShot) then FOnRelizeShot(Self, Bdy.SubPoints[0].RealPoint, TmpMousePoint);
-      FBulletStep := 1;
-    end;
-    if Round(Bdy.NowFrame) = Bdy.CoolSprite.EndFrame then begin // стрельба окончена
-      Bdy.NowFrame := Bdy.CoolSprite.StartFrame;
-      SetColVisible(1, 0);
-    end;
-  end;
-
-  if FBulletStep > 0 then INC(FBulletStep, 1);
-  if FBulletStep > BulletPause then FBulletStep := 0;
-
-end;
+//TBullet1
+{$INCLUDE tbullet1.inc}
 
 end.
 

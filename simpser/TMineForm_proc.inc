@@ -609,7 +609,10 @@ begin
   TmpSpr.ColAnimate[1, 1] := false;
   TmpSpr.MoveSpeed := 1;
 
-  TmpSpr.BulletPause := 7;
+  TmpSpr.BulletPause := 14;
+  //{1 = 15 пуль, отключить}
+  //2 = 7 //3 = 5 //4 = 4
+  //5,6 = 3 //7-13 = 2 //14 = 1
 
   TmpSpr.OnBeforeProc := DoMoveGamer;
   TmpSpr.OnRelizeShot := DoShotBullet;
@@ -628,9 +631,12 @@ var
   FlP: byte;
   CPY, CPX: Single;
   FTG: TGamer1;
+  TmpMousePosition: zglTPoint2D;
 begin
   if Sender.ClassName <> 'TGamer1' then Exit;
   FTG := TGamer1(Sender);
+  TmpMousePosition.X := avk_MouseIsX;
+  TmpMousePosition.Y := avk_MouseIsY;
 
   //собираем нажатия
   FlP := FLAG_K_NO;
@@ -640,7 +646,7 @@ begin
   if key_Down( K_D ) or key_Down( K_RIGHT ) then FlP := FlP or FLAG_K_RIGHT;
   if avk_MouseIsClick(M_BLEFT) then FlP := FlP or FLAG_M_LEFT_Cl;
   if avk_MouseIsClick(M_BRIGHT) then FlP := FlP or FLAG_M_RIGHT_Cl;
-  FTG.MoveSprite(FlP, avk_MouseIsX, avk_MouseIsY);
+  FTG.MoveSprite(FlP, TmpMousePosition);
 
   //ограничения
   CPY := FTG.Position.Y;
@@ -678,6 +684,7 @@ begin
   TmpSpr.SkPnt.SetInternalParameters(AStartPoint.X, AStartPoint.Y, 0, 0.4);
   TmpSpr.SkPnt.Angle := AlM;
   TmpSpr.OnAfterProc := DoCloseBullet;
+
 end;
 
 procedure TMineForm.DoCloseBullet(Sender: TObject);
