@@ -574,8 +574,8 @@ end;
 procedure TMineForm.DoPanelGamer(Sender: TObject);
 var
   tmpTestForm: avk_TElement;
-  TmpBtn: avk_TSimpleButton;
   TmpSpr: TGamer1;
+  TmpBtn: avk_TSimpleButton;
 begin
   if MineForm.ListName['Пример игрок'] <> nil then Exit;
   tmpTestForm := avk_TElement.Create(MineForm,'Пример игрок');
@@ -661,8 +661,11 @@ begin
   FTG.Position.Y := CPY;
 
   {$IfDef Debug}
-  with avk_TElement(FTG.Parent) do
+  with avk_TElement(FTG.Parent) do begin
     avk_TSimpleButton(GetFraimById(GetIdByName('Кадры'))).LabelCaption.Caption:= 'Н: ' + avk_IntToStr(Round(FTG.Sprite[0, FTG.ColVisible[0]].NowFrame)) + ', Т:' + avk_IntToStr(Round(FTG.Sprite[1, FTG.ColVisible[1]].NowFrame));
+    //if GetFraimById(GetIdByName('Углы')) <> nil then
+    //  avk_TSimpleButton(GetFraimById(GetIdByName('Углы'))).LabelCaption.Caption:= 'У: ' + avk_IntToStr(Round(FTG.Sprite[0, FTG.ColVisible[0]].NowFrame)) + ', Д:' + avk_IntToStr(Round(FTG.Sprite[1, FTG.ColVisible[1]].NowFrame));
+  end;
   {$EndIf}
 
 end;
@@ -673,21 +676,41 @@ var
   Pnl: avk_TElement;
   AlM: Single;
   TmpSpr: avk_TSimpleSprite;
+  {$IfDef Debug}
+  TmpBtn: avk_TSimpleButton;
+  {$EndIf}
 begin
   Pnl := avk_TElement(Sender.Parent);
-  AlM := m_Angle(AStartPoint.X, AStartPoint.Y, ATargetPoint.X, ATargetPoint.Y) - 90;
+  AlM := Round(m_Angle(AStartPoint.X, AStartPoint.Y, ATargetPoint.X, ATargetPoint.Y) - 180);
   //в рамках родителя создаем дым
   TmpSpr := avk_TSimpleSprite.Create(Pnl);
-  TmpSpr.SkPnt.Emitter := MineForm.EmitterManager.EmitterName['дымок'];
+  case random(2) of
+    0: TmpSpr.SkPnt.Emitter := MineForm.EmitterManager.EmitterName['дымок'];
+    1: TmpSpr.SkPnt.Emitter := MineForm.EmitterManager.EmitterName['дым выстрела'];
+    2: TmpSpr.SkPnt.Emitter := MineForm.EmitterManager.EmitterName['дым выстрела']; //не наступает никогда
+  end;
+  TmpSpr.SkPnt.Angle := AlM;
   TmpSpr.SkPnt.Emitter.Params.Loop := false;
   TmpSpr.SkPnt.RateCadre := 4;
   TmpSpr.SkPnt.SetInternalParameters(AStartPoint.X, AStartPoint.Y, 0, 0.4);
-  TmpSpr.SkPnt.Angle := AlM;
-  TmpSpr.OnAfterProc := DoCloseBullet;
-
+  TmpSpr.DoProc(Self);
+  TmpSpr.OnAfterProc := DoCloseBulletSmoke;
+  {$IfDef Debug}
+  with Pnl do
+    if GetFraimById(GetIdByName('Углы')) = nil then begin
+      TmpBtn := avk_TSimpleButton.Create(Pnl,'Углы');
+      TmpBtn.TexButton := MineForm.TexManager.TexName['Кнопка'];
+      TmpBtn.SetAreaElement(103,549,100,30);
+      TmpBtn.LabelCaption.Caption := avk_IntToStr(Round(TmpSpr.SkPnt.Angle));
+      TmpBtn.LabelCaption.FontColor := $8B0000;
+    end else begin
+      TmpBtn := avk_TSimpleButton(GetFraimById(GetIdByName('Углы')));
+      TmpBtn.LabelCaption.Caption := avk_IntToStr(Round(TmpSpr.SkPnt.Angle));
+    end;
+  {$EndIf}
 end;
 
-procedure TMineForm.DoCloseBullet(Sender: TObject);
+procedure TMineForm.DoCloseBulletSmoke(Sender: TObject);
 var
   Blt: avk_TSimpleSprite;
 begin

@@ -60,7 +60,7 @@ type
     procedure DoMoveGamer(Sender: TObject);
     procedure DoShotBullet(const Sender: avk_TFraim; const AStartPoint,
       ATargetPoint: zglTPoint2D);
-    procedure DoCloseBullet(Sender: TObject);
+    procedure DoCloseBulletSmoke(Sender: TObject);
   public
     TCPServer: avk_TServer;
     procedure DoStopStartServer(Sender: TObject);

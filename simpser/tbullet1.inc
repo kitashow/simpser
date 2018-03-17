@@ -1,12 +1,10 @@
 { TBullet1 }
 
-constructor TBullet1.Create(const InParent: avk_TFraim);
+procedure TBullet1.StartMoveBullet(AStartPoint, AFinishPoint: zglTPoint2D);
 begin
+  FStartPoint := AStartPoint;
+  FFinishPoint := AFinishPoint;
+  Position := AStartPoint;
 
-end;
-
-destructor TBullet1.Destroy;
-begin
-  inherited Destroy;
 end;
 

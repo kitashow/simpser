@@ -137,6 +137,7 @@ TBullet1 = class(TSprite)
 public
   FStartPoint, FFinishPoint: zglTPoint2D;
   FCurAngle: Single;
+  procedure StartMoveBullet(AStartPoint, AFinishPoint: zglTPoint2D);
 end;
 
 

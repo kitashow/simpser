@@ -3,7 +3,7 @@
   <ProjectSession>
     <Version Value="10"/>
     <BuildModes Active="Debug"/>
-    <Units Count="91">
+    <Units Count="92">
       <Unit0>
         <Filename Value="simpser.pas"/>
         <IsPartOfProject Value="True"/>
@@ -17,7 +17,8 @@
         <Filename Value="mine_unit.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="23" Y="63"/>
+        <TopLine Value="97"/>
+        <CursorPos X="51" Y="63"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -28,724 +29,736 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="70"/>
         <CursorPos X="20" Y="67"/>
-        <UsageCount Value="104"/>
+        <UsageCount Value="116"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit2>
       <Unit3>
         <Filename Value="sg_unit.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="4"/>
-        <TopLine Value="125"/>
-        <CursorPos X="21" Y="139"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="21"/>
+        <CursorPos Y="145"/>
         <FoldState Value=" T7iUAdP"/>
-        <UsageCount Value="75"/>
+        <UsageCount Value="87"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit3>
       <Unit4>
+        <Filename Value="tgamer1.inc"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="10"/>
+        <TopLine Value="73"/>
+        <CursorPos X="7" Y="103"/>
+        <UsageCount Value="40"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="tsprite.inc"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="9"/>
+        <TopLine Value="82"/>
+        <CursorPos Y="96"/>
+        <UsageCount Value="37"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="tbullet1.inc"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="8"/>
+        <CursorPos X="3" Y="8"/>
+        <UsageCount Value="35"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit6>
+      <Unit7>
         <Filename Value="../avk-1/avk_btype.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="45"/>
         <CursorPos X="5" Y="49"/>
-        <UsageCount Value="232"/>
+        <UsageCount Value="231"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit4>
-      <Unit5>
+      </Unit7>
+      <Unit8>
         <Filename Value="../avk-1/avk_gui.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="174"/>
         <CursorPos X="33" Y="188"/>
-        <UsageCount Value="234"/>
+        <UsageCount Value="233"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit5>
-      <Unit6>
+      </Unit8>
+      <Unit9>
         <Filename Value="avk_spr2.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="150"/>
+        <UsageCount Value="149"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit6>
-      <Unit7>
+      </Unit9>
+      <Unit10>
         <Filename Value="../avk-1/avk_add/avk_addgui.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="201"/>
         <CursorPos Y="193"/>
-        <UsageCount Value="190"/>
+        <UsageCount Value="189"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit7>
-      <Unit8>
+      </Unit10>
+      <Unit11>
         <Filename Value="../avk-1/avk_strings.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="85"/>
         <CursorPos X="5" Y="99"/>
-        <UsageCount Value="191"/>
+        <UsageCount Value="190"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit8>
-      <Unit9>
+      </Unit11>
+      <Unit12>
         <Filename Value="../avk-1/avk_errordiscribe.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="34" Y="31"/>
-        <UsageCount Value="192"/>
+        <UsageCount Value="191"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit9>
-      <Unit10>
+      </Unit12>
+      <Unit13>
         <Filename Value="../avk-1/avk_sprites_GetRotatePointsSquare.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="56"/>
         <CursorPos Y="60"/>
         <FoldState Value=" T3c06f"/>
-        <UsageCount Value="209"/>
+        <UsageCount Value="208"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit10>
-      <Unit11>
+      </Unit13>
+      <Unit14>
         <Filename Value="../avk-1/avk_sprites_tadditionalpoint.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="7"/>
         <CursorPos Y="31"/>
-        <UsageCount Value="229"/>
+        <UsageCount Value="228"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit11>
-      <Unit12>
+      </Unit14>
+      <Unit15>
         <Filename Value="../avk-1/avk_tcompsprite.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="55"/>
         <CursorPos Y="69"/>
-        <UsageCount Value="345"/>
+        <UsageCount Value="344"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit12>
-      <Unit13>
+      </Unit15>
+      <Unit16>
         <Filename Value="mineform_loadresource.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="30"/>
-        <CursorPos X="70" Y="54"/>
-        <UsageCount Value="98"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="36"/>
+        <CursorPos X="63" Y="59"/>
+        <UsageCount Value="100"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit13>
-      <Unit14>
+      </Unit16>
+      <Unit17>
         <Filename Value="avk_spr2_tsimplemap.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="5"/>
         <CursorPos X="12" Y="22"/>
         <FoldState Value=" T3B030E1O"/>
-        <UsageCount Value="65"/>
+        <UsageCount Value="64"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit14>
-      <Unit15>
+      </Unit17>
+      <Unit18>
         <Filename Value="avk_spr2_tskeletpoint.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="65"/>
         <CursorPos Y="64"/>
-        <UsageCount Value="38"/>
+        <UsageCount Value="37"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit15>
-      <Unit16>
+      </Unit18>
+      <Unit19>
         <Filename Value="avk_spr2_tsimplesprite.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos Y="24"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="15"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit16>
-      <Unit17>
+      </Unit19>
+      <Unit20>
         <Filename Value="tests.lpr"/>
         <UnitName Value="avk_bs"/>
         <EditorIndex Value="-1"/>
         <WindowIndex Value="-1"/>
         <CursorPos X="26"/>
-        <UsageCount Value="78"/>
+        <UsageCount Value="77"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit17>
-      <Unit18>
+      </Unit20>
+      <Unit21>
         <Filename Value="../avk-1/avk_gui_telement.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="267"/>
         <CursorPos X="81" Y="277"/>
-        <UsageCount Value="183"/>
+        <UsageCount Value="182"/>
         <Bookmarks Count="1">
           <Item0 X="18" Y="272" ID="2"/>
         </Bookmarks>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit18>
-      <Unit19>
+      </Unit21>
+      <Unit22>
         <Filename Value="../zengl-src-0.3.12/src/zgl_sprite_2d.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="27"/>
         <CursorPos X="25" Y="37"/>
-        <UsageCount Value="50"/>
+        <UsageCount Value="49"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit19>
-      <Unit20>
+      </Unit22>
+      <Unit23>
         <Filename Value="TMineForm_proc.inc"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="664"/>
-        <CursorPos Y="687"/>
-        <FoldState Value=" T03026 pj6n7Y3B]9Lj9qa8 T37055 pl7lO0j416 T1804]IkQlT0d[I56F069 TMu643071f"/>
+        <TopLine Value="680"/>
+        <CursorPos X="107" Y="690"/>
+        <FoldState Value=" T03026 pj6n7Y3B]9Lj9qa8 T37055 pl7lO0j416 T1804]IkQlT0d[I56F06]hMu643081z"/>
         <UsageCount Value="107"/>
         <Bookmarks Count="1">
           <Item0 X="21" Y="375" ID="1"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit20>
-      <Unit21>
+      </Unit23>
+      <Unit24>
         <Filename Value="../avk-1/avk_sprites_tsimplesprite.inc"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="13"/>
-        <UsageCount Value="97"/>
+        <UsageCount Value="96"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit21>
-      <Unit22>
+      </Unit24>
+      <Unit25>
         <Filename Value="../avk-1/avk_input.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="61"/>
         <CursorPos Y="84"/>
-        <UsageCount Value="26"/>
+        <UsageCount Value="25"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit22>
-      <Unit23>
+      </Unit25>
+      <Unit26>
         <Filename Value="../zengl-src-0.3.12/src/zgl_primitives_2d.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="24"/>
         <CursorPos X="11" Y="40"/>
-        <UsageCount Value="43"/>
+        <UsageCount Value="42"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit23>
-      <Unit24>
+      </Unit26>
+      <Unit27>
         <Filename Value="../zengl-src-0.3.12/src/zgl_fx.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="154"/>
         <CursorPos Y="165"/>
-        <UsageCount Value="39"/>
+        <UsageCount Value="38"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit24>
-      <Unit25>
+      </Unit27>
+      <Unit28>
         <Filename Value="../zengl-src-0.3.12/src/zgl_math_2d.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="30"/>
         <CursorPos X="29" Y="42"/>
-        <UsageCount Value="48"/>
+        <UsageCount Value="47"/>
         <Bookmarks Count="1">
           <Item0 ID="2"/>
         </Bookmarks>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit25>
-      <Unit26>
+      </Unit28>
+      <Unit29>
         <Filename Value="../avk-1/avk_sprites_getrotatepoints.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="42"/>
         <CursorPos Y="70"/>
-        <UsageCount Value="174"/>
+        <UsageCount Value="173"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit26>
-      <Unit27>
+      </Unit29>
+      <Unit30>
         <Filename Value="../zengl-src-0.3.12/src/zgl_textures.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="100"/>
         <CursorPos X="11" Y="111"/>
-        <UsageCount Value="112"/>
+        <UsageCount Value="111"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit27>
-      <Unit28>
+      </Unit30>
+      <Unit31>
         <Filename Value="avk_spr2_tsimpletile.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="11"/>
         <CursorPos Y="44"/>
         <FoldState Value=" T0305 T3A0E011r"/>
-        <UsageCount Value="97"/>
+        <UsageCount Value="96"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit28>
-      <Unit29>
+      </Unit31>
+      <Unit32>
         <Filename Value="avk_spr2_ttilemap.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2"/>
         <CursorPos Y="5"/>
-        <UsageCount Value="58"/>
+        <UsageCount Value="57"/>
         <Bookmarks Count="1">
           <Item0 Y="71"/>
         </Bookmarks>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit29>
-      <Unit30>
+      </Unit32>
+      <Unit33>
         <Filename Value="../zengl-src-0.3.12/src/zgl_render_target.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="543"/>
         <CursorPos Y="554"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit30>
-      <Unit31>
+      </Unit33>
+      <Unit34>
         <Filename Value="../avk-1/avk_sprites_tsimplemap.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="61"/>
         <CursorPos X="39" Y="68"/>
-        <UsageCount Value="19"/>
+        <UsageCount Value="18"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit31>
-      <Unit32>
+      </Unit34>
+      <Unit35>
         <Filename Value="C:/lazarus/fpc/3.0.4/source/rtl/objpas/objpas.pp"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="20"/>
         <CursorPos X="8" Y="35"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit32>
-      <Unit33>
+      </Unit35>
+      <Unit36>
         <Filename Value="../avk-1/avk_gui_tsimplebutton.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="13"/>
         <CursorPos Y="10"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit33>
-      <Unit34>
+      </Unit36>
+      <Unit37>
         <Filename Value="../zengl-src-0.3.12/src/zgl_lib_msvcrt.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="40"/>
         <CursorPos X="28" Y="41"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit34>
-      <Unit35>
+      </Unit37>
+      <Unit38>
         <Filename Value="../zengl-src-0.3.12/demos/Android/rocks2/zengl/zgl_lib_msvcrt.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit35>
-      <Unit36>
+      </Unit38>
+      <Unit39>
         <Filename Value="../zengl-src-0.3.12/demos/Android/rocks2/zengl/src/zgl_textures_png.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="17"/>
         <CursorPos X="3" Y="31"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit36>
-      <Unit37>
+      </Unit39>
+      <Unit40>
         <Filename Value="../zengl-src-0.3.12/src/zgl_lib_ogg.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="60"/>
         <CursorPos X="3" Y="74"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit37>
-      <Unit38>
+      </Unit40>
+      <Unit41>
         <Filename Value="../zengl-src-0.3.12/src/zgl_lib_theora.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="21"/>
         <CursorPos X="3" Y="35"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit38>
-      <Unit39>
+      </Unit41>
+      <Unit42>
         <Filename Value="../zengl-src-0.3.12/src/zgl_textures_jpg.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="34"/>
         <CursorPos X="3" Y="48"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit39>
-      <Unit40>
+      </Unit42>
+      <Unit43>
         <Filename Value="../zengl-src-0.3.12/src/zgl_textures_png.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="23"/>
         <CursorPos X="3" Y="31"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit40>
-      <Unit41>
+      </Unit43>
+      <Unit44>
         <Filename Value="../zengl-src-0.3.12/demos/Android/rocks2/zengl/extra/zglChipmunk.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="53"/>
         <CursorPos X="26" Y="67"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit41>
-      <Unit42>
+      </Unit44>
+      <Unit45>
         <Filename Value="../avk-1/avk_sort_btype.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="33"/>
         <CursorPos Y="53"/>
-        <UsageCount Value="2"/>
+        <UsageCount Value="1"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit42>
-      <Unit43>
+      </Unit45>
+      <Unit46>
         <Filename Value="../avk-1/avk_gui_thostform.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="140"/>
         <CursorPos X="52" Y="171"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit43>
-      <Unit44>
+      </Unit46>
+      <Unit47>
         <Filename Value="../zengl-src-0.3.12/extra/zglChipmunk.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="73"/>
         <CursorPos X="36" Y="175"/>
-        <UsageCount Value="16"/>
+        <UsageCount Value="15"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit44>
-      <Unit45>
+      </Unit47>
+      <Unit48>
         <Filename Value="../zengl-src-0.3.12/src/zgl_opengles_all.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="127"/>
         <CursorPos X="5" Y="384"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit45>
-      <Unit46>
+      </Unit48>
+      <Unit49>
         <Filename Value="../zengl-src-0.3.12/src/zgl_opengl_all.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="388"/>
         <CursorPos X="13" Y="403"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="0"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit46>
-      <Unit47>
+      </Unit49>
+      <Unit50>
         <Filename Value="../zengl-src-0.3.12/extra/zglModPlug.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit47>
-      <Unit48>
+      </Unit50>
+      <Unit51>
         <Filename Value="../avk-1/avk_sprites_tskeletpoint.inc"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="26"/>
-        <CursorPos X="64" Y="227"/>
-        <UsageCount Value="22"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="235"/>
+        <CursorPos Y="252"/>
+        <UsageCount Value="26"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit48>
-      <Unit49>
+      </Unit51>
+      <Unit52>
         <Filename Value="../avk-1/avk_sprites_tsimpletile.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="43"/>
         <CursorPos X="20" Y="46"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="20"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit49>
-      <Unit50>
+      </Unit52>
+      <Unit53>
         <Filename Value="../avk-1/avk_sprites_ttilemap.inc"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="3" Y="6"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit50>
-      <Unit51>
+      </Unit53>
+      <Unit54>
         <Filename Value="C:/lazarus/fpc/3.0.4/source/rtl/inc/objpash.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="185"/>
         <CursorPos X="25" Y="196"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit51>
-      <Unit52>
+      </Unit54>
+      <Unit55>
         <Filename Value="../Lnet_lib/lnet.pp"/>
         <UnitName Value="lNet"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="552"/>
         <CursorPos X="3" Y="503"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="0"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit52>
-      <Unit53>
+      </Unit55>
+      <Unit56>
         <Filename Value="avk_coolspritetest.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="49"/>
         <CursorPos X="7" Y="28"/>
-        <UsageCount Value="29"/>
+        <UsageCount Value="28"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit53>
-      <Unit54>
+      </Unit56>
+      <Unit57>
         <Filename Value="avk_cls.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="3" Y="77"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit54>
-      <Unit55>
+      </Unit57>
+      <Unit58>
         <Filename Value="../avk-1/avk_resmanager.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="178"/>
         <CursorPos Y="196"/>
-        <UsageCount Value="22"/>
+        <UsageCount Value="21"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit55>
-      <Unit56>
+      </Unit58>
+      <Unit59>
         <Filename Value="../zengl-src-0.3.12/src/zgl_config.cfg"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="106"/>
         <CursorPos X="14" Y="126"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="0"/>
         <DefaultSyntaxHighlighter Value="None"/>
-      </Unit56>
-      <Unit57>
+      </Unit59>
+      <Unit60>
         <Filename Value="../zengl-src-0.3.12/src/zgl_fpc.cfg"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="3" Y="28"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="0"/>
         <DefaultSyntaxHighlighter Value="None"/>
-      </Unit57>
-      <Unit58>
+      </Unit60>
+      <Unit61>
         <Filename Value="../zengl-src-0.3.12/src/zgl_main.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="728"/>
         <CursorPos Y="748"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit58>
-      <Unit59>
+      </Unit61>
+      <Unit62>
         <Filename Value="unit_test_cs.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="119"/>
         <CursorPos X="11" Y="23"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit59>
-      <Unit60>
+      </Unit62>
+      <Unit63>
         <Filename Value="../Lnet_lib/levents.pp"/>
         <UnitName Value="lEvents"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="59"/>
         <CursorPos X="5" Y="59"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="0"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit60>
-      <Unit61>
+      </Unit63>
+      <Unit64>
         <Filename Value="C:/lazarus/fpc/3.0.4/source/rtl/inc/ustringh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="118"/>
         <CursorPos X="23" Y="132"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="0"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit61>
-      <Unit62>
+      </Unit64>
+      <Unit65>
         <Filename Value="../avk-1/coder.pas"/>
         <UnitName Value="Coder"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="13" Y="14"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="0"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit62>
-      <Unit63>
+      </Unit65>
+      <Unit66>
         <Filename Value="../avk-1/avk_cls.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="83"/>
         <CursorPos X="13" Y="93"/>
-        <UsageCount Value="12"/>
+        <UsageCount Value="11"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit63>
-      <Unit64>
+      </Unit66>
+      <Unit67>
         <Filename Value="../avk-1/avk_sprites.pas"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="25"/>
-        <UsageCount Value="49"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="253"/>
+        <CursorPos X="14" Y="266"/>
+        <UsageCount Value="54"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit64>
-      <Unit65>
+      </Unit67>
+      <Unit68>
         <Filename Value="C:/lazarus/fpc/3.0.4/source/rtl/win32/classes.pp"/>
         <UnitName Value="Classes"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="38"/>
         <CursorPos X="70" Y="35"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit65>
-      <Unit66>
+      </Unit68>
+      <Unit69>
         <Filename Value="C:/lazarus/fpc/3.0.4/source/rtl/objpas/classes/classesh.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1557"/>
         <CursorPos X="16" Y="1573"/>
-        <UsageCount Value="5"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit66>
-      <Unit67>
-        <Filename Value="../avk-1/avk_vector.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="29"/>
-        <UsageCount Value="27"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit67>
-      <Unit68>
-        <Filename Value="../avk-1/avk_texmanager.pas"/>
-        <EditorIndex Value="-1"/>
-        <UsageCount Value="5"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit68>
-      <Unit69>
-        <Filename Value="../../ClCr_only/BDB_game/unit_test_cs.pas"/>
-        <EditorIndex Value="-1"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit69>
       <Unit70>
-        <Filename Value="../zengl-src-0.3.12/src/zgl_file.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="425"/>
-        <CursorPos Y="438"/>
-        <UsageCount Value="4"/>
+        <Filename Value="../avk-1/avk_vector.pas"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="19"/>
+        <UsageCount Value="30"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit70>
       <Unit71>
-        <Filename Value="C:/lazarus/fpc/3.0.4/source/rtl/inc/heaph.inc"/>
+        <Filename Value="../avk-1/avk_texmanager.pas"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="69"/>
-        <CursorPos X="18" Y="95"/>
         <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit71>
       <Unit72>
+        <Filename Value="../../ClCr_only/BDB_game/unit_test_cs.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="2"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit72>
+      <Unit73>
+        <Filename Value="../zengl-src-0.3.12/src/zgl_file.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="425"/>
+        <CursorPos Y="438"/>
+        <UsageCount Value="3"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit73>
+      <Unit74>
+        <Filename Value="C:/lazarus/fpc/3.0.4/source/rtl/inc/heaph.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="69"/>
+        <CursorPos X="18" Y="95"/>
+        <UsageCount Value="3"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit74>
+      <Unit75>
         <Filename Value="C:/lazarus/fpc/3.0.4/source/rtl/inc/objpas.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="273"/>
         <CursorPos X="9" Y="281"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit72>
-      <Unit73>
+      </Unit75>
+      <Unit76>
         <Filename Value="../zengl-src-0.3.12/src/zgl_utils.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="340"/>
         <CursorPos Y="363"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit73>
-      <Unit74>
+      </Unit76>
+      <Unit77>
         <Filename Value="../zengl-src-0.3.12/src/zgl_particles_2d.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="355"/>
         <CursorPos Y="367"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit74>
-      <Unit75>
+      </Unit77>
+      <Unit78>
         <Filename Value="../zengl-src-0.3.12/src/zgl_render_2d.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="6"/>
         <CursorPos X="24" Y="163"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit75>
-      <Unit76>
+      </Unit78>
+      <Unit79>
         <Filename Value="C:/lazarus/fpc/3.0.4/source/rtl/win/wininc/base.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="197"/>
         <CursorPos X="22" Y="209"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit76>
-      <Unit77>
+      </Unit79>
+      <Unit80>
         <Filename Value="../zengl/extra/zglChipmunk.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="16"/>
         <CursorPos X="7" Y="31"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit77>
-      <Unit78>
+      </Unit80>
+      <Unit81>
         <Filename Value="../zengl/src/zgl_file.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="423"/>
         <CursorPos Y="438"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit78>
-      <Unit79>
+      </Unit81>
+      <Unit82>
         <Filename Value="../zengl/src/zgl_math_2d.pas"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="28"/>
-        <CursorPos X="3" Y="43"/>
-        <UsageCount Value="8"/>
+        <TopLine Value="82"/>
+        <CursorPos X="33" Y="94"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit79>
-      <Unit80>
+      </Unit82>
+      <Unit83>
         <Filename Value="../zengl/src/zgl_textures_png.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit80>
-      <Unit81>
+      </Unit83>
+      <Unit84>
         <Filename Value="../zengl/src/zgl_sprite_2d.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="22"/>
         <FoldState Value=" T3iE0}S+"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit81>
-      <Unit82>
+      </Unit84>
+      <Unit85>
         <Filename Value="../zengl/src/zgl_types.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="6"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit82>
-      <Unit83>
+      </Unit85>
+      <Unit86>
         <Filename Value="../zengl/src/zgl_main.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="157"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit83>
-      <Unit84>
+      </Unit86>
+      <Unit87>
         <Filename Value="../zengl/src/zgl_primitives_2d.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="52"/>
         <CursorPos X="32" Y="76"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit84>
-      <Unit85>
+      </Unit87>
+      <Unit88>
         <Filename Value="../zengl/src/zgl_fx.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="28"/>
         <CursorPos X="35" Y="41"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit85>
-      <Unit86>
+      </Unit88>
+      <Unit89>
         <Filename Value="../zengl/src/zgl_keyboard.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="243"/>
         <CursorPos X="11" Y="174"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit86>
-      <Unit87>
+      </Unit89>
+      <Unit90>
         <Filename Value="../zengl/src/zgl_mouse.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="142"/>
         <CursorPos X="3" Y="67"/>
-        <UsageCount Value="9"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit87>
-      <Unit88>
-        <Filename Value="tgamer1.inc"/>
-        <IsPartOfProject Value="True"/>
-        <EditorIndex Value="7"/>
-        <TopLine Value="5"/>
-        <CursorPos Y="27"/>
-        <UsageCount Value="28"/>
-        <Loaded Value="True"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit88>
-      <Unit89>
-        <Filename Value="tsprite.inc"/>
-        <IsPartOfProject Value="True"/>
-        <EditorIndex Value="6"/>
-        <TopLine Value="82"/>
-        <CursorPos Y="96"/>
-        <UsageCount Value="25"/>
-        <Loaded Value="True"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
-      </Unit89>
-      <Unit90>
-        <Filename Value="tbullet1.inc"/>
-        <IsPartOfProject Value="True"/>
-        <EditorIndex Value="5"/>
-        <CursorPos Y="5"/>
-        <UsageCount Value="23"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="8"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit90>
+      <Unit91>
+        <Filename Value="../zengl/src/zgl_particles_2d.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="118"/>
+        <CursorPos X="5" Y="127"/>
+        <UsageCount Value="14"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit91>
     </Units>
     <OtherDefines Count="9">
       <Define0 Value="Debug"/>
@@ -761,123 +774,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="TMineForm_proc.inc"/>
-        <Caret Line="672" TopLine="654"/>
+        <Caret Line="687" TopLine="667"/>
       </Position1>
       <Position2>
-        <Filename Value="sg_unit.pas"/>
-        <Caret Line="381" Column="3" TopLine="356"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="678" Column="84" TopLine="670"/>
       </Position2>
       <Position3>
-        <Filename Value="mine_unit.pas"/>
-        <Caret Line="63" Column="23"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="687" TopLine="670"/>
       </Position3>
       <Position4>
-        <Filename Value="tsprite.inc"/>
-        <Caret Line="2" Column="4"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="685" TopLine="670"/>
       </Position4>
       <Position5>
-        <Filename Value="tsprite.inc"/>
-        <Caret Line="3" Column="17"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="686" Column="21" TopLine="670"/>
       </Position5>
       <Position6>
-        <Filename Value="tsprite.inc"/>
-        <Caret Line="8" Column="18"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="685" Column="35" TopLine="670"/>
       </Position6>
       <Position7>
-        <Filename Value="tsprite.inc"/>
-        <Caret Line="16" Column="17"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="678" Column="79" TopLine="667"/>
       </Position7>
       <Position8>
-        <Filename Value="tsprite.inc"/>
-        <Caret Line="22" Column="18"/>
+        <Filename Value="../avk-1/avk_sprites.pas"/>
+        <Caret Line="266" Column="14" TopLine="255"/>
       </Position8>
       <Position9>
-        <Filename Value="tsprite.inc"/>
-        <Caret Line="31" Column="17" TopLine="19"/>
+        <Filename Value="../avk-1/avk_sprites.pas"/>
+        <Caret Line="241" Column="18" TopLine="228"/>
       </Position9>
       <Position10>
-        <Filename Value="tsprite.inc"/>
-        <Caret Line="36" Column="18" TopLine="19"/>
+        <Filename Value="../avk-1/avk_sprites.pas"/>
+        <Caret Line="264" Column="18" TopLine="260"/>
       </Position10>
       <Position11>
-        <Filename Value="tsprite.inc"/>
-        <Caret Line="44" Column="17" TopLine="20"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="686" Column="3" TopLine="667"/>
       </Position11>
       <Position12>
-        <Filename Value="tsprite.inc"/>
-        <Caret Line="55" Column="18" TopLine="31"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="682" TopLine="667"/>
       </Position12>
       <Position13>
-        <Filename Value="tsprite.inc"/>
-        <Caret Line="80" Column="17" TopLine="56"/>
+        <Filename Value="../avk-1/avk_sprites_tskeletpoint.inc"/>
+        <Caret Line="251" Column="35" TopLine="235"/>
       </Position13>
       <Position14>
-        <Filename Value="tsprite.inc"/>
-        <Caret Line="89" Column="18" TopLine="65"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="684" Column="43" TopLine="665"/>
       </Position14>
       <Position15>
-        <Filename Value="tsprite.inc"/>
-        <Caret Line="97" Column="18" TopLine="73"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="683" TopLine="665"/>
       </Position15>
       <Position16>
-        <Filename Value="tsprite.inc"/>
-        <Caret Line="102" Column="18" TopLine="78"/>
+        <Filename Value="sg_unit.pas"/>
+        <Caret Line="145" TopLine="21"/>
       </Position16>
       <Position17>
-        <Filename Value="tsprite.inc"/>
-        <Caret Line="112" Column="18" TopLine="88"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="678" Column="50" TopLine="665"/>
       </Position17>
       <Position18>
-        <Filename Value="tsprite.inc"/>
-        <Caret Line="123" Column="18" TopLine="99"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="682" Column="28" TopLine="669"/>
       </Position18>
       <Position19>
-        <Filename Value="tsprite.inc"/>
-        <Caret Line="138" Column="20" TopLine="114"/>
+        <Filename Value="../avk-1/avk_sprites_tskeletpoint.inc"/>
+        <Caret Line="253" TopLine="235"/>
       </Position19>
       <Position20>
-        <Filename Value="tgamer1.inc"/>
-        <Caret Column="12"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="678" Column="91" TopLine="669"/>
       </Position20>
       <Position21>
-        <Filename Value="tgamer1.inc"/>
-        <Caret Line="16" Column="57"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="682" Column="27" TopLine="669"/>
       </Position21>
       <Position22>
-        <Filename Value="sg_unit.pas"/>
-        <Caret Line="123" TopLine="103"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="676" Column="15" TopLine="669"/>
       </Position22>
       <Position23>
-        <Filename Value="tgamer1.inc"/>
-        <Caret Line="16" Column="18"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="680" Column="45" TopLine="669"/>
       </Position23>
       <Position24>
-        <Filename Value="tgamer1.inc"/>
-        <Caret Line="27" TopLine="86"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="679" Column="89" TopLine="669"/>
       </Position24>
       <Position25>
         <Filename Value="TMineForm_proc.inc"/>
-        <Caret Line="646" Column="50" TopLine="630"/>
+        <Caret Line="695" Column="9" TopLine="680"/>
       </Position25>
       <Position26>
-        <Filename Value="TMineForm_proc.inc"/>
-        <Caret Line="639" Column="38" TopLine="623"/>
+        <Filename Value="../avk-1/avk_sprites_tskeletpoint.inc"/>
+        <Caret Line="251" TopLine="235"/>
       </Position26>
       <Position27>
-        <Filename Value="sg_unit.pas"/>
-        <Caret Line="138" Column="19" TopLine="126"/>
+        <Filename Value="../avk-1/avk_sprites_tskeletpoint.inc"/>
+        <Caret Line="252" TopLine="235"/>
       </Position27>
       <Position28>
-        <Filename Value="tbullet1.inc"/>
-        <Caret Line="6" Column="6"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="691" Column="48" TopLine="685"/>
       </Position28>
       <Position29>
-        <Filename Value="sg_unit.pas"/>
-        <Caret Line="29" Column="14" TopLine="14"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="686" Column="85" TopLine="682"/>
       </Position29>
       <Position30>
-        <Filename Value="sg_unit.pas"/>
-        <Caret Line="139" Column="21" TopLine="125"/>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="689" Column="16" TopLine="677"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>

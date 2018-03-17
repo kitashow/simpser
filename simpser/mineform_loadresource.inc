@@ -56,4 +56,5 @@
    MineForm.LoadResource(TmpPrefix+'emitter_diamond.zei', 'сияние');
    MineForm.LoadResource(TmpPrefix+'emitter_fire00.zei', 'горение');
    MineForm.LoadResource(TmpPrefix+'Emitter_exemp.zei', 'дымок');
+   MineForm.LoadResource(TmpPrefix+'emitter_rifle_fire.zei', 'дым выстрела');
 
