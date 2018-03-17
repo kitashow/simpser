@@ -248,7 +248,7 @@ begin
     CmpAngle := RealAngle;
 
   pengine2d_Set( @Fparticles );
-  FEmitter.AsLine.Direction := CmpAngle + TexAngle;
+  FEmitter.AsPoint.Direction := (CmpAngle + TexAngle) * deg2rad;
   FEmitter.Params.Position.X := LRP.X;
   FEmitter.Params.Position.Y := LRP.Y;
   pengine2d_Proc(RateCadre);
