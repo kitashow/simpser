@@ -6,16 +6,14 @@ begin
   BulletPause := 14;
   MoveSpeed := 1;
   inherited Create(InParent);
+  {$IfDef Debug}
+  OnFinishDraw := DoFinishDraw;
+  {$EndIf}
 end;
 
 destructor TGamer1.Destroy;
 begin
   inherited Destroy;
-end;
-
-procedure TGamer1.SetOnRelizeShot(AValue: TShotEvent);
-begin
-  FOnRelizeShot := AValue;
 end;
 
 procedure TGamer1.MoveSprite(AFlag: byte; AMousePosition: zglTPoint2D);
@@ -79,11 +77,15 @@ begin
   SetColAngle(1, m_Angle(CPX, CPY, AMousePosition.X, AMousePosition.Y) - 90);
   SetColPosition(1, Position);
 
-  if not ItIsFire then
+  if not ItIsFire then begin
     if (AFlag and FLAG_M_LEFT_Cl) > 0 then begin//стреляем
       SetColVisible(1, 1);
       FSprites[1, 1].NowFrame := FSprites[1, 1].CoolSprite.StartFrame;
     end;
+    //в мирном режиме охлаждаем ствол
+    if FCurrentRadiusTarget > FMinimalRadiusTarget then
+       FCurrentRadiusTarget := FCurrentRadiusTarget - FStepColdRadiusTarget;
+  end;
 
   Leg := FSprites[0, GetColVisible(0)];
   Bdy := FSprites[1, GetColVisible(1)];
@@ -113,3 +115,15 @@ begin
   if FBulletStep > BulletPause then FBulletStep := 0;
 
 end;
+
+{$IfDef Debug}
+procedure TGamer1.DoFinishDraw(Sender: TObject);
+var
+  ItIsFire: Boolean;
+begin
+  ItIsFire := GetColVisible(1) = 1; //это стрельба
+  if ItIsFire then begin
+    pr2d_Circle(avk_MouseIsX, avk_MouseIsY, FCurrentRadiusTarget, $7a250f, 150 ,250, PR2D_SMOOTH)
+  end;
+end;
+{$EndIf}

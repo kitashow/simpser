@@ -614,6 +614,11 @@ begin
   //2 = 7 //3 = 5 //4 = 4
   //5,6 = 3 //7-13 = 2 //14 = 1
 
+  TmpSpr.FMinimalRadiusTarget := 10;
+  TmpSpr.FCurrentRadiusTarget := 10;
+  TmpSpr.FStepWarmRadiusTarget := 10;
+  TmpSpr.FStepColdRadiusTarget := 0.2;
+
   TmpSpr.OnBeforeProc := DoMoveGamer;
   TmpSpr.OnRelizeShot := DoShotBullet;
 
@@ -662,9 +667,8 @@ begin
 
   {$IfDef Debug}
   with avk_TElement(FTG.Parent) do begin
-    avk_TSimpleButton(GetFraimById(GetIdByName('Кадры'))).LabelCaption.Caption:= UTF8String('Н: ') + avk_IntToStr(Round(FTG.Sprite[0, FTG.ColVisible[0]].NowFrame)) + UTF8String(', Т:') + avk_IntToStr(Round(FTG.Sprite[1, FTG.ColVisible[1]].NowFrame));
-    //if GetFraimById(GetIdByName('Углы')) <> nil then
-    //  avk_TSimpleButton(GetFraimById(GetIdByName('Углы'))).LabelCaption.Caption:= 'У: ' + avk_IntToStr(Round(FTG.Sprite[0, FTG.ColVisible[0]].NowFrame)) + ', Д:' + avk_IntToStr(Round(FTG.Sprite[1, FTG.ColVisible[1]].NowFrame));
+    //avk_TSimpleButton(GetFraimById(GetIdByName('Кадры'))).LabelCaption.Caption:= UTF8String('Н: ') + avk_IntToStr(Round(FTG.Sprite[0, FTG.ColVisible[0]].NowFrame)) + UTF8String(', Т:') + avk_IntToStr(Round(FTG.Sprite[1, FTG.ColVisible[1]].NowFrame));
+    avk_TSimpleButton(GetFraimById(GetIdByName('Кадры'))).LabelCaption.Caption := UTF8String('Нагрев: ') + avk_IntToStr(Round(FTG.FCurrentRadiusTarget - FTG.FMinimalRadiusTarget));
   end;
   {$EndIf}
 
@@ -677,12 +681,26 @@ var
   AlM: Single;
   TmpSpr: avk_TSimpleSprite;
   TmpBullet: TBullet1;
+  Gmr: TGamer1;
+  TmWarm: zglTPoint2D;
+  TmpRad: Single;
   {$IfDef Debug}
   TmpBtn: avk_TSimpleButton;
   {$EndIf}
 begin
   Pnl := avk_TElement(Sender.Parent);
-  AlM := m_Angle(ATargetPoint.X, ATargetPoint.Y, AStartPoint.X, AStartPoint.Y);
+  Gmr := TGamer1(Sender);
+
+  //меняем точку прицеливания на нагрев ствола
+  TmWarm := VcForAngle(Random(360));
+  TmpRad := Round(Random(Round(Gmr.FCurrentRadiusTarget - Gmr.FMinimalRadiusTarget)) + Gmr.FMinimalRadiusTarget);
+  TmWarm.X := ATargetPoint.X + (TmWarm.X * TmpRad);
+  TmWarm.Y := ATargetPoint.Y + (TmWarm.Y * TmpRad);
+
+  Gmr.FCurrentRadiusTarget := Gmr.FStepWarmRadiusTarget + Gmr.FCurrentRadiusTarget;
+
+  AlM := m_Angle(TmWarm.X, TmWarm.Y, AStartPoint.X, AStartPoint.Y);
+
   //в рамках родителя создаем дым
   TmpSpr := avk_TSimpleSprite.Create(Pnl);
   case random(2) of
@@ -703,11 +721,15 @@ begin
       TmpBtn := avk_TSimpleButton.Create(Pnl,'Углы');
       TmpBtn.TexButton := MineForm.TexManager.TexName['Кнопка'];
       TmpBtn.SetAreaElement(103,549,100,30);
-      TmpBtn.LabelCaption.Caption := avk_IntToStr(Round(TmpSpr.SkPnt.Angle));
+      TmpBtn.LabelCaption.Caption := avk_IntToStr(Round(TmpSpr.SkPnt.Angle)) +
+        UTF8String('[') + avk_IntToStr(Round(TmWarm.X)) + UTF8String(':') +
+        avk_IntToStr(Round(TmWarm.Y)) + UTF8String(']');
       TmpBtn.LabelCaption.FontColor := $8B0000;
     end else begin
       TmpBtn := avk_TSimpleButton(GetFraimById(GetIdByName('Углы')));
-      TmpBtn.LabelCaption.Caption := avk_IntToStr(Round(TmpSpr.SkPnt.Angle));
+      TmpBtn.LabelCaption.Caption := avk_IntToStr(Round(TmpSpr.SkPnt.Angle)) +
+        UTF8String('[') + avk_IntToStr(Round(TmWarm.X)) + UTF8String(':') +
+        avk_IntToStr(Round(TmWarm.Y)) + UTF8String(']');
     end;
   {$EndIf}
 
@@ -717,7 +739,7 @@ begin
   TmpBullet.FPower := 100;
   TmpBullet.FLosePowerInStep := 0.2;
   TmpBullet.FSpeedFly := 2;
-  TmpBullet.StartMoveBullet(AStartPoint, ATargetPoint);
+  TmpBullet.StartMoveBullet(AStartPoint, TmWarm);
 end;
 
 procedure TMineForm.DoCloseBulletSmoke(Sender: TObject);

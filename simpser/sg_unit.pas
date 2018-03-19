@@ -119,13 +119,20 @@ TGamer1 = class(TSprite)
 private
   FBulletStep :Integer;
   FOnRelizeShot: TShotEvent;
-  procedure SetOnRelizeShot(AValue: TShotEvent);
 public
   MoveSpeed: Single;
   BulletPause :Integer;
+  FMinimalRadiusTarget: Single;
+  FCurrentRadiusTarget: Single;
+  FStepWarmRadiusTarget: Single;
+  FStepColdRadiusTarget: Single;
   procedure MoveSprite(AFlag: byte; AMousePosition: zglTPoint2D);
+  {$IfDef Debug}
+  procedure DoFinishDraw(Sender: TObject);
+  {$EndIf}
+
 public
-  property OnRelizeShot: TShotEvent read FOnRelizeShot write SetOnRelizeShot;
+  property OnRelizeShot: TShotEvent read FOnRelizeShot write FOnRelizeShot;
 public
   constructor Create(const InParent: avk_TFraim = nil);
   destructor Destroy; override;
