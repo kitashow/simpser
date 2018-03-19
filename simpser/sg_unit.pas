@@ -134,10 +134,24 @@ end;
 { TBullet1 }
 
 TBullet1 = class(TSprite)
+private
+  FOnRelizeDethBullet: TNotifyEvent;
+  procedure DoSimpleDethBullet(Sender: TObject);
 public
   FStartPoint, FFinishPoint: zglTPoint2D;
   FCurAngle: Single;
+  FPower: Single;
+  FLosePowerInStep: Single;
+  FSpeedFly: Single;
+  {$IfDef Debug}
+  procedure DoDraw(Sender: TObject);
+  {$EndIf}
+  procedure DoProc(Sender: TObject);
   procedure StartMoveBullet(AStartPoint, AFinishPoint: zglTPoint2D);
+public
+  constructor Create(const InParent: avk_TFraim = nil);
+public
+  property OnRelizeDethBullet: TNotifyEvent read FOnRelizeDethBullet write FOnRelizeDethBullet;
 end;
 
 

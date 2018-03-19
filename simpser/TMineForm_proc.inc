@@ -609,7 +609,7 @@ begin
   TmpSpr.ColAnimate[1, 1] := false;
   TmpSpr.MoveSpeed := 1;
 
-  TmpSpr.BulletPause := 14;
+  TmpSpr.BulletPause := 7;
   //{1 = 15 пуль, отключить}
   //2 = 7 //3 = 5 //4 = 4
   //5,6 = 3 //7-13 = 2 //14 = 1
@@ -662,7 +662,7 @@ begin
 
   {$IfDef Debug}
   with avk_TElement(FTG.Parent) do begin
-    avk_TSimpleButton(GetFraimById(GetIdByName('Кадры'))).LabelCaption.Caption:= 'Н: ' + avk_IntToStr(Round(FTG.Sprite[0, FTG.ColVisible[0]].NowFrame)) + ', Т:' + avk_IntToStr(Round(FTG.Sprite[1, FTG.ColVisible[1]].NowFrame));
+    avk_TSimpleButton(GetFraimById(GetIdByName('Кадры'))).LabelCaption.Caption:= UTF8String('Н: ') + avk_IntToStr(Round(FTG.Sprite[0, FTG.ColVisible[0]].NowFrame)) + UTF8String(', Т:') + avk_IntToStr(Round(FTG.Sprite[1, FTG.ColVisible[1]].NowFrame));
     //if GetFraimById(GetIdByName('Углы')) <> nil then
     //  avk_TSimpleButton(GetFraimById(GetIdByName('Углы'))).LabelCaption.Caption:= 'У: ' + avk_IntToStr(Round(FTG.Sprite[0, FTG.ColVisible[0]].NowFrame)) + ', Д:' + avk_IntToStr(Round(FTG.Sprite[1, FTG.ColVisible[1]].NowFrame));
   end;
@@ -676,12 +676,13 @@ var
   Pnl: avk_TElement;
   AlM: Single;
   TmpSpr: avk_TSimpleSprite;
+  TmpBullet: TBullet1;
   {$IfDef Debug}
   TmpBtn: avk_TSimpleButton;
   {$EndIf}
 begin
   Pnl := avk_TElement(Sender.Parent);
-  AlM := Round(m_Angle(AStartPoint.X, AStartPoint.Y, ATargetPoint.X, ATargetPoint.Y) - 180);
+  AlM := m_Angle(ATargetPoint.X, ATargetPoint.Y, AStartPoint.X, AStartPoint.Y);
   //в рамках родителя создаем дым
   TmpSpr := avk_TSimpleSprite.Create(Pnl);
   case random(2) of
@@ -695,6 +696,7 @@ begin
   TmpSpr.SkPnt.SetInternalParameters(AStartPoint.X, AStartPoint.Y, 0, 0.4);
   TmpSpr.DoProc(Self);
   TmpSpr.OnAfterProc := DoCloseBulletSmoke;
+
   {$IfDef Debug}
   with Pnl do
     if GetFraimById(GetIdByName('Углы')) = nil then begin
@@ -708,6 +710,14 @@ begin
       TmpBtn.LabelCaption.Caption := avk_IntToStr(Round(TmpSpr.SkPnt.Angle));
     end;
   {$EndIf}
+
+  TmpBullet := TBullet1.Create(Pnl);
+  TmpBullet.Sprite[0, 0].Texture := MineForm.TexManager.TexName['пулька'];
+  TmpBullet.Sprite[0, 0].SetInternalParameters(0, 0, 0, 1, -3, -7, 6, 14);
+  TmpBullet.FPower := 100;
+  TmpBullet.FLosePowerInStep := 0.2;
+  TmpBullet.FSpeedFly := 2;
+  TmpBullet.StartMoveBullet(AStartPoint, ATargetPoint);
 end;
 
 procedure TMineForm.DoCloseBulletSmoke(Sender: TObject);

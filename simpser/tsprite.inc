@@ -100,7 +100,8 @@ var
 begin
   for CKL1 := 0 to Length(FSprites) - 1 do
     for CKL2 := 0 to Length(FSprites[CKL1]) - 1 do begin
-      FSprites[CKL1, CKL2].SetInternalParameters(Position.X, Position.Y, PosAngle, PosScale);
+      FSprites[CKL1, CKL2].SetInternalParameters(Position.X, Position.Y, PosAngle, PosScale,
+        FSprites[CKL1, CKL2].X, FSprites[CKL1, CKL2].Y, FSprites[CKL1, CKL2].W, FSprites[CKL1, CKL2].H);
     end;
 end;
 
