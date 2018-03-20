@@ -11,10 +11,10 @@ var
   CKL1, CKL2: Integer;
 begin
   if not PosHide then
-    for CKL1 := 0 to Length(FSprites) - 1 do
-      for CKL2 := 0 to Length(FSprites[CKL1]) - 1 do
-        if not FSprites[CKL1, CKL2].Hide then begin
-          FSprites[CKL1, CKL2].DoDraw;
+    for CKL1 := 0 to ColCount - 1 do
+      for CKL2 := 0 to RowCount[CKL1] - 1 do
+        if not Sprite[CKL1, CKL2].Hide then begin
+          Sprite[CKL1, CKL2].DoDraw;
         end;
 end;
 {$EndIf}
@@ -24,15 +24,15 @@ var
   TmpRP: zglTPoint2D;
   CKL1, CKL2: Integer;
 begin
-  if Assigned(FOnBeforeProc) then FOnBeforeProc(Self);
+  if Assigned(OnBeforeProc) then OnBeforeProc(Self);
 
   SetPosForAll;
 
   if PosAnimate then
-    for CKL1 := 0 to Length(FSprites) - 1 do
-      for CKL2 := 0 to Length(FSprites[CKL1]) - 1 do
-        if FSprites[CKL1, CKL2].Animate then
-          FSprites[CKL1, CKL2].DoProc;
+    for CKL1 := 0 to ColCount - 1 do
+      for CKL2 := 0 to RowCount[CKL1] - 1 do
+        if Sprite[CKL1, CKL2].Animate then
+          Sprite[CKL1, CKL2].DoProc;
 
   //После реализации предыдущего шага считаем новый
   if FPower <= 0 then
@@ -43,7 +43,7 @@ begin
   Position.X := Position.X + (TmpRP.X * FSpeedFly);
   Position.Y := Position.Y + (TmpRP.Y * FSpeedFly);
 
-  if Assigned(FOnAfterProc) then FOnAfterProc(Self);
+  if Assigned(OnAfterProc) then OnAfterProc(Self);
 end;
 
 procedure TBullet1.StartMoveBullet(AStartPoint, AFinishPoint: zglTPoint2D);

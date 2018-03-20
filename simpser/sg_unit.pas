@@ -71,51 +71,9 @@ type
 
 TShotEvent = procedure (const Sender: avk_TFraim; const AStartPoint, ATargetPoint: zglTPoint2D) of object;
 
-TSprite = class(avk_TFraim)
-private
-  FSprites: array of array of avk_TSkeletTile;
-private
-  FOnAfterProc: TNotifyEvent;
-  FOnBeforeProc: TNotifyEvent;
-  function GetColAngle(const ACol: Integer): Single;
-  function GetColAnimate(const ACol, ARow: Integer): boolean;
-  function GetColPosition(const ACol: Integer): zglTPoint2D;
-  function GetColVisible(const ACol: Integer): Integer;
-  function GetSprite(const ACol, ARow: Integer): avk_TSkeletTile;
-  procedure SetColAngle(const ACol: Integer; AValue: Single);
-  procedure SetColAnimate(const ACol, ARow: Integer; AValue: boolean);
-  procedure SetColPosition(const ACol: Integer; AValue: zglTPoint2D);
-  procedure SetColVisible(const ACol: Integer; ARow: Integer);
-  procedure SetSprite(const ACol, ARow: Integer; AValue: avk_TSkeletTile = nil);
-public
-  property ColPosition[const ACol: Integer]: zglTPoint2D read GetColPosition write SetColPosition;
-  property ColAngle[const ACol: Integer]: Single read GetColAngle write SetColAngle;
-  property ColVisible[const ACol: Integer]: Integer read GetColVisible write SetColVisible;
-  property ColAnimate[const ACol, ARow: Integer]: boolean read GetColAnimate write SetColAnimate;
-  property Sprite[const ACol, ARow: Integer]: avk_TSkeletTile read GetSprite write SetSprite;
-public
-  Position: zglTPoint2D;
-  PosAngle: Single;
-  PosScale: Single;
-  procedure SetPosForAll;
-public
-  PosHide: boolean;
-  PosAnimate: boolean;
-public
-  property OnBeforeProc: TNotifyEvent read FOnBeforeProc write FOnBeforeProc;
-  property OnAfterProc: TNotifyEvent read FOnAfterProc write FOnAfterProc;
-public
-  procedure DoDraw(Sender: TObject);
-  procedure DoProc(Sender: TObject);
-public
-  constructor Create(const InParent: avk_TFraim = nil);
-  destructor Destroy; override;
-end;
-
-
 { TGamer1 }
 
-TGamer1 = class(TSprite)
+TGamer1 = class(avk_TSprite)
 private
   FBulletStep :Integer;
   FOnRelizeShot: TShotEvent;
@@ -140,7 +98,7 @@ end;
 
 { TBullet1 }
 
-TBullet1 = class(TSprite)
+TBullet1 = class(avk_TSprite)
 private
   FOnRelizeDethBullet: TNotifyEvent;
   procedure DoSimpleDethBullet(Sender: TObject);
@@ -163,9 +121,6 @@ end;
 
 
 implementation
-
-//TSprite
-{$INCLUDE tsprite.inc}
 
 //TGamer1
 {$INCLUDE tgamer1.inc}

@@ -24,7 +24,7 @@ var
   LegAngle, Speed45: Single;
 begin
 
-  ItIsFire := GetColVisible(1) = 1; //это стрельба
+  ItIsFire := ColVisible[1] = 1; //это стрельба
 
   CPY := Position.Y;
   CPX := Position.X;
@@ -36,7 +36,7 @@ begin
   TmpK_LEFT := (AFlag and FLAG_K_LEFT) > 0;
   TmpK_RIGHT := (AFlag and FLAG_K_RIGHT) > 0;
 
-  LegAngle := GetColAngle(0);
+  LegAngle := ColAngle[0];
 
   if TmpK_UP and TmpK_LEFT then begin
     LegAngle := -45;
@@ -71,24 +71,24 @@ begin
   Position.X := CPX;
   Position.Y := CPY;
 
-  SetColAngle(0, LegAngle);
-  SetColPosition(0, Position);
+  ColAngle[0] := LegAngle;
+  ColPosition[0] := Position;
 
-  SetColAngle(1, m_Angle(CPX, CPY, AMousePosition.X, AMousePosition.Y) - 90);
-  SetColPosition(1, Position);
+  ColAngle[1] := m_Angle(CPX, CPY, AMousePosition.X, AMousePosition.Y) - 90;
+  ColPosition[1] := Position;
 
   if not ItIsFire then begin
     if (AFlag and FLAG_M_LEFT_Cl) > 0 then begin//стреляем
-      SetColVisible(1, 1);
-      FSprites[1, 1].NowFrame := FSprites[1, 1].CoolSprite.StartFrame;
+      ColVisible[1] := 1;
+      Sprite[1, 1].NowFrame := Sprite[1, 1].CoolSprite.StartFrame;
     end;
     //в мирном режиме охлаждаем ствол
     if FCurrentRadiusTarget > FMinimalRadiusTarget then
        FCurrentRadiusTarget := FCurrentRadiusTarget - FStepColdRadiusTarget;
   end;
 
-  Leg := FSprites[0, GetColVisible(0)];
-  Bdy := FSprites[1, GetColVisible(1)];
+  Leg := Sprite[0, ColVisible[0]];
+  Bdy := Sprite[1, ColVisible[1]];
 
   Leg.Animate := true;
   Bdy.Animate := true;
@@ -107,7 +107,7 @@ begin
     end;
     if Round(Bdy.NowFrame) = Bdy.CoolSprite.EndFrame then begin // стрельба окончена
       Bdy.NowFrame := Bdy.CoolSprite.StartFrame;
-      SetColVisible(1, 0);
+      ColVisible[1] := 0;
     end;
   end;
 
@@ -121,7 +121,7 @@ procedure TGamer1.DoFinishDraw(Sender: TObject);
 var
   ItIsFire: Boolean;
 begin
-  ItIsFire := GetColVisible(1) = 1; //это стрельба
+  ItIsFire := ColVisible[1] = 1; //это стрельба
   if ItIsFire then begin
     pr2d_Circle(avk_MouseIsX, avk_MouseIsY, FCurrentRadiusTarget, $7a250f, 150 ,250, PR2D_SMOOTH)
   end;

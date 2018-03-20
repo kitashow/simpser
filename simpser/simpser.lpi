@@ -189,7 +189,7 @@
         <IsPartOfProject Value="True"/>
       </Unit4>
       <Unit5>
-        <Filename Value="tsprite.inc"/>
+        <Filename Value="../avk-1/avk_sprites_tsprite.inc"/>
         <IsPartOfProject Value="True"/>
       </Unit5>
       <Unit6>
