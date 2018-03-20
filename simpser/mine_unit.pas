@@ -69,8 +69,6 @@ type
     procedure WasError(const InCommand: String = ''; InMessage: String = ''; InParent: TObject = nil);
     procedure DoInputTCPMessage(Sender: TObject);
   public
-    procedure DoInspectBullet(Sender: TObject);
-  public
     procedure DoClickOnSimpleLabel(Sender: TObject);
     procedure DoSpriteProverka(Sender: TObject);
   public

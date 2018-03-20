@@ -17,7 +17,8 @@
         <Filename Value="mine_unit.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <CursorPos X="21" Y="61"/>
+        <TopLine Value="45"/>
+        <CursorPos Y="71"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -35,7 +36,7 @@
         <Filename Value="sg_unit.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="5"/>
-        <TopLine Value="55"/>
+        <TopLine Value="79"/>
         <CursorPos Y="124"/>
         <UsageCount Value="108"/>
         <Loaded Value="True"/>
@@ -63,9 +64,9 @@
       <Unit6>
         <Filename Value="tbullet1.inc"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="6"/>
-        <CursorPos X="11" Y="17"/>
+        <TopLine Value="17"/>
+        <CursorPos X="11" Y="35"/>
         <UsageCount Value="56"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -204,13 +205,14 @@
       </Unit22>
       <Unit23>
         <Filename Value="TMineForm_proc.inc"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="465"/>
-        <CursorPos X="26" Y="612"/>
-        <FoldState Value=" T03026 pj6n7Y393212 T3705515 T180451416 T6F068 TMu643091Z"/>
+        <TopLine Value="214"/>
+        <CursorPos Y="228"/>
+        <FoldState Value=" T3705515 pkUqO0X412 pjFlH0w[94Lkg06 T18045142]B09'25]Q4n0Y3932]mT6F066[94Mue43C"/>
         <UsageCount Value="107"/>
         <Bookmarks Count="1">
-          <Item0 X="21" Y="375" ID="1"/>
+          <Item0 X="21" Y="374" ID="1"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -558,7 +560,7 @@
         <EditorIndex Value="2"/>
         <TopLine Value="290"/>
         <CursorPos X="15" Y="302"/>
-        <UsageCount Value="61"/>
+        <UsageCount Value="62"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit66>
@@ -759,7 +761,7 @@
       <Define7 Value="USE_CHIPMUNK_STATIC"/>
       <Define8 Value="ShowCursor"/>
     </OtherDefines>
-    <JumpHistory Count="27" HistoryIndex="26">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="TMineForm_proc.inc"/>
         <Caret Line="742" Column="20" TopLine="724"/>
@@ -868,6 +870,18 @@
         <Filename Value="../avk-1/avk_sprites.pas"/>
         <Caret Line="302" Column="15" TopLine="290"/>
       </Position27>
+      <Position28>
+        <Filename Value="tbullet1.inc"/>
+        <Caret Line="17" Column="11"/>
+      </Position28>
+      <Position29>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="454" TopLine="203"/>
+      </Position29>
+      <Position30>
+        <Filename Value="mine_unit.pas"/>
+        <Caret Line="71" TopLine="45"/>
+      </Position30>
     </JumpHistory>
   </ProjectSession>
   <Debugging>

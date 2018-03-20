@@ -225,7 +225,6 @@ begin
   TmpPnl.TexPanel := MineForm.TexManager.TexName['Панелька пуст'];
   TmpPnl.SetAreaElement(0,40,800,600);
   TmpPnl.EmpityCentre := true;
-  TmpPnl.OnProc := DoInspectBullet; //пульки
 
   //теперь делаем спрайтик
   TmpSpr := avk_TSimpleSprite.Create(TmpPnl);
@@ -415,6 +414,41 @@ begin
   TmpBtn.LabelCaption.FontColor := $8B0000;
   {$EndIf}
 
+end;
+
+procedure TMineForm.DoPnlSprMove(Sender: TObject);
+var
+  tempEl: avk_TSimpleMap;
+  SpeedLost, SpeedLostX, SpeedLostY: Single;
+begin
+  if Sender.ClassName <> 'avk_TSimpleMap' then Exit;
+  tempEl := avk_TSimpleMap(Sender);
+  SpeedLost := 1;
+  with tempEl do begin
+    SpeedLostX := 0;
+    SpeedLostY := 0;
+    {$IfDef Debug}
+    avk_TSimpleButton(GetFraimById(GetIdByName('Производительность'))).LabelCaption.Caption:= 'P - D ' + avk_IntToStr(CalcPrgs - CalcDraw) + '[' + avk_IntToStr(FSFrecvency) + ']';
+    {$EndIf}
+    if key_Down( K_A ) or key_Down( K_LEFT ) then begin
+      SpeedLostX := SpeedLostX - SpeedLost;
+    end;
+    if key_Down( K_D ) or key_Down( K_RIGHT ) then begin
+      SpeedLostX := SpeedLostX + SpeedLost;
+    end;
+    if key_Down( K_W ) or key_Down( K_UP ) then begin
+      SpeedLostY := SpeedLostY - SpeedLost;
+    end;
+    if key_Down( K_S ) or key_Down( K_DOWN ) then begin
+      SpeedLostY := SpeedLostY + SpeedLost;
+    end;
+    if not ((SpeedLostX = 0) and (SpeedLostY = 0)) then begin
+      SpeedLostX := SpeedLostX / 2;
+      SpeedLostY := SpeedLostY / 2;
+    end;
+    if not((SpeedLostX = 0) and (SpeedLostY = 0)) then
+      MoveWievPanelMap(SpeedLostX, SpeedLostY);
+  end;
 end;
 
 procedure TMineForm.DoStopStartServer(Sender: TObject);
@@ -750,55 +784,4 @@ begin
   if Blt.SkPnt.Emitter = nil then Blt.DeleteMe := true;
 end;
 
-procedure TMineForm.DoPnlSprMove(Sender: TObject);
-var
-  tempEl: avk_TSimpleMap;
-  SpeedLost, SpeedLostX, SpeedLostY: Single;
-begin
-  if Sender.ClassName <> 'avk_TSimpleMap' then Exit;
-  tempEl := avk_TSimpleMap(Sender);
-  SpeedLost := 1;
-  with tempEl do begin
-    SpeedLostX := 0;
-    SpeedLostY := 0;
-    {$IfDef Debug}
-    avk_TSimpleButton(GetFraimById(GetIdByName('Производительность'))).LabelCaption.Caption:= 'P - D ' + avk_IntToStr(CalcPrgs - CalcDraw) + '[' + avk_IntToStr(FSFrecvency) + ']';
-    {$EndIf}
-    if key_Down( K_A ) or key_Down( K_LEFT ) then begin
-      SpeedLostX := SpeedLostX - SpeedLost;
-    end;
-    if key_Down( K_D ) or key_Down( K_RIGHT ) then begin
-      SpeedLostX := SpeedLostX + SpeedLost;
-    end;
-    if key_Down( K_W ) or key_Down( K_UP ) then begin
-      SpeedLostY := SpeedLostY - SpeedLost;
-    end;
-    if key_Down( K_S ) or key_Down( K_DOWN ) then begin
-      SpeedLostY := SpeedLostY + SpeedLost;
-    end;
-    if not ((SpeedLostX = 0) and (SpeedLostY = 0)) then begin
-      SpeedLostX := SpeedLostX / 2;
-      SpeedLostY := SpeedLostY / 2;
-    end;
-    if not((SpeedLostX = 0) and (SpeedLostY = 0)) then
-      MoveWievPanelMap(SpeedLostX, SpeedLostY);
-  end;
-end;
-
-procedure TMineForm.DoInspectBullet(Sender: TObject);
-var
-  TmpPnl: avk_TPanel;
-  TmpSpr: avk_TSimpleSprite;
-begin
-  if avk_MouseIsClick(M_BLEFT) then begin
-    //теперь делаем спрайтик
-    //TmpPnl := avk_TPanel(Sender);
-    //TmpSpr := avk_TSimpleSprite.Create(TmpPnl);
-    //TmpSpr.SkPnt.Texture := MineForm.TexManager.TexName['пулька'];
-    //TmpSpr.SetParameters(80, 80, 6, 14, 0);
-    //TmpSpr.SkPnt.StopCadre := 0;
-    //TmpSpr.SkPnt.RateCadre := 0;
-    //TmpSpr.OnBeforeProc := DoAPforSpr;//чтоб двигать
-  end;
-end;
 
