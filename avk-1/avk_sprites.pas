@@ -294,6 +294,53 @@ avk_TSimpleSprite = class (avk_TFraim)
     destructor Destroy; override;
 end;
 
+{ avk_TSprite }
+
+avk_TSprite = class(avk_TFraim)
+private
+  FSprites: array of array of avk_TSkeletTile;
+  function GetColCount: Integer;
+  function GetRowCount(const ACol: Integer): Integer;
+private
+  FOnAfterProc: TNotifyEvent;
+  FOnBeforeProc: TNotifyEvent;
+  function GetColAngle(const ACol: Integer): Single;
+  function GetColAnimate(const ACol, ARow: Integer): boolean;
+  function GetColPosition(const ACol: Integer): zglTPoint2D;
+  function GetColVisible(const ACol: Integer): Integer;
+  function GetSprite(const ACol, ARow: Integer): avk_TSkeletTile;
+  procedure SetColAngle(const ACol: Integer; AValue: Single);
+  procedure SetColAnimate(const ACol, ARow: Integer; AValue: boolean);
+  procedure SetColPosition(const ACol: Integer; AValue: zglTPoint2D);
+  procedure SetColVisible(const ACol: Integer; ARow: Integer);
+  procedure SetSprite(const ACol, ARow: Integer; AValue: avk_TSkeletTile = nil);
+public
+  property ColPosition[const ACol: Integer]: zglTPoint2D read GetColPosition write SetColPosition;
+  property ColAngle[const ACol: Integer]: Single read GetColAngle write SetColAngle;
+  property ColVisible[const ACol: Integer]: Integer read GetColVisible write SetColVisible;
+  property ColAnimate[const ACol, ARow: Integer]: boolean read GetColAnimate write SetColAnimate;
+  property Sprite[const ACol, ARow: Integer]: avk_TSkeletTile read GetSprite write SetSprite;
+  property ColCount: Integer read GetColCount;
+  property RowCount[const ACol: Integer]: Integer read GetRowCount;
+public
+  Position: zglTPoint2D;
+  PosAngle: Single;
+  PosScale: Single;
+  procedure SetPosForAll;
+public
+  PosHide: boolean;
+  PosAnimate: boolean;
+public
+  property OnBeforeProc: TNotifyEvent read FOnBeforeProc write FOnBeforeProc;
+  property OnAfterProc: TNotifyEvent read FOnAfterProc write FOnAfterProc;
+public
+  procedure DoDraw(Sender: TObject);
+  procedure DoProc(Sender: TObject);
+public
+  constructor Create(const InParent: avk_TFraim = nil);
+  destructor Destroy; override;
+end;
+
 
 implementation
 
@@ -312,6 +359,8 @@ implementation
 //avk_TSimpleSprite
 {$INCLUDE avk_sprites_tsimplesprite.inc}
 
+//avk_TSprite
+{$INCLUDE avk_sprites_tsprite.inc}
 
 
 end.
