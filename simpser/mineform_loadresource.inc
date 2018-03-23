@@ -12,6 +12,7 @@
    MineForm.LoadResource(TmpPrefix+'blueback.png', 'wallpaper');
    MineForm.LoadResource(TmpPrefix+'simplebutton.png', 'Кнопка');
    MineForm.LoadResource(TmpPrefix+'fraimwallpaper.png', 'Обои фрейма');
+   MineForm.LoadResource(TmpPrefix+'gwallpapers.png', 'Обои игрового поля');
    MineForm.LoadResource(TmpPrefix+'connor_btn.png', 'Угловая кнопка');
    MineForm.LoadResource(TmpPrefix+'swichbutton.png', 'Чекбокс');
    MineForm.LoadResource(TmpPrefix+'bevelpanel.png', 'Панелька');

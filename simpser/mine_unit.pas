@@ -72,6 +72,8 @@ type
     procedure DoClickOnSimpleLabel(Sender: TObject);
     procedure DoSpriteProverka(Sender: TObject);
   public
+    procedure DoGameField(Sender: TObject);
+  public
     constructor Create(const InParent: avk_TFraim; InName: String);
     destructor Destroy; override;
   end;
@@ -218,6 +220,15 @@ begin
   TmpBttn.Layer := 120;
   TmpBttn.OnClick := TMineForm.DoPanelGamer;
 
+  TmpBttn := avk_TSimpleButton.Create(MineForm,'Игровое поле');
+  TmpBttn.SetAreaElement(979,2,120,32);
+  TmpBttn.TexButton := MineForm.TexManager.TexName['Кнопка'];
+  TmpBttn.LabelCaption.Font := MineForm.FontManager.FontName['Bicubik-Bold-12pt'];
+  TmpBttn.LabelCaption.Caption := 'Game';
+  TmpBttn.LabelCaption.FontColor := $1E90FF;
+  TmpBttn.Layer := 120;
+  TmpBttn.OnClick := TMineForm.DoGameField;
+
   TmpBttn := avk_TSimpleButton.Create(MineForm,'Выход');
   TmpBttn.SetAreaElement(MineForm.AreaElement.W - 121,1,120,32);
   TmpBttn.TexButton := MineForm.TexManager.TexName['Кнопка'];
@@ -230,6 +241,11 @@ end;
 
 //процедуры
 {$INCLUDE TMineForm_proc.inc}
+
+//процедуры игрового поля
+{$INCLUDE mineform_gamefield.inc}
+
+
 
 end.
 

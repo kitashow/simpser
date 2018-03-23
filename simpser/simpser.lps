@@ -3,7 +3,7 @@
   <ProjectSession>
     <Version Value="10"/>
     <BuildModes Active="Debug"/>
-    <Units Count="91">
+    <Units Count="92">
       <Unit0>
         <Filename Value="simpser.pas"/>
         <IsPartOfProject Value="True"/>
@@ -17,8 +17,8 @@
         <Filename Value="mine_unit.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="45"/>
-        <CursorPos Y="71"/>
+        <TopLine Value="219"/>
+        <CursorPos X="67" Y="116"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -29,54 +29,55 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="70"/>
         <CursorPos X="20" Y="67"/>
-        <UsageCount Value="137"/>
+        <UsageCount Value="139"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit2>
       <Unit3>
         <Filename Value="sg_unit.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="5"/>
+        <EditorIndex Value="6"/>
         <TopLine Value="79"/>
         <CursorPos Y="124"/>
-        <UsageCount Value="108"/>
+        <UsageCount Value="110"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit3>
       <Unit4>
         <Filename Value="tgamer1.inc"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="8"/>
+        <EditorIndex Value="9"/>
         <TopLine Value="100"/>
         <CursorPos X="28" Y="124"/>
-        <UsageCount Value="61"/>
+        <UsageCount Value="63"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit4>
       <Unit5>
         <Filename Value="../avk-1/avk_sprites_tsprite.inc"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="7"/>
+        <EditorIndex Value="8"/>
         <CursorPos X="3" Y="5"/>
-        <UsageCount Value="58"/>
+        <UsageCount Value="60"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit5>
       <Unit6>
         <Filename Value="tbullet1.inc"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="6"/>
+        <EditorIndex Value="7"/>
         <TopLine Value="17"/>
         <CursorPos X="11" Y="35"/>
-        <UsageCount Value="56"/>
+        <UsageCount Value="58"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit6>
       <Unit7>
         <Filename Value="../avk-1/avk_btype.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="401"/>
-        <CursorPos Y="416"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="323"/>
+        <CursorPos Y="346"/>
         <UsageCount Value="229"/>
+        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit7>
       <Unit8>
@@ -143,9 +144,10 @@
       </Unit15>
       <Unit16>
         <Filename Value="mineform_loadresource.inc"/>
-        <EditorIndex Value="3"/>
-        <TopLine Value="31"/>
-        <CursorPos X="63" Y="59"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="2"/>
+        <CursorPos X="74" Y="15"/>
         <UsageCount Value="100"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
@@ -205,11 +207,9 @@
       </Unit22>
       <Unit23>
         <Filename Value="TMineForm_proc.inc"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="4"/>
-        <TopLine Value="214"/>
-        <CursorPos Y="228"/>
-        <FoldState Value=" T3705515 pkUqO0X412 pjFlH0w[94Lkg06 T18045142]B09'25]Q4n0Y3932]mT6F066[94Mue43C"/>
+        <EditorIndex Value="5"/>
+        <CursorPos Y="249"/>
+        <FoldState Value=" T03026 pj6n6Y3B]9Lj9qaD piXjSV34 T37055 pl7lO0i]9kUm00X[q49kD0j2]9DkL0,1 T1804[Y4QlT0c[94Clf0T6](dkF0d[h42kS0r]h6F06D TMue43031m"/>
         <UsageCount Value="107"/>
         <Bookmarks Count="1">
           <Item0 X="21" Y="374" ID="1"/>
@@ -557,11 +557,10 @@
       </Unit65>
       <Unit66>
         <Filename Value="../avk-1/avk_sprites.pas"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="290"/>
         <CursorPos X="15" Y="302"/>
         <UsageCount Value="62"/>
-        <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit66>
       <Unit67>
@@ -749,6 +748,15 @@
         <UsageCount Value="12"/>
         <DefaultSyntaxHighlighter Value="Delphi"/>
       </Unit90>
+      <Unit91>
+        <Filename Value="mineform_gamefield.inc"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="72" Y="9"/>
+        <UsageCount Value="22"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit91>
     </Units>
     <OtherDefines Count="9">
       <Define0 Value="Debug"/>
@@ -763,124 +771,124 @@
     </OtherDefines>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="TMineForm_proc.inc"/>
-        <Caret Line="742" Column="20" TopLine="724"/>
-      </Position1>
-      <Position2>
-        <Filename Value="mine_unit.pas"/>
-        <Caret Line="61" Column="21" TopLine="51"/>
-      </Position2>
-      <Position3>
-        <Filename Value="sg_unit.pas"/>
-        <Caret Line="154" Column="20" TopLine="143"/>
-      </Position3>
-      <Position4>
-        <Filename Value="sg_unit.pas"/>
-        <Caret Line="129" Column="18" TopLine="115"/>
-      </Position4>
-      <Position5>
-        <Filename Value="tgamer1.inc"/>
-        <Caret Line="9" Column="19"/>
-      </Position5>
-      <Position6>
-        <Filename Value="tgamer1.inc"/>
-        <Caret Line="121" Column="65" TopLine="100"/>
-      </Position6>
-      <Position7>
-        <Filename Value="tgamer1.inc"/>
-        <Caret Line="12" TopLine="3"/>
-      </Position7>
-      <Position8>
-        <Filename Value="tgamer1.inc"/>
-        <Caret Line="123" TopLine="102"/>
-      </Position8>
-      <Position9>
-        <Filename Value="tgamer1.inc"/>
-        <Caret Line="126" Column="95" TopLine="103"/>
-      </Position9>
-      <Position10>
-        <Filename Value="TMineForm_proc.inc"/>
-        <Caret Line="733" Column="23" TopLine="715"/>
-      </Position10>
-      <Position11>
-        <Filename Value="sg_unit.pas"/>
-        <Caret Line="157" Column="20" TopLine="146"/>
-      </Position11>
-      <Position12>
-        <Filename Value="mine_unit.pas"/>
-        <Caret Line="61" Column="21"/>
-      </Position12>
-      <Position13>
-        <Filename Value="sg_unit.pas"/>
-        <Caret Line="124" TopLine="55"/>
-      </Position13>
-      <Position14>
-        <Filename Value="tgamer1.inc"/>
-        <Caret Line="27" Column="28" TopLine="12"/>
-      </Position14>
-      <Position15>
-        <Filename Value="tgamer1.inc"/>
-        <Caret Line="110" Column="25" TopLine="98"/>
-      </Position15>
-      <Position16>
-        <Filename Value="tgamer1.inc"/>
-        <Caret Line="77" Column="76" TopLine="64"/>
-      </Position16>
-      <Position17>
-        <Filename Value="tgamer1.inc"/>
-        <Caret Line="91" Column="31" TopLine="76"/>
-      </Position17>
-      <Position18>
-        <Filename Value="tgamer1.inc"/>
-        <Caret Line="124" Column="28" TopLine="100"/>
-      </Position18>
-      <Position19>
-        <Filename Value="../avk-1/avk_sprites.pas"/>
-        <Caret Line="302" Column="9" TopLine="287"/>
-      </Position19>
-      <Position20>
-        <Filename Value="tbullet1.inc"/>
-        <Caret Line="27" Column="34" TopLine="21"/>
-      </Position20>
-      <Position21>
-        <Filename Value="../avk-1/avk_sprites_tsprite.inc"/>
-        <Caret Line="148" Column="23" TopLine="119"/>
-      </Position21>
-      <Position22>
-        <Filename Value="../avk-1/avk_sprites_tsprite.inc"/>
-        <Caret Line="5" Column="28" TopLine="3"/>
-      </Position22>
-      <Position23>
-        <Filename Value="../avk-1/avk_sprites_tsprite.inc"/>
-        <Caret Line="96" Column="13" TopLine="78"/>
-      </Position23>
-      <Position24>
-        <Filename Value="../avk-1/avk_sprites.pas"/>
-        <Caret Line="324" Column="62" TopLine="296"/>
-      </Position24>
-      <Position25>
-        <Filename Value="../avk-1/avk_sprites.pas"/>
-        <Caret Line="302" Column="18" TopLine="295"/>
-      </Position25>
-      <Position26>
-        <Filename Value="../avk-1/avk_sprites_tsprite.inc"/>
-        <Caret Line="5" Column="3"/>
-      </Position26>
-      <Position27>
-        <Filename Value="../avk-1/avk_sprites.pas"/>
-        <Caret Line="302" Column="15" TopLine="290"/>
-      </Position27>
-      <Position28>
-        <Filename Value="tbullet1.inc"/>
-        <Caret Line="17" Column="11"/>
-      </Position28>
-      <Position29>
-        <Filename Value="TMineForm_proc.inc"/>
-        <Caret Line="454" TopLine="203"/>
-      </Position29>
-      <Position30>
         <Filename Value="mine_unit.pas"/>
         <Caret Line="71" TopLine="45"/>
+      </Position1>
+      <Position2>
+        <Filename Value="TMineForm_proc.inc"/>
+        <Caret Line="792" TopLine="331"/>
+      </Position2>
+      <Position3>
+        <Filename Value="mineform_gamefield.inc"/>
+        <Caret Line="4" Column="5"/>
+      </Position3>
+      <Position4>
+        <Filename Value="mine_unit.pas"/>
+        <Caret Line="237" Column="25" TopLine="213"/>
+      </Position4>
+      <Position5>
+        <Filename Value="mineform_gamefield.inc"/>
+        <Caret Line="6" Column="33"/>
+      </Position5>
+      <Position6>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="90" Column="14" TopLine="76"/>
+      </Position6>
+      <Position7>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="26" Column="20" TopLine="11"/>
+      </Position7>
+      <Position8>
+        <Filename Value="mineform_gamefield.inc"/>
+        <Caret Line="7" Column="19"/>
+      </Position8>
+      <Position9>
+        <Filename Value="mineform_gamefield.inc"/>
+        <Caret Line="8" Column="9"/>
+      </Position9>
+      <Position10>
+        <Filename Value="mineform_gamefield.inc"/>
+        <Caret Line="7"/>
+      </Position10>
+      <Position11>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="228" TopLine="213"/>
+      </Position11>
+      <Position12>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="229" TopLine="213"/>
+      </Position12>
+      <Position13>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="230" TopLine="213"/>
+      </Position13>
+      <Position14>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="159" TopLine="144"/>
+      </Position14>
+      <Position15>
+        <Filename Value="mineform_gamefield.inc"/>
+        <Caret Line="6" Column="14"/>
+      </Position15>
+      <Position16>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="97" Column="60" TopLine="84"/>
+      </Position16>
+      <Position17>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="55" Column="21" TopLine="40"/>
+      </Position17>
+      <Position18>
+        <Filename Value="mineform_gamefield.inc"/>
+        <Caret Line="6" Column="14"/>
+      </Position18>
+      <Position19>
+        <Filename Value="mineform_gamefield.inc"/>
+        <Caret Line="7"/>
+      </Position19>
+      <Position20>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="340" TopLine="324"/>
+      </Position20>
+      <Position21>
+        <Filename Value="mineform_gamefield.inc"/>
+        <Caret Line="8"/>
+      </Position21>
+      <Position22>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="338" TopLine="323"/>
+      </Position22>
+      <Position23>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="339" TopLine="323"/>
+      </Position23>
+      <Position24>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="340" TopLine="323"/>
+      </Position24>
+      <Position25>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="341" TopLine="323"/>
+      </Position25>
+      <Position26>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="342" TopLine="323"/>
+      </Position26>
+      <Position27>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="343" TopLine="323"/>
+      </Position27>
+      <Position28>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="344" TopLine="323"/>
+      </Position28>
+      <Position29>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="345" TopLine="323"/>
+      </Position29>
+      <Position30>
+        <Filename Value="../avk-1/avk_btype.pas"/>
+        <Caret Line="346" TopLine="323"/>
       </Position30>
     </JumpHistory>
   </ProjectSession>
