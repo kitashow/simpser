@@ -125,7 +125,7 @@ var
   tmpFont: zglPFont;
   ArhOpenBefore: boolean;
   tmpSnd: zglPSound;
-  tmpCs: clPSprite;
+//  tmpCs: clPSprite;
   tmpEmtr: zglPEmitter2D;
 begin
   ArhOpenBefore := ArhResNowOpen;

@@ -356,6 +356,7 @@ type
     property SoundManager: avk_TSoundManager read FSoundManager;
     property CoolSpriteManager: avk_TCoolSpriteManager read FCoolSpriteManager;
     property EmitterManager: avk_TEmitterManager read FEmitterManager;
+    property MapManager: avk_TMapArrayManager read FMapManager;
     property ArhResNowOpen: boolean read FArhiveNowOpen write FSetModeArhive;
   public
     constructor Create(const InParent: avk_TFraim = nil; InName: String = '');

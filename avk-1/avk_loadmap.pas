@@ -68,9 +68,9 @@ begin
   while not (Length(str) = 0) do begin
     SetLength(Result, Length(Result) + 1);
 
-    while not (Length(str) = 0) do begin
+    while not (Length(st) = 0) do begin
       SetLength(Result[Length(Result) - 1], Length(Result[Length(Result) - 1]) + 1);
-      Result[Length(Result) - 1, Length(Result[Length(Result) - 1]) - 1] := u_StrToInt(NextArg(str));
+      Result[Length(Result) - 1, Length(Result[Length(Result) - 1]) - 1] := u_StrToInt(NextArg(st));
     end;
 
     myReadLn(str, st);
