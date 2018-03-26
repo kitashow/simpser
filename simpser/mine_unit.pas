@@ -223,8 +223,8 @@ begin
   TmpBttn := avk_TSimpleButton.Create(MineForm,'Игровое поле');
   TmpBttn.SetAreaElement(979,2,120,32);
   TmpBttn.TexButton := MineForm.TexManager.TexName['Кнопка'];
-  TmpBttn.LabelCaption.Font := MineForm.FontManager.FontName['Bicubik-Bold-12pt'];
-  TmpBttn.LabelCaption.Caption := 'Game';
+  TmpBttn.LabelCaption.Font := MineForm.FontManager.FontName['Bicubik-Bold-9pt'];
+  TmpBttn.LabelCaption.Caption := 'Игровое поле';
   TmpBttn.LabelCaption.FontColor := $1E90FF;
   TmpBttn.Layer := 120;
   TmpBttn.OnClick := TMineForm.DoGameField;

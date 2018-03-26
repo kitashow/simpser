@@ -35,6 +35,8 @@
    MineForm.LoadResource(TmpPrefix+'BorderIndicatorComp64.png', 'край со стрелкой');
    MineForm.LoadResource(TmpPrefix+'m_a_tilefloor01.png', 'пол8');
    MineForm.LoadResource(TmpPrefix+'bullet.png', 'пулька');
+{Карты}
+   MineForm.LoadResource(TmpPrefix+'first.csv', 'пример карты');
 {Разобранный спрайт}
    MineForm.LoadResource(TmpPrefix+'helmet.png', 'спрайт шлем');
    MineForm.LoadResource(TmpPrefix+'arrow_head.png', 'спрайт стрелка на шлем');
