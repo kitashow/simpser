@@ -17,6 +17,7 @@ uses
   //, zgl_file
   //avk
   , avk_btype
+  , avk_loadmap
   //coolsprite
   , avk_cls
   ;
@@ -42,8 +43,6 @@ type
     {$ENDIF}
   end;
 
-  { avk_TCoolSpriteSimple }
-
   avk_TCoolSpriteSimple = class
     FileName: String;
     Buffer: String;
@@ -52,6 +51,13 @@ type
 
   avk_TEmitterSimple = class
     Emitter: zglPEmitter2D;
+    {$IFDEF ANDROID}
+    FileName: String;
+    {$ENDIF}
+  end;
+
+  avk_TMapArraySimple = class
+    MapArray: TMapArray;
     {$IFDEF ANDROID}
     FileName: String;
     {$ENDIF}
@@ -141,7 +147,7 @@ type
     function FGetCount: Integer;
     function GetTexSimple(InID : Integer): avk_TSoundSimple;
   public
-    procedure AddSound(InName: String; InSound: zglPSound; InFName: String='');
+    procedure AddSound(InName: String; InSound: zglPSound; InFName: String = '');
   public
     property Parent: avk_TFraim read FParent;
     property SoundList[InID :Integer]: zglPSound read GetSoundById;
@@ -164,7 +170,7 @@ type
     function FGetCount: Integer;
     function GetEmitterSimple(InID : Integer): avk_TEmitterSimple;
   public
-    procedure AddEmitter(InName: String; InEmitter: zglPEmitter2D; InFName: String='');
+    procedure AddEmitter(InName: String; InEmitter: zglPEmitter2D; InFName: String = '');
   public
     property Parent: avk_TFraim read FParent;
     property EmitterList[InID :Integer]: zglPEmitter2D read GetEmitterById;
@@ -175,7 +181,90 @@ type
     constructor Create(inParent: avk_TFraim = nil);
     destructor Destroy; override;
   end;
+
+  { avk_TMapArrayManager }
+
+  avk_TMapArrayManager = class (TObject)
+  private
+    FParent: avk_TFraim;
+    FMapArrayList: TStringList;
+    function GetMapArrayById(InID : Integer): TMapArray;
+    function GetMapArrayByName(InID : String): TMapArray;
+    function FGetCount: Integer;
+    function GetMapArraySimple(InID : Integer): avk_TMapArraySimple;
+  public
+    procedure AddMapArray(InName: String; AMapArray: TMapArray; InFName: String);
+  public
+    property Parent: avk_TFraim read FParent;
+    property MapArrayList[InID :Integer]: TMapArray read GetMapArrayById;
+    property MapArrayName[InID :String]: TMapArray read GetMapArrayByName;
+    property Count: Integer read FGetCount;
+    property ResList[InID :Integer]: avk_TMapArraySimple read GetMapArraySimple;
+  public
+    constructor Create(inParent: avk_TFraim = nil);
+    destructor Destroy; override;
+  end;
+
 implementation
+
+{ avk_TMapArrayManager }
+
+function avk_TMapArrayManager.GetMapArrayById(InID: Integer): TMapArray;
+begin
+  Result := avk_TMapArraySimple(FMapArrayList.Objects[InId]).MapArray;
+end;
+
+function avk_TMapArrayManager.GetMapArrayByName(InID: String): TMapArray;
+var
+  OutId: Integer;
+begin
+  Result := nil;
+  if InID = '' then Exit;
+  OutId := -1;
+  FMapArrayList.Find(InID, OutId);
+  Result := GetMapArrayById(OutId);
+end;
+
+function avk_TMapArrayManager.FGetCount: Integer;
+begin
+  Result := FMapArrayList.Count;
+end;
+
+function avk_TMapArrayManager.GetMapArraySimple(InID: Integer
+  ): avk_TMapArraySimple;
+begin
+  Result := avk_TMapArraySimple(FMapArrayList.Objects[InId]);
+end;
+
+procedure avk_TMapArrayManager.AddMapArray(InName: String; AMapArray: TMapArray;
+  InFName: String);
+var
+  tmp_MA: avk_TMapArraySimple;
+begin
+  tmp_MA := avk_TMapArraySimple.Create;
+  tmp_MA.MapArray := AMapArray;
+  {$IFDEF ANDROID}
+  tmp_MA.FileName := InFName;
+  {$EndIf}
+  FMapArrayList.AddObject(InName, tmp_MA);
+end;
+
+constructor avk_TMapArrayManager.Create(inParent: avk_TFraim);
+begin
+  FMapArrayList := TStringList.Create;
+  FMapArrayList.Sorted := true;
+  FParent := inParent;
+end;
+
+destructor avk_TMapArrayManager.Destroy;
+var
+  i: Integer;
+begin
+  for i:= 0 to FMapArrayList.Count - 1 do
+    avk_TMapArraySimple(FMapArrayList.Objects[i]).Destroy;
+  FMapArrayList.Destroy;
+  inherited Destroy;
+end;
 
 { avk_TEmitterManager }
 

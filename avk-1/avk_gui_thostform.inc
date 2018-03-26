@@ -9,6 +9,7 @@ begin
   if not Assigned(FSoundManager) then FSoundManager := avk_TSoundManager.Create(Self);
   if not Assigned(FCoolSpriteManager) then FCoolSpriteManager := avk_TCoolSpriteManager.Create(Self, FTextureManager);
   if not Assigned(FEmitterManager) then FEmitterManager := avk_TEmitterManager.Create(Self);
+  if not Assigned(FMapManager) then FMapManager := avk_TMapArrayManager.Create(Self);
   FFileResourses := inNameFile;
 end;
 
@@ -140,6 +141,8 @@ begin
   end else if Pos('.zei', inNameFile) > 0 then begin
     tmpEmtr := emitter2d_LoadFromFile(inNameFile);
     FEmitterManager.AddEmitter(inNameRes, tmpEmtr, inNameFile);
+  end else if Pos('.csv', inNameFile) > 0 then begin
+    FMapManager.AddMapArray(inNameRes, LoadMapFromCsv(inNameFile), inNameFile);
   end else begin //считаю остальные текстуры
     tmpTex := tex_LoadFromFile(inNameFile, $FF000000, TEX_DEFAULT_2D);
     FTextureManager.AddTexture(inNameRes, tmpTex, inNameFile);
@@ -155,6 +158,7 @@ begin
   FSoundManager := nil;
   FCoolSpriteManager := nil;
   FEmitterManager := nil;
+  FMapManager := nil;
   FileResourses := '';
   FArhiveNowOpen:=false;
   TextureCursor := nil;
@@ -169,6 +173,7 @@ begin
   if Assigned(FSoundManager) then FSoundManager.Destroy;
   if Assigned(FCoolSpriteManager) then FCoolSpriteManager.Destroy;
   if Assigned(FEmitterManager) then FEmitterManager.Destroy;
+  if Assigned(FMapManager) then FMapManager.Destroy;
   inherited Destroy;
 end;
 

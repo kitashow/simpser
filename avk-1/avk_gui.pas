@@ -24,6 +24,7 @@ uses
   , avk_input
   , avk_resmanager
   , avk_cls
+  , avk_loadmap
   //zgl
   , zgl_file
   , zgl_render_2d
@@ -334,6 +335,7 @@ type
     FSoundManager: avk_TSoundManager;
     FCoolSpriteManager: avk_TCoolSpriteManager;
     FEmitterManager: avk_TEmitterManager;
+    FMapManager: avk_TMapArrayManager;
     procedure FSetFileResourses(inNameFile: String);
     procedure FSetModeArhive(inOpen: boolean);
   protected

@@ -341,7 +341,6 @@ public
   destructor Destroy; override;
 end;
 
-
 implementation
 
 //avk_TSimpleTile
@@ -361,7 +360,6 @@ implementation
 
 //avk_TSprite
 {$INCLUDE avk_sprites_tsprite.inc}
-
 
 end.
 
