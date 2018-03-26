@@ -754,7 +754,7 @@ begin
     if GetFraimById(GetIdByName('Углы')) = nil then begin
       TmpBtn := avk_TSimpleButton.Create(Pnl,'Углы');
       TmpBtn.TexButton := MineForm.TexManager.TexName['Кнопка'];
-      TmpBtn.SetAreaElement(103,549,100,30);
+      TmpBtn.SetAreaElement(103,1,100,30);
       TmpBtn.LabelCaption.Caption := avk_IntToStr(Round(TmpSpr.SkPnt.Angle)) +
         UTF8String('[') + avk_IntToStr(Round(TmWarm.X)) + UTF8String(':') +
         avk_IntToStr(Round(TmWarm.Y)) + UTF8String(']');

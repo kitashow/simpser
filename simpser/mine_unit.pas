@@ -12,7 +12,7 @@ uses
   avk_btype, avk_gui, avk_addgui,
   avk_server, LNet,
   avk_input, avk_sprites,
-  avk_vector,
+  avk_vector, avk_loadmap,
   //
   sg_unit,
   //
@@ -73,6 +73,7 @@ type
     procedure DoSpriteProverka(Sender: TObject);
   public
     procedure DoGameField(Sender: TObject);
+    procedure DoMoveGamerInGameField(Sender: TObject);
   public
     constructor Create(const InParent: avk_TFraim; InName: String);
     destructor Destroy; override;
