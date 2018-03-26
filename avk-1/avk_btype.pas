@@ -77,7 +77,7 @@ type
     constructor Create (InParent: avk_TFraim = nil);
     destructor Destroy; override;
   public
-    procedure SetName(inName: String);
+    procedure SetName(inName: UTF8String);
   public
     property DeleteMe: boolean read FDeleteMe write SetDeleteMe;
     property Drawing: boolean read FDrawing write FDrawing;
@@ -86,7 +86,7 @@ type
     property Layer: Integer read FLayer write SetLayer;
     property InputText: avk_TFraim read GetInputText write SetInputText;
     property MouseHost: avk_TFraim read GetMouseHost write SetMouseHost;
-    property Name: String read FName write SetName;
+    property Name: UTF8String read FName write SetName;
     property Count: Integer read GetCount;
     property Parent: avk_TFraim read FParent;
     property Id: Integer read FID;
@@ -466,7 +466,7 @@ begin
   inherited Destroy;
 end;
 
-procedure avk_TFraim.SetName(inName: String);
+procedure avk_TFraim.SetName(inName: UTF8String);
 begin
   if inName = FName then Exit;
   if Parent = nil then begin
