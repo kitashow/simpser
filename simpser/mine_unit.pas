@@ -73,6 +73,7 @@ type
     procedure DoSpriteProverka(Sender: TObject);
   public
     procedure DoGameField(Sender: TObject);
+    procedure MoveAllObjectInGameField(AX, AY: Single);
     procedure DoMoveGamerInGameField(Sender: TObject);
   public
     constructor Create(const InParent: avk_TFraim; InName: String);

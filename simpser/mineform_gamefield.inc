@@ -97,9 +97,10 @@ begin
   TmpMap.SetAreaElement(0,0,MineForm.AreaElement.W, MineForm.AreaElement.H);
   TmpMap.GetMouse := false; //Не должен брать мыш
   TmpMap.Layer := 1;
-  //TmpMap.OnBeforeProc := DoPnlSprMove;
 
+  //Игрок
   TmpSpr := TGamer1.Create(MineForm);
+  TmpSpr.Name := UTF8String('Ид игрока');
   //ноги
   TmpSpr.Sprite[0, 0].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример ноги'];
   //тело
@@ -143,14 +144,37 @@ begin
 
 end;
 
+procedure TMineForm.MoveAllObjectInGameField(AX, AY: Single);
+var
+  CKL: Integer;
+  TFR: avk_TFraim;
+begin
+  for CKL := 0 to MineForm.Count - 1 do begin
+    TFR := MineForm.ListNom[CKL];
+    if not Assigned(TFR) then Continue;
+    if TFR.Name = UTF8String('Тайловая карта') then Continue;
+    if TFR.Name = UTF8String('Ид игрока') then Continue;
+    if TFR is avk_TSimpleSprite then begin
+       avk_TSimpleSprite(TFR).SkPnt.SetPoint( avk_TSimpleSprite(TFR).SkPnt.Point.X + AX
+                                            , avk_TSimpleSprite(TFR).SkPnt.Point.Y + AY);
+    end else if TFR is avk_TSprite then begin
+      avk_TSprite(TFR).Position.X := avk_TSprite(TFR).Position.X + AX;
+      avk_TSprite(TFR).Position.Y := avk_TSprite(TFR).Position.Y + AY;
+    end;
+
+  end;
+end;
+
 procedure TMineForm.DoMoveGamerInGameField(Sender: TObject);
 var
   FlP: byte;
-  CPY, CPX, OldC_X, OldC_Y, NMX, NMY: Single;
+  CPY, CPX, TMS: Single;
   FTG: TGamer1;
   TmpMousePosition: zglTPoint2D;
+  TmpStageSize: zglTPoint2D;
+  TmpWPort, TmpBorder: zglTRect;
   TmpMap: avk_TSimpleMap;
-  TmpSpr: avk_TSimpleSprite;
+
 begin
   if Sender.ClassName <> 'TGamer1' then Exit;
   FTG := TGamer1(Sender);
@@ -171,10 +195,15 @@ begin
   CPY := FTG.Position.Y;
   CPX := FTG.Position.X;
 
-  if CPY < avk_TElement(FTG.Parent).GetAbsolyteArea.Y then CPY := CPY + 1;
-  if CPX < avk_TElement(FTG.Parent).GetAbsolyteArea.X then CPX := CPX + 1;
-  if CPX > (avk_TElement(FTG.Parent).GetAbsolyteArea.X + avk_TElement(FTG.Parent).AreaElement.W) then CPX := CPX - 1;
-  if CPY > (avk_TElement(FTG.Parent).GetAbsolyteArea.Y + avk_TElement(FTG.Parent).AreaElement.H) then CPY := CPY - 1;
+  TmpBorder := avk_TElement(FTG.Parent).GetAbsolyteArea;
+  TmpBorder.W := TmpBorder.X + TmpBorder.W;
+  TmpBorder.H := TmpBorder.Y + TmpBorder.H;
+
+
+  if CPY < TmpBorder.Y then CPY := CPY + 1;
+  if CPX < TmpBorder.X then CPX := CPX + 1;
+  if CPX > TmpBorder.W then CPX := CPX - 1;
+  if CPY > TmpBorder.H then CPY := CPY - 1;
 
   FTG.Position.X := CPX;
   FTG.Position.Y := CPY;
@@ -188,35 +217,50 @@ begin
 
   //считаем новый центр въюпорта
   TmpMap := avk_TSimpleMap(FTG.Parent.ListName['Тайловая карта']);
-  //TmpMap.MoveWievPanelMap( TmpMap.Stage[TmpMap.CurrentStage].WievPanel.X + CPX - TmpMap.Stage[TmpMap.CurrentStage].WievPanel.W / 2,
-  //                         TmpMap.Stage[TmpMap.CurrentStage].WievPanel.Y + CPY - TmpMap.Stage[TmpMap.CurrentStage].WievPanel.Y / 2);
-  OldC_X := TmpMap.Stage[TmpMap.CurrentStage].WievPanel.W / 2;
-  OldC_Y := TmpMap.Stage[TmpMap.CurrentStage].WievPanel.H / 2;
+
+  TmpWPort := TmpMap.Stage[TmpMap.CurrentStage].WievPanel;
+  TmpStageSize.X := (TmpMap.Stage[TmpMap.CurrentStage].CountTileW * TmpMap.Stage[TmpMap.CurrentStage].TileSizeW);
+  TmpStageSize.Y := (TmpMap.Stage[TmpMap.CurrentStage].CountTileH * TmpMap.Stage[TmpMap.CurrentStage].TileSizeH);
 
   CPX := FTG.Position.X - ((FTG.Position.X - TmpMousePosition.X) / 2);
   CPY := FTG.Position.Y - ((FTG.Position.Y - TmpMousePosition.Y) / 2);
 
-  NMX := CPX - OldC_X;
-  NMY := CPY - OldC_Y;
+  TMS := 0.5;
 
-  if NMX > 0 then TmpMap.MoveWievPanelMap(1, 0);
-  if NMX < 0 then TmpMap.MoveWievPanelMap(-1, 0);
-  if NMY > 0 then TmpMap.MoveWievPanelMap(0, 1);
-  if NMY < 0 then TmpMap.MoveWievPanelMap(0, -1);
+  if CPX > (TmpWPort.W / 2) then //wp x +
+    if (TmpWPort.X + TmpWPort.W) <  TmpStageSize.X then
+      if FTG.Position.X > TmpBorder.X then
+        begin
+          TmpMap.MoveWievPanelMap(TMS, 0);
+          MoveAllObjectInGameField(-TMS, 0);
+          FTG.Position.X := FTG.Position.X - TMS;
+        end;
 
+  if CPX < (TmpWPort.W / 2) then //wp x -
+    if TmpWPort.X > 0 then
+      if FTG.Position.X < TmpBorder.W then
+        begin
+          TmpMap.MoveWievPanelMap( -TMS, 0);
+          MoveAllObjectInGameField( TMS, 0);
+          FTG.Position.X := FTG.Position.X + TMS;
+        end;
 
-  ////в рамках родителя создаем дым
-  //TmpSpr := avk_TSimpleSprite.Create(avk_TElement(FTG.Parent));
-  //TmpSpr.SkPnt.Emitter := MineForm.EmitterManager.EmitterName['дымок'];
-  //TmpSpr.SkPnt.Angle := 0;
-  //TmpSpr.SkPnt.Emitter.Params.Loop := false;
-  //TmpSpr.SkPnt.RateCadre := 15;
-  //TmpSpr.SkPnt.SetInternalParameters(NMX, NMY, 0, 0.4);
-  //TmpSpr.DoProc(Self);
-  //TmpSpr.OnAfterProc := DoCloseBulletSmoke;
+  if CPY > (TmpWPort.H / 2) then //wp y +
+    if (TmpWPort.Y + TmpWPort.H) <  TmpStageSize.Y then
+      if FTG.Position.Y > TmpBorder.Y then
+        begin
+          TmpMap.MoveWievPanelMap(0, TMS);
+          MoveAllObjectInGameField(0, -TMS);
+          FTG.Position.Y := FTG.Position.Y - TMS;
+        end;
 
-
-  //TmpMap.MoveWievPanelMap( TmpMap.Stage[TmpMap.CurrentStage].WievPanel.W / 2 - CPX,
-  //                         TmpMap.Stage[TmpMap.CurrentStage].WievPanel.H / 2 - CPY);
+  if CPY < (TmpWPort.H / 2) then //wp y -
+    if TmpWPort.Y > 0 then
+      if FTG.Position.Y < TmpBorder.H then
+        begin
+          TmpMap.MoveWievPanelMap( 0, -TMS);
+          MoveAllObjectInGameField(0, TMS);
+          FTG.Position.Y := FTG.Position.Y + TMS;
+        end;
 end;
 
