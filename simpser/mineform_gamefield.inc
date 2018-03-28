@@ -122,13 +122,13 @@ begin
   //тело
   TmpSpr.Sprite[1, 0].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример тело'];
   TmpSpr.Sprite[1, 1].CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример тело выстрел'];
-  TmpSpr.Sprite[1, 1].AddSubPoint(22, -85);
+  TmpSpr.Sprite[1, 1].AddSubPoint(19, -75);
 
   //общие настройки
   TmpSpr.Position.X := 470;
   TmpSpr.Position.Y := 266;
   TmpSpr.PosAngle := 0;
-  TmpSpr.PosScale := 0.4;
+  TmpSpr.PosScale := 0.3;
   TmpSpr.SetPosForAll;
 
   TmpSpr.ColVisible[0] := 0;
@@ -181,16 +181,67 @@ begin
   end;
 end;
 
+procedure TMineForm.MoveFloorInGameField(FTG: TGamer1; CPY, CPX, TMS: Single);
+var
+  TmpStageSize: zglTPoint2D;
+  TmpWPort, TmpBorder: zglTRect;
+  TmpMap: avk_TSimpleMap;
+begin
+  TmpBorder := avk_TElement(FTG.Parent).GetAbsolyteArea;
+  TmpBorder.W := TmpBorder.X + TmpBorder.W;
+  TmpBorder.H := TmpBorder.Y + TmpBorder.H;
+
+  //считаем новый центр въюпорта
+  TmpMap := avk_TSimpleMap(FTG.Parent.ListName['Тайловая карта']);
+
+  TmpWPort := TmpMap.Stage[TmpMap.CurrentStage].WievPanel;
+  TmpStageSize.X := (TmpMap.Stage[TmpMap.CurrentStage].CountTileW * TmpMap.Stage[TmpMap.CurrentStage].TileSizeW);
+  TmpStageSize.Y := (TmpMap.Stage[TmpMap.CurrentStage].CountTileH * TmpMap.Stage[TmpMap.CurrentStage].TileSizeH);
+
+  if CPX > (TmpWPort.W / 2) then //wp x +
+    if (TmpWPort.X + TmpWPort.W) <  TmpStageSize.X then
+      if FTG.Position.X > TmpBorder.X then
+        begin
+          TmpMap.MoveWievPanelMap(TMS, 0);
+          MoveAllObjectInGameField(-TMS, 0);
+          FTG.Position.X := FTG.Position.X - TMS;
+        end;
+
+  if CPX < (TmpWPort.W / 2) then //wp x -
+    if TmpWPort.X > 0 then
+      if FTG.Position.X < TmpBorder.W then
+        begin
+          TmpMap.MoveWievPanelMap( -TMS, 0);
+          MoveAllObjectInGameField( TMS, 0);
+          FTG.Position.X := FTG.Position.X + TMS;
+        end;
+
+  if CPY > (TmpWPort.H / 2) then //wp y +
+    if (TmpWPort.Y + TmpWPort.H) <  TmpStageSize.Y then
+      if FTG.Position.Y > TmpBorder.Y then
+        begin
+          TmpMap.MoveWievPanelMap(0, TMS);
+          MoveAllObjectInGameField(0, -TMS);
+          FTG.Position.Y := FTG.Position.Y - TMS;
+        end;
+
+  if CPY < (TmpWPort.H / 2) then //wp y -
+    if TmpWPort.Y > 0 then
+      if FTG.Position.Y < TmpBorder.H then
+        begin
+          TmpMap.MoveWievPanelMap( 0, -TMS);
+          MoveAllObjectInGameField(0, TMS);
+          FTG.Position.Y := FTG.Position.Y + TMS;
+        end;
+end;
+
 procedure TMineForm.DoMoveGamerInGameField(Sender: TObject);
 var
   FlP: byte;
   CPY, CPX, TMS: Single;
   FTG: TGamer1;
   TmpMousePosition: zglTPoint2D;
-  TmpStageSize: zglTPoint2D;
-  TmpWPort, TmpBorder: zglTRect;
-  TmpMap: avk_TSimpleMap;
-
+  TmpBorder: zglTRect;
 begin
   if Sender.ClassName <> 'TGamer1' then Exit;
   FTG := TGamer1(Sender);
@@ -230,52 +281,14 @@ begin
   end;
   {$EndIf}
 
-  //считаем новый центр въюпорта
-  TmpMap := avk_TSimpleMap(FTG.Parent.ListName['Тайловая карта']);
-
-  TmpWPort := TmpMap.Stage[TmpMap.CurrentStage].WievPanel;
-  TmpStageSize.X := (TmpMap.Stage[TmpMap.CurrentStage].CountTileW * TmpMap.Stage[TmpMap.CurrentStage].TileSizeW);
-  TmpStageSize.Y := (TmpMap.Stage[TmpMap.CurrentStage].CountTileH * TmpMap.Stage[TmpMap.CurrentStage].TileSizeH);
+  if FLP = FLAG_K_NO then
+    TMS := 0.5
+  else
+    TMS := FTG.MoveSpeed + 0.5;
 
   CPX := FTG.Position.X - ((FTG.Position.X - TmpMousePosition.X) / 2);
   CPY := FTG.Position.Y - ((FTG.Position.Y - TmpMousePosition.Y) / 2);
 
-  TMS := FTG.MoveSpeed + 0.5;
-
-  if CPX > (TmpWPort.W / 2) then //wp x +
-    if (TmpWPort.X + TmpWPort.W) <  TmpStageSize.X then
-      if FTG.Position.X > TmpBorder.X then
-        begin
-          TmpMap.MoveWievPanelMap(TMS, 0);
-          MoveAllObjectInGameField(-TMS, 0);
-          FTG.Position.X := FTG.Position.X - TMS;
-        end;
-
-  if CPX < (TmpWPort.W / 2) then //wp x -
-    if TmpWPort.X > 0 then
-      if FTG.Position.X < TmpBorder.W then
-        begin
-          TmpMap.MoveWievPanelMap( -TMS, 0);
-          MoveAllObjectInGameField( TMS, 0);
-          FTG.Position.X := FTG.Position.X + TMS;
-        end;
-
-  if CPY > (TmpWPort.H / 2) then //wp y +
-    if (TmpWPort.Y + TmpWPort.H) <  TmpStageSize.Y then
-      if FTG.Position.Y > TmpBorder.Y then
-        begin
-          TmpMap.MoveWievPanelMap(0, TMS);
-          MoveAllObjectInGameField(0, -TMS);
-          FTG.Position.Y := FTG.Position.Y - TMS;
-        end;
-
-  if CPY < (TmpWPort.H / 2) then //wp y -
-    if TmpWPort.Y > 0 then
-      if FTG.Position.Y < TmpBorder.H then
-        begin
-          TmpMap.MoveWievPanelMap( 0, -TMS);
-          MoveAllObjectInGameField(0, TMS);
-          FTG.Position.Y := FTG.Position.Y + TMS;
-        end;
+  MoveFloorInGameField(FTG, CPY, CPX, TMS);
 end;
 

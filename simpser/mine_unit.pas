@@ -74,6 +74,7 @@ type
   public
     procedure DoGameField(Sender: TObject);
     procedure MoveAllObjectInGameField(AX, AY: Single);
+    procedure MoveFloorInGameField(FTG: TGamer1; CPY, CPX, TMS: Single);
     procedure DoMoveGamerInGameField(Sender: TObject);
   public
     constructor Create(const InParent: avk_TFraim; InName: String);
