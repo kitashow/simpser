@@ -48,9 +48,12 @@ begin
 
   n := Pos(#44, f);
 
-  if n = 0 then n := Length(f);
+  if n = 0 then begin //последняя в строке
+     n := Length(f);
+     Result := Copy(f, 1, n);
+  end else
+     Result := Copy(f, 1, n - 1);
 
-  Result := Copy(f, 1, n - 1);
   Delete(f, 1, n);
 end;
 
@@ -64,8 +67,10 @@ begin
   sz := file_GetSize(f);
   SetLength(str, sz);
   file_Read( f, str[1], sz);
-  myReadLn(str, st);
-  while not (Length(str) = 0) do begin
+
+  repeat
+    myReadLn(str, st);
+
     SetLength(Result, Length(Result) + 1);
 
     while not (Length(st) = 0) do begin
@@ -73,8 +78,7 @@ begin
       Result[Length(Result) - 1, Length(Result[Length(Result) - 1]) - 1] := u_StrToInt(NextArg(st));
     end;
 
-    myReadLn(str, st);
-  end;
+  until Length(str) = 0;
 
   file_close( f );
 end;
