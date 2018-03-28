@@ -23,6 +23,22 @@ begin
   SprTile.H := TmpMap.TileSizeH;
 
   case NumTile of
+    12: begin
+      SprTile.Texture := MineForm.TexManager.TexName['угол со стрелкой'];
+      SprTile.TexAngle := 0;
+    end;
+    1: begin
+      SprTile.Texture := MineForm.TexManager.TexName['угол со стрелкой'];
+      SprTile.TexAngle := 90;
+    end;
+    2: begin
+      SprTile.Texture := MineForm.TexManager.TexName['угол со стрелкой'];
+      SprTile.TexAngle := 180;
+    end;
+    3: begin
+      SprTile.Texture := MineForm.TexManager.TexName['угол со стрелкой'];
+      SprTile.TexAngle := -90;
+    end;
     4: begin
       SprTile.Texture := MineForm.TexManager.TexName['край со стрелкой'];
       SprTile.SetTexFrameSize(64, 64);
@@ -210,7 +226,6 @@ begin
 
   {$IfDef Debug}
   with avk_TElement(FTG.Parent) do begin
-    //avk_TSimpleButton(GetFraimById(GetIdByName('Кадры'))).LabelCaption.Caption:= UTF8String('Н: ') + avk_IntToStr(Round(FTG.Sprite[0, FTG.ColVisible[0]].NowFrame)) + UTF8String(', Т:') + avk_IntToStr(Round(FTG.Sprite[1, FTG.ColVisible[1]].NowFrame));
     avk_TSimpleButton(GetFraimById(GetIdByName('Кадры'))).LabelCaption.Caption := UTF8String('Нагрев: ') + avk_IntToStr(Round(FTG.FCurrentRadiusTarget - FTG.FMinimalRadiusTarget));
   end;
   {$EndIf}
@@ -225,7 +240,7 @@ begin
   CPX := FTG.Position.X - ((FTG.Position.X - TmpMousePosition.X) / 2);
   CPY := FTG.Position.Y - ((FTG.Position.Y - TmpMousePosition.Y) / 2);
 
-  TMS := 0.5;
+  TMS := FTG.MoveSpeed + 0.5;
 
   if CPX > (TmpWPort.W / 2) then //wp x +
     if (TmpWPort.X + TmpWPort.W) <  TmpStageSize.X then
