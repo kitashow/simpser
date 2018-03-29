@@ -25,18 +25,30 @@ begin
   case NumTile of
     12: begin
       SprTile.Texture := MineForm.TexManager.TexName['угол со стрелкой'];
+      SprTile.SetTexFrameSize(64, 64);
+      SprTile.StopCadre := 10;
+      SprTile.RateCadre := 12;
       SprTile.TexAngle := 0;
     end;
     1: begin
       SprTile.Texture := MineForm.TexManager.TexName['угол со стрелкой'];
+      SprTile.SetTexFrameSize(64, 64);
+      SprTile.StopCadre := 10;
+      SprTile.RateCadre := 12;
       SprTile.TexAngle := 90;
     end;
     2: begin
       SprTile.Texture := MineForm.TexManager.TexName['угол со стрелкой'];
+      SprTile.SetTexFrameSize(64, 64);
+      SprTile.StopCadre := 10;
+      SprTile.RateCadre := 12;
       SprTile.TexAngle := 180;
     end;
     3: begin
       SprTile.Texture := MineForm.TexManager.TexName['угол со стрелкой'];
+      SprTile.SetTexFrameSize(64, 64);
+      SprTile.StopCadre := 10;
+      SprTile.RateCadre := 12;
       SprTile.TexAngle := -90;
     end;
     4: begin
@@ -266,7 +278,6 @@ begin
   TmpBorder.W := TmpBorder.X + TmpBorder.W;
   TmpBorder.H := TmpBorder.Y + TmpBorder.H;
 
-
   if CPY < TmpBorder.Y then CPY := CPY + 1;
   if CPX < TmpBorder.X then CPX := CPX + 1;
   if CPX > TmpBorder.W then CPX := CPX - 1;
@@ -275,12 +286,14 @@ begin
   FTG.Position.X := CPX;
   FTG.Position.Y := CPY;
 
+
   {$IfDef Debug}
   with avk_TElement(FTG.Parent) do begin
     avk_TSimpleButton(GetFraimById(GetIdByName('Кадры'))).LabelCaption.Caption := UTF8String('Нагрев: ') + avk_IntToStr(Round(FTG.FCurrentRadiusTarget - FTG.FMinimalRadiusTarget));
   end;
   {$EndIf}
 
+  //Перемещение пола
   if FLP = FLAG_K_NO then
     TMS := 0.5
   else
@@ -290,5 +303,11 @@ begin
   CPY := FTG.Position.Y - ((FTG.Position.Y - TmpMousePosition.Y) / 2);
 
   MoveFloorInGameField(FTG, CPY, CPX, TMS);
+
+  //Проверка на падения в дырки
+  TmpMap := avk_TSimpleMap(FTG.Parent.ListName['Тайловая карта']);
+  TmpWPort := TmpMap.Stage[TmpMap.CurrentStage].WievPanel;
+
+
 end;
 
