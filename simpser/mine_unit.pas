@@ -13,6 +13,7 @@ uses
   avk_server, LNet,
   avk_input, avk_sprites,
   avk_vector, avk_loadmap,
+  avk_checks,
   //
   sg_unit,
   //

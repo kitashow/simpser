@@ -36,9 +36,9 @@
    MineForm.LoadResource(TmpPrefix+'BordeConnor64.png', 'угол со стрелкой');
    MineForm.LoadResource(TmpPrefix+'m_a_tilefloor01.png', 'пол8');
    MineForm.LoadResource(TmpPrefix+'bullet.png', 'пулька');
-{Карты}
+{Карта}
    MineForm.LoadResource(TmpPrefix+'first.csv', 'пример карты');
-{Разобранный спрайт}
+{Спрайт игрок}
    MineForm.LoadResource(TmpPrefix+'helmet.png', 'спрайт шлем');
    MineForm.LoadResource(TmpPrefix+'arrow_head.png', 'спрайт стрелка на шлем');
    MineForm.LoadResource(TmpPrefix+'right_shoulder.png', 'спрайт правое плечо');
@@ -51,12 +51,25 @@
    MineForm.LoadResource(TmpPrefix+'right_foot.png', 'спрайт правая нога');
    MineForm.LoadResource(TmpPrefix+'riffle.png', 'винтовка');
    MineForm.LoadResource(TmpPrefix+'riffle_fire.png', 'огонь выстрела');
-
+{собранный спрайт игрок}
    MineForm.LoadResource(TmpPrefix+'f.cls', 'пример');
    MineForm.LoadResource(TmpPrefix+'f_go.cls', 'пример тело');
    MineForm.LoadResource(TmpPrefix+'f_leg.cls', 'пример ноги');
    MineForm.LoadResource(TmpPrefix+'f_fire.cls', 'пример тело выстрел');
-{Эмитер}
+{Спрайт паук}
+   MineForm.LoadResource(TmpPrefix+'spider_big_leg_bone.png', 'паук кость ноги');
+   MineForm.LoadResource(TmpPrefix+'spider_leg_joint.png', 'паук сустав ноги');
+   MineForm.LoadResource(TmpPrefix+'spider_body.png', 'паук тело');
+   MineForm.LoadResource(TmpPrefix+'spider_front_leg_bone.png', 'паук левая пила');
+   MineForm.LoadResource(TmpPrefix+'spider_rfront_leg_bone.png', 'паук правая пила');
+   MineForm.LoadResource(TmpPrefix+'spider_lshell.png', 'паук левая броня');
+   MineForm.LoadResource(TmpPrefix+'spider_rshell.png', 'паук правая броня');
+   MineForm.LoadResource(TmpPrefix+'spider_rside_leg_bone.png', 'паук левая стопа');
+   MineForm.LoadResource(TmpPrefix+'spider_side_leg_bone.png', 'паук правая стопа');
+{собранный спрайт паук}
+   MineForm.LoadResource(TmpPrefix+'spider_body.cls', 'паук тело');
+   MineForm.LoadResource(TmpPrefix+'spider_shell.cls', 'паук броня');
+{Эмитеры}
    MineForm.LoadResource(TmpPrefix+'emitter_diamond.zei', 'сияние');
    MineForm.LoadResource(TmpPrefix+'emitter_fire00.zei', 'горение');
    MineForm.LoadResource(TmpPrefix+'Emitter_exemp.zei', 'дымок');

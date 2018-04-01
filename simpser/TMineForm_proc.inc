@@ -580,7 +580,10 @@ begin
   for CKL := 0 to 4 do begin
     //кулспрайтов
     TmpSpr := avk_TSimpleSprite.Create(tmpTestForm);
-    TmpSpr.SkPnt.CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример'];
+    case random(2) of
+      0: TmpSpr.SkPnt.CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['пример'];
+      1: TmpSpr.SkPnt.CoolSprite := MineForm.CoolSpriteManager.CoolSpriteName['паук тело'];
+    end;
     //TmpSpr.SkPnt.SetTexFrameSize(69, 52);
     TmpSpr.SkPnt.SetInternalParameters(270 + Random(500), 66 + Random(500), 90, 0.4);
     TmpSpr.SkPnt.Animate := false;

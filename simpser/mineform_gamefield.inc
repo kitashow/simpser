@@ -257,6 +257,25 @@ var
 begin
   if Sender.ClassName <> 'TGamer1' then Exit;
   FTG := TGamer1(Sender);
+
+  //Проверка на падения в дырки
+  if SpriteFall(avk_TSimpleMap(FTG.Parent.ListName['Тайловая карта']), FTG, true) then
+    begin
+      {$IfDef Debug}
+      with avk_TElement(FTG.Parent) do begin
+        avk_TSimpleButton(GetFraimById(GetIdByName('Кадры'))).LabelCaption.Caption := UTF8String('Падение: ') + u_FloatToStr(FTG.PosScale);
+      end;
+      {$EndIf}
+      FTG.PosScale := FTG.PosScale - 0.001;
+      FTG.SetPosForAll;
+      if FTG.PosScale <= 0 then begin
+        FTG.DeleteMe := true;
+        //MineForm.DoGameField(nil);
+      end;
+      Exit;
+    end;
+
+  //Прямое управление
   TmpMousePosition.X := avk_MouseIsX;
   TmpMousePosition.Y := avk_MouseIsY;
 
@@ -303,11 +322,6 @@ begin
   CPY := FTG.Position.Y - ((FTG.Position.Y - TmpMousePosition.Y) / 2);
 
   MoveFloorInGameField(FTG, CPY, CPX, TMS);
-
-  //Проверка на падения в дырки
-  TmpMap := avk_TSimpleMap(FTG.Parent.ListName['Тайловая карта']);
-  TmpWPort := TmpMap.Stage[TmpMap.CurrentStage].WievPanel;
-
 
 end;
 
