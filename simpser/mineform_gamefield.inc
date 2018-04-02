@@ -6,110 +6,120 @@ var
   TmpTileMap: avk_TTileMap;
   MapArray: TMapArray;
   TmpSpr: TGamer1;
+  Supervisor: avk_TFraim;
   {$IfDef Debug}
   TmpBtn: avk_TSimpleButton;
   {$endif}
 
-function GetTile(NumTile: Word):avk_TSimpleTile;
-var
-  SprTile: avk_TSimpleTile;
-begin
+    function GetTile(NumTile: Word):avk_TSimpleTile;
+    var
+      SprTile: avk_TSimpleTile;
+    begin
 
-  SprTile := avk_TSimpleTile.Create;
-  SprTile.SetTexFrameSize(64, 64);
-  SprTile.X := 0;
-  SprTile.Y := 0;
-  SprTile.W := TmpMap.TileSizeW;
-  SprTile.H := TmpMap.TileSizeH;
+      SprTile := avk_TSimpleTile.Create;
+      SprTile.SetTexFrameSize(64, 64);
+      SprTile.X := 0;
+      SprTile.Y := 0;
+      SprTile.W := TmpMap.TileSizeW;
+      SprTile.H := TmpMap.TileSizeH;
 
-  case NumTile of
-    12: begin
-      SprTile.Texture := MineForm.TexManager.TexName['угол со стрелкой'];
-      SprTile.SetTexFrameSize(64, 64);
-      SprTile.StopCadre := 10;
-      SprTile.RateCadre := 12;
-      SprTile.TexAngle := 0;
+      case NumTile of
+        12: begin
+          SprTile.Texture := MineForm.TexManager.TexName['угол со стрелкой'];
+          SprTile.SetTexFrameSize(64, 64);
+          SprTile.StopCadre := 10;
+          SprTile.RateCadre := 12;
+          SprTile.TexAngle := 0;
+        end;
+        1: begin
+          SprTile.Texture := MineForm.TexManager.TexName['угол со стрелкой'];
+          SprTile.SetTexFrameSize(64, 64);
+          SprTile.StopCadre := 10;
+          SprTile.RateCadre := 12;
+          SprTile.TexAngle := 90;
+        end;
+        2: begin
+          SprTile.Texture := MineForm.TexManager.TexName['угол со стрелкой'];
+          SprTile.SetTexFrameSize(64, 64);
+          SprTile.StopCadre := 10;
+          SprTile.RateCadre := 12;
+          SprTile.TexAngle := 180;
+        end;
+        3: begin
+          SprTile.Texture := MineForm.TexManager.TexName['угол со стрелкой'];
+          SprTile.SetTexFrameSize(64, 64);
+          SprTile.StopCadre := 10;
+          SprTile.RateCadre := 12;
+          SprTile.TexAngle := -90;
+        end;
+        4: begin
+          SprTile.Texture := MineForm.TexManager.TexName['край со стрелкой'];
+          SprTile.SetTexFrameSize(64, 64);
+          SprTile.StopCadre := 12;
+          SprTile.RateCadre := 12;
+          SprTile.TexAngle := 0;
+        end;
+        5: begin
+          SprTile.Texture := MineForm.TexManager.TexName['край со стрелкой'];
+          SprTile.SetTexFrameSize(64, 64);
+          SprTile.StopCadre := 12;
+          SprTile.RateCadre := 12;
+          SprTile.TexAngle := 90;
+        end;
+        6: begin
+          SprTile.Texture := MineForm.TexManager.TexName['край со стрелкой'];
+          SprTile.SetTexFrameSize(64, 64);
+          SprTile.StopCadre := 12;
+          SprTile.RateCadre := 12;
+          SprTile.TexAngle := 180;
+        end;
+        7: begin
+          SprTile.Texture := MineForm.TexManager.TexName['край со стрелкой'];
+          SprTile.SetTexFrameSize(64, 64);
+          SprTile.StopCadre := 12;
+          SprTile.RateCadre := 12;
+          SprTile.TexAngle := -90;
+        end;
+        8: begin
+          SprTile.Texture := MineForm.TexManager.TexName['пол1'];
+        end;
+        9: begin
+          SprTile.Texture := MineForm.TexManager.TexName['пол2'];
+        end;
+        10: begin
+          SprTile.Texture := MineForm.TexManager.TexName['пол3'];
+        end;
+        11: begin
+          SprTile.Texture := MineForm.TexManager.TexName['пол4'];
+        end;
+      else
+          SprTile.Destroy;
+          SprTile := nil;
+      end;
+      Result := SprTile;
     end;
-    1: begin
-      SprTile.Texture := MineForm.TexManager.TexName['угол со стрелкой'];
-      SprTile.SetTexFrameSize(64, 64);
-      SprTile.StopCadre := 10;
-      SprTile.RateCadre := 12;
-      SprTile.TexAngle := 90;
-    end;
-    2: begin
-      SprTile.Texture := MineForm.TexManager.TexName['угол со стрелкой'];
-      SprTile.SetTexFrameSize(64, 64);
-      SprTile.StopCadre := 10;
-      SprTile.RateCadre := 12;
-      SprTile.TexAngle := 180;
-    end;
-    3: begin
-      SprTile.Texture := MineForm.TexManager.TexName['угол со стрелкой'];
-      SprTile.SetTexFrameSize(64, 64);
-      SprTile.StopCadre := 10;
-      SprTile.RateCadre := 12;
-      SprTile.TexAngle := -90;
-    end;
-    4: begin
-      SprTile.Texture := MineForm.TexManager.TexName['край со стрелкой'];
-      SprTile.SetTexFrameSize(64, 64);
-      SprTile.StopCadre := 12;
-      SprTile.RateCadre := 12;
-      SprTile.TexAngle := 0;
-    end;
-    5: begin
-      SprTile.Texture := MineForm.TexManager.TexName['край со стрелкой'];
-      SprTile.SetTexFrameSize(64, 64);
-      SprTile.StopCadre := 12;
-      SprTile.RateCadre := 12;
-      SprTile.TexAngle := 90;
-    end;
-    6: begin
-      SprTile.Texture := MineForm.TexManager.TexName['край со стрелкой'];
-      SprTile.SetTexFrameSize(64, 64);
-      SprTile.StopCadre := 12;
-      SprTile.RateCadre := 12;
-      SprTile.TexAngle := 180;
-    end;
-    7: begin
-      SprTile.Texture := MineForm.TexManager.TexName['край со стрелкой'];
-      SprTile.SetTexFrameSize(64, 64);
-      SprTile.StopCadre := 12;
-      SprTile.RateCadre := 12;
-      SprTile.TexAngle := -90;
-    end;
-    8: begin
-      SprTile.Texture := MineForm.TexManager.TexName['пол1'];
-    end;
-    9: begin
-      SprTile.Texture := MineForm.TexManager.TexName['пол2'];
-    end;
-    10: begin
-      SprTile.Texture := MineForm.TexManager.TexName['пол3'];
-    end;
-    11: begin
-      SprTile.Texture := MineForm.TexManager.TexName['пол4'];
-    end;
-  else
-      SprTile.Destroy;
-      SprTile := nil;
-  end;
-  Result := SprTile;
-end;
-
 
 begin
   For CKL := 0 to MineForm.Count - 1 do
-    if MineForm.ListNom[CKL].Name <> 'Выход' then
-      MineForm.ListNom[CKL].DeleteMe := true;
+    if Assigned(MineForm.ListNom[CKL]) then
+      if MineForm.ListNom[CKL].Name <> UTF8String('Выход') then
+        if MineForm.ListNom[CKL].Name <> UTF8String('Проверяющий') then
+          MineForm.ListNom[CKL].DeleteMe := true;
+
   MineForm.Wallpaper := MineForm.TexManager.TexName['Обои игрового поля'];
+
+  if MineForm.ListName['Проверяющий'] = nil then begin
+    Supervisor := avk_TFraim.Create(MineForm);
+    Supervisor.Name := UTF8String('Проверяющий');
+    Supervisor.OnProc := DoSupervision;
+  end;
 
   //пол
   MapArray := MineForm.MapManager.MapArrayName['пример карты'];
 
   //переводим файла карты
   TmpMap := avk_TSimpleMap.Create(MineForm,'Тайловая карта');
+  TmpMap.Name := UTF8String('Тайловая карта');
   TmpMap.CountStage := 1;
   TmpMap.SetMapSize(Length(MapArray[0]), Length(MapArray));
   TmpMap.SetWievPanelAndTileSize(1280, 768, 64, 64);
@@ -140,7 +150,7 @@ begin
   TmpSpr.Position.X := 470;
   TmpSpr.Position.Y := 266;
   TmpSpr.PosAngle := 0;
-  TmpSpr.PosScale := 0.3;
+  TmpSpr.PosScale := 0.4;
   TmpSpr.SetPosForAll;
 
   TmpSpr.ColVisible[0] := 0;
@@ -254,6 +264,7 @@ var
   FTG: TGamer1;
   TmpMousePosition: zglTPoint2D;
   TmpBorder: zglTRect;
+  TmpUD: avk_TElement;
 begin
   if Sender.ClassName <> 'TGamer1' then Exit;
   FTG := TGamer1(Sender);
@@ -266,12 +277,22 @@ begin
         avk_TSimpleButton(GetFraimById(GetIdByName('Кадры'))).LabelCaption.Caption := UTF8String('Падение: ') + u_FloatToStr(FTG.PosScale);
       end;
       {$EndIf}
+
+      if MineForm.GetIdByName('Твоя умирать') = -1 then begin
+        TmpUD := avk_TElement.Create(MineForm, 'Твоя умирать');
+        TmpUD.Wallpaper := MineForm.TexManager.TexName['Твоя умирать'];
+        TmpUD.SetAreaElement(0, 0, MineForm.AreaElement.W, MineForm.AreaElement.H);
+        TmpUD.Layer := MineForm.ListName['Выход'].Layer - 1;
+        TmpUD.Transparence := 0;
+      end;
+      TmpUD := avk_TElement(MineForm.ListName['Твоя умирать']);
+      if TmpUD.Transparence < 254 then
+        TmpUD.Transparence := TmpUD.Transparence + 1;
+
       FTG.PosScale := FTG.PosScale - 0.001;
       FTG.SetPosForAll;
-      if FTG.PosScale <= 0 then begin
+      if FTG.PosScale <= 0 then
         FTG.DeleteMe := true;
-        //MineForm.DoGameField(nil);
-      end;
       Exit;
     end;
 
@@ -325,3 +346,20 @@ begin
 
 end;
 
+procedure TMineForm.DoSupervision(Sender: TObject);
+var
+  CKL: Integer;
+begin
+  if MineForm.ListName['Ид игрока'] = nil then begin
+    //нужно пересоздать персонажа
+    if (MineForm.GetIdByName('Ид игрока') = -1) and (MineForm.GetIdByName('Тайловая карта') = -1) then
+      MineForm.DoGameField(Sender)
+    else
+      For CKL := 0 to MineForm.Count - 1 do
+        if Assigned(MineForm.ListNom[CKL]) then
+          if MineForm.ListNom[CKL].Name <> UTF8String('Выход') then
+            if MineForm.ListNom[CKL].Name <> UTF8String('Проверяющий') then
+              MineForm.ListNom[CKL].DeleteMe := true;
+  end;
+
+end;
