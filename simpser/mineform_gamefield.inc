@@ -182,13 +182,26 @@ begin
   {$EndIf}
 
   //мишеньки
-  for CKL := 0 to 5 do begin
+  for CKL := 0 to 25 do begin
     TmpSprTr := avk_TSimpleSprite.Create(MineForm);
     TmpSprTr.Name := UTF8String('Мишень'+u_IntToStr(CKL));
     TmpSprTr.SkPnt.Texture := MineForm.TexManager.TexName['Ящик мишень'];
-    TmpSprTr.SkPnt.Angle := Random(180);
-    TmpSprTr.MapPosition.X := 32 + Random(3000);
-    TmpSprTr.MapPosition.Y := 32 + Random(1500);
+    TmpSprTr.SkPnt.SetInternalParameters(0, 0, 0, 1, -32, -32, 64, 64);
+    TmpSprTr.SkPnt.SetTexFrameSize(128, 128);
+    TmpSprTr.SkPnt.StopCadre := 3;
+    TmpSprTr.SkPnt.RateCadre := 15;
+    TmpSprTr.SkPnt.Animate := false;
+
+    TmpSprTr.MapPosition.X := 32 + Random(2500);
+    TmpSprTr.MapPosition.Y := 32 + Random(1400);
+    while SpriteInMapFall(TmpMap, avk_TSprite(TmpSprTr)) do begin
+      TmpSprTr.MapPosition.X := 32 + Random(2500);
+      TmpSprTr.MapPosition.Y := 32 + Random(1400);
+    end;
+
+    TmpSprTr.PosAngle := Random(180);
+    TmpSprTr.PosHide := true;
+    TmpSprTr.Layer := 3;
   end;
 
 end;
@@ -203,12 +216,10 @@ begin
     if not Assigned(TFR) then Continue;
     if TFR.Name = UTF8String('Тайловая карта') then Continue;
     if TFR.Name = UTF8String('Ид игрока') then Continue;
-    if TFR is avk_TSimpleSprite then begin
-       avk_TSimpleSprite(TFR).SkPnt.SetPoint( avk_TSimpleSprite(TFR).SkPnt.Point.X + AX
-                                            , avk_TSimpleSprite(TFR).SkPnt.Point.Y + AY);
-    end else if TFR is avk_TSprite then begin
-      avk_TSprite(TFR).Position.X := avk_TSprite(TFR).Position.X + AX;
-      avk_TSprite(TFR).Position.Y := avk_TSprite(TFR).Position.Y + AY;
+    if TFR is avk_TSprite then begin
+      avk_TSprite(TFR).Position.X := trunc(avk_TSprite(TFR).Position.X + AX);
+      avk_TSprite(TFR).Position.Y := trunc(avk_TSprite(TFR).Position.Y + AY);
+      avk_TSprite(TFR).SetPosForAll;
     end;
   end;
 end;
@@ -386,14 +397,15 @@ begin
         if MineForm.ListNom[CKL] is avk_TSprite then
           with avk_TSprite(MineForm.ListNom[CKL]) do begin
             MPS := MapPosition;
-            //PosHide := false;
-            //PosHide := (MPS.X < (TmpWPort.X - TCS.TileSizeW)) or
-            //  (MPS.X > (TmpWPort.X + TmpWPort.W + TCS.TileSizeW)) or
-            //  (MPS.Y < (TmpWPort.Y - TCS.TileSizeH)) or
-            //  (MPS.Y > (TmpWPort.Y + TmpWPort.H + TCS.TileSizeH));
+            PosHide := false;
+            PosHide := (MPS.X < (TmpWPort.X - TCS.TileSizeW)) or
+              (MPS.X > (TmpWPort.X + TmpWPort.W + TCS.TileSizeW)) or
+              (MPS.Y < (TmpWPort.Y - TCS.TileSizeH)) or
+              (MPS.Y > (TmpWPort.Y + TmpWPort.H + TCS.TileSizeH));
 
             Position.X := MPS.X - TmpWPort.X;
             Position.Y := MPS.Y - TmpWPort.Y;
+            SetPosForAll;
          end;
 
 end;

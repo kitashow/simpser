@@ -76,6 +76,8 @@ type
 
 function SpriteFall(AMap: avk_TSimpleMap; ASprite: avk_TSprite; DoCorrectPosition: boolean = false): boolean;
 
+function SpriteInMapFall(AMap: avk_TSimpleMap; ASprite: avk_TSprite): boolean;
+
 implementation
 
 function SpriteFall(AMap: avk_TSimpleMap; ASprite: avk_TSprite; DoCorrectPosition: boolean = false): boolean;
@@ -91,6 +93,15 @@ begin
     ASprite.Position.X := (InTileX * AMap.Stage[AMap.CurrentStage].TileSizeW - TmpWPort.X) + (AMap.Stage[AMap.CurrentStage].TileSizeW / 2);
     ASprite.Position.Y := (InTileY * AMap.Stage[AMap.CurrentStage].TileSizeH - TmpWPort.Y) + (AMap.Stage[AMap.CurrentStage].TileSizeH / 2);
   end;
+end;
+
+function SpriteInMapFall(AMap: avk_TSimpleMap; ASprite: avk_TSprite): boolean;
+var
+  InTileX, InTileY: Integer;
+begin
+  InTileX := Trunc(ASprite.MapPosition.X / AMap.Stage[AMap.CurrentStage].TileSizeW);
+  InTileY := Trunc(ASprite.MapPosition.Y / AMap.Stage[AMap.CurrentStage].TileSizeH);
+  Result := AMap.Stage[AMap.CurrentStage].LOT[InTileX, InTileY] = nil;
 end;
 
 { avk_Checker }
