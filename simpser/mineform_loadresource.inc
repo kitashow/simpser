@@ -22,6 +22,7 @@
 {Спрайты}
    MineForm.LoadResource(TmpPrefix+'PersonSteps.png', 'Шагающий стрелок');
    MineForm.LoadResource(TmpPrefix+'leafs.png', 'Листочек');
+   MineForm.LoadResource(TmpPrefix+'box128.png', 'Ящик мишень');
 {Тайлы}
    MineForm.LoadResource(TmpPrefix+'tile_floor1.png', 'пол1');
    MineForm.LoadResource(TmpPrefix+'tile_floor2.png', 'пол2');

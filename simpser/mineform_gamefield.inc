@@ -1,15 +1,16 @@
 //процедуры игрового поля
 procedure TMineForm.DoGameField(Sender: TObject);
 var
+  {$IfDef Debug}
+  TmpBtn: avk_TSimpleButton;
+  {$endif}
   CKL, CKL0, CKL1, CKL2: Integer;
   TmpMap: avk_TSimpleMap;
   TmpTileMap: avk_TTileMap;
   MapArray: TMapArray;
   TmpSpr: TGamer1;
-  Supervisor: avk_TFraim;
-  {$IfDef Debug}
-  TmpBtn: avk_TSimpleButton;
-  {$endif}
+  Supervisor: avk_Checker;
+  TmpSprTr: avk_TSimpleSprite;
 
     function GetTile(NumTile: Word):avk_TSimpleTile;
     var
@@ -109,9 +110,9 @@ begin
   MineForm.Wallpaper := MineForm.TexManager.TexName['Обои игрового поля'];
 
   if MineForm.ListName['Проверяющий'] = nil then begin
-    Supervisor := avk_TFraim.Create(MineForm);
+    Supervisor := avk_Checker.Create(MineForm);
     Supervisor.Name := UTF8String('Проверяющий');
-    Supervisor.OnProc := DoSupervision;
+    Supervisor.OnBeforeCheck := DoSupervision;
   end;
 
   //пол
@@ -180,6 +181,16 @@ begin
   TmpBtn.LabelCaption.FontColor := $8B0000;
   {$EndIf}
 
+  //мишеньки
+  for CKL := 0 to 5 do begin
+    TmpSprTr := avk_TSimpleSprite.Create(MineForm);
+    TmpSprTr.Name := UTF8String('Мишень'+u_IntToStr(CKL));
+    TmpSprTr.SkPnt.Texture := MineForm.TexManager.TexName['Ящик мишень'];
+    TmpSprTr.SkPnt.Angle := Random(180);
+    TmpSprTr.MapPosition.X := 32 + Random(3000);
+    TmpSprTr.MapPosition.Y := 32 + Random(1500);
+  end;
+
 end;
 
 procedure TMineForm.MoveAllObjectInGameField(AX, AY: Single);
@@ -199,7 +210,6 @@ begin
       avk_TSprite(TFR).Position.X := avk_TSprite(TFR).Position.X + AX;
       avk_TSprite(TFR).Position.Y := avk_TSprite(TFR).Position.Y + AY;
     end;
-
   end;
 end;
 
@@ -270,8 +280,7 @@ begin
   FTG := TGamer1(Sender);
 
   //Проверка на падения в дырки
-  if SpriteFall(avk_TSimpleMap(FTG.Parent.ListName['Тайловая карта']), FTG, true) then
-    begin
+  if SpriteFall(avk_TSimpleMap(FTG.Parent.ListName['Тайловая карта']), FTG, true) then begin
       {$IfDef Debug}
       with avk_TElement(FTG.Parent) do begin
         avk_TSimpleButton(GetFraimById(GetIdByName('Кадры'))).LabelCaption.Caption := UTF8String('Падение: ') + u_FloatToStr(FTG.PosScale);
@@ -349,6 +358,10 @@ end;
 procedure TMineForm.DoSupervision(Sender: TObject);
 var
   CKL: Integer;
+  TmpWPort: zglTRect;
+  MPS: zglTPoint2D;
+  TMap: avk_TSimpleMap;
+  TCS: avk_TTileMap;
 begin
   if MineForm.ListName['Ид игрока'] = nil then begin
     //нужно пересоздать персонажа
@@ -360,6 +373,27 @@ begin
           if MineForm.ListNom[CKL].Name <> UTF8String('Выход') then
             if MineForm.ListNom[CKL].Name <> UTF8String('Проверяющий') then
               MineForm.ListNom[CKL].DeleteMe := true;
+
+    Exit; //Дальше на тесте не надо
   end;
+
+  TMap := avk_TSimpleMap(MineForm.ListName['Тайловая карта']);
+  TCS := TMap.Stage[TMap.CurrentStage];
+  TmpWPort := TMap.Stage[TMap.CurrentStage].WievPanel;
+  For CKL := 0 to MineForm.Count - 1 do
+    if Assigned(MineForm.ListNom[CKL]) then
+      if MineForm.ListNom[CKL].Name <> UTF8String('Ид игрока') then
+        if MineForm.ListNom[CKL] is avk_TSprite then
+          with avk_TSprite(MineForm.ListNom[CKL]) do begin
+            MPS := MapPosition;
+            //PosHide := false;
+            //PosHide := (MPS.X < (TmpWPort.X - TCS.TileSizeW)) or
+            //  (MPS.X > (TmpWPort.X + TmpWPort.W + TCS.TileSizeW)) or
+            //  (MPS.Y < (TmpWPort.Y - TCS.TileSizeH)) or
+            //  (MPS.Y > (TmpWPort.Y + TmpWPort.H + TCS.TileSizeH));
+
+            Position.X := MPS.X - TmpWPort.X;
+            Position.Y := MPS.Y - TmpWPort.Y;
+         end;
 
 end;

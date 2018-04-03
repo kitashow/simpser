@@ -58,6 +58,21 @@ uses
   , zgl_main
   , zglChipmunk
   ;
+type
+
+  { avk_Checker }
+
+  avk_Checker = class (avk_TFraim)
+  private
+    FOnBeforeCheck: TNotifyEvent;
+  public
+    OffCheck: boolean;
+    property OnBeforeCheck: TNotifyEvent read FOnBeforeCheck write FOnBeforeCheck;
+    procedure DoProc(Sender: TObject);
+  public
+    constructor Create(const InParent: avk_TFraim = nil);
+    destructor Destroy; override;
+  end;
 
 function SpriteFall(AMap: avk_TSimpleMap; ASprite: avk_TSprite; DoCorrectPosition: boolean = false): boolean;
 
@@ -79,5 +94,28 @@ begin
 end;
 
 { avk_Checker }
+
+procedure avk_Checker.DoProc(Sender: TObject);
+var
+  PMF: avk_THostForm;
+begin
+  if Assigned(OnBeforeCheck) then FOnBeforeCheck(Self);
+  //тут проверка столкновений
+  PMF := avk_THostForm(Parent);
+  //список столкновений это стринглистстринг листов
+
+end;
+
+constructor avk_Checker.Create(const InParent: avk_TFraim);
+begin
+  inherited Create(InParent);
+  OnProc := DoProc;
+end;
+
+destructor avk_Checker.Destroy;
+begin
+  inherited Destroy;
+end;
+
 
 end.
