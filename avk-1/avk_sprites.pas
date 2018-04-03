@@ -274,26 +274,6 @@ avk_TSkeletTile = class (avk_TSimpleTile)
     destructor Destroy; override;
 end;
 
-{ avk_TSimpleSprite }
-
-avk_TSimpleSprite = class (avk_TFraim)
-  private
-    FOnBeforeProc: TNotifyEvent;
-    FOnAfterProc: TNotifyEvent;
-    FSkeletPoint: avk_TSkeletTile;
-  public
-    property SkPnt: avk_TSkeletTile read FSkeletPoint write FSkeletPoint;
-  public
-    property OnBeforeProc: TNotifyEvent read FOnBeforeProc write FOnBeforeProc;
-    property OnAfterProc: TNotifyEvent read FOnAfterProc write FOnAfterProc;
-  public
-    procedure DoDraw(Sender: TObject);
-    procedure DoProc(Sender: TObject);
-  public
-    constructor Create(const InParent: avk_TFraim = nil);
-    destructor Destroy; override;
-end;
-
 { avk_TSprite }
 
 avk_TSprite = class(avk_TFraim)
@@ -323,6 +303,7 @@ public
   property ColCount: Integer read GetColCount;
   property RowCount[const ACol: Integer]: Integer read GetRowCount;
 public
+  MapPosition: zglTPoint2D;
   Position: zglTPoint2D;
   PosAngle: Single;
   PosScale: Single;
@@ -340,6 +321,15 @@ public
   constructor Create(const InParent: avk_TFraim = nil);
   destructor Destroy; override;
 end;
+
+{ avk_TSimpleSprite }
+
+avk_TSimpleSprite = class (avk_TSprite)
+public
+  property SkPnt: avk_TSkeletTile read FSprites[0, 0] write FSprites[0, 0];
+  constructor Create(const InParent: avk_TFraim = nil);
+end;
+
 
 implementation
 
