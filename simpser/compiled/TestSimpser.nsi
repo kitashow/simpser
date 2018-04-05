@@ -1,7 +1,7 @@
 ;имя приложения
 !define PRODUCT_NAME "Tests simpser"
 ;версия приложения
-;!define PRODUCT_VERSION "0.0001"
+!define PRODUCT_VERSION "0.0.0.1"
 ;папка, где будут храниться исходные файлы, подлежащие сжатию.
 ;!define pkgdir "d:\package"
 
@@ -16,19 +16,31 @@ SetCompressor /SOLID lzma
 !define MUI_ABORTWARNING
 
 ;Константа MUI_ICON определяет значок инсталятора:
-!define MUI_ICON "..\simpser.ico" ;"${NSISDIR}\Contrib\Graphics\Icons\modern-install.ico"
+!define MUI_ICON "..\simpser_setup.ico" ;"${NSISDIR}\Contrib\Graphics\Icons\modern-install.ico"
 
 ;Если мы хотим, чтобы все страницы нашего скрипта были на русском языке, необходимо также добавить вызов макроса локализации:
 !insertmacro MUI_LANGUAGE "Russian"
 
-;Команда Name задает название кнопки инсталлятора на панели задач. В нашей случае мы будем использовать её в следующем виде:
+;Name задает название кнопки инсталлятора на панели задач. В нашей случае мы будем использовать её в следующем виде:
 Name "${PRODUCT_NAME}"
 
-;Команда Caption задает заголовок окна инсталятора. Её мы зададим равной
+;Caption задает заголовок окна инсталятора. Её мы зададим равной
 Caption "Установка ${PRODUCT_NAME}" ;убрал[ ${PRODUCT_VERSION}"]
 
 ;Имя файла инсталлятора задается командой OutFile
 OutFile "setup_simpser.exe"
+
+VIProductVersion ${PRODUCT_VERSION}
+VIAddVersionKey ProductName "${PRODUCT_NAME}"
+VIAddVersionKey Comments "Установщик ${PRODUCT_NAME}, простая установка нсис."
+VIAddVersionKey CompanyName "Киташов Алексей"
+VIAddVersionKey LegalCopyright "Киташов Алексей"
+;VIAddVersionKey FileDescription "${PRODUCT_NAME}"
+;VIAddVersionKey FileVersion ${PRODUCT_VERSION}
+;VIAddVersionKey ProductVersion ${PRODUCT_VERSION}
+;VIAddVersionKey InternalName "simser.exe"
+;VIAddVersionKey LegalTrademarks "PortableApps.com is a Trademark of Rare Ideas, LLC."
+;VIAddVersionKey OriginalFilename "simser.exe"
 
 ;ShowInstDetails, говорит компилятору, что в окне хода выполнения инсталлятора должен 
 ;быть виден протокол его действий. 
@@ -63,19 +75,32 @@ Section "" ;Имя оставляем пустым, чтобы не было показано в списке компонентов
 SectionEnd
 
 ; Optional section (can be disabled by the user)
-Section "Создать ярлык на рабочем столе"
+Section "Создать ярлык на рабочем столе" SLink
 
   CreateShortcut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\simpser.exe" "" "$INSTDIR\simpser.exe" 0
   
 SectionEnd
 
-Section "Ярлыки в меню Windows"
+Section "Ярлыки в меню Windows" SStMnLinks
 
   CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
   CreateShortcut "$SMPROGRAMS\${PRODUCT_NAME}\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
   CreateShortcut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\simpser.exe" "" "$INSTDIR\simpser.exe" 0
   
 SectionEnd
+
+Section "Добавить отладочную версию" SDbgVer
+
+  File simpser_dbg.exe
+  
+SectionEnd
+
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+	!insertmacro MUI_DESCRIPTION_TEXT ${SLink} "После установки ярлык быстрого доступа будет на рабочем столе."
+	!insertmacro MUI_DESCRIPTION_TEXT ${SStMnLinks} "После установки в меню пуск будут ярлычки на запуск и удаление программы."
+	!insertmacro MUI_DESCRIPTION_TEXT ${SDbgVer} "Добавляет также отладочную версию, можно добавить ради любопытства. Ярлыков на нее выведено не будет."
+!insertmacro MUI_FUNCTION_DESCRIPTION_END
+	
 
 ;--------------------------------
 
