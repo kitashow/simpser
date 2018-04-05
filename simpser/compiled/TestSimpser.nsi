@@ -39,7 +39,7 @@ VIAddVersionKey LegalCopyright "Киташов Алексей"
 ;VIAddVersionKey FileVersion ${PRODUCT_VERSION}
 ;VIAddVersionKey ProductVersion ${PRODUCT_VERSION}
 ;VIAddVersionKey InternalName "simser.exe"
-;VIAddVersionKey LegalTrademarks "PortableApps.com is a Trademark of Rare Ideas, LLC."
+;VIAddVersionKey LegalTrademarks "Киташов Алексей"
 ;VIAddVersionKey OriginalFilename "simser.exe"
 
 ;ShowInstDetails, говорит компилятору, что в окне хода выполнения инсталлятора должен 
