@@ -52,12 +52,13 @@ uses
   //, zgl_textures_jpg
   , zgl_sprite_2d
   , zgl_particles_2d
+  , zgl_collision_2d
   , zgl_render_target
   , zgl_utils
   , zgl_types
   , zgl_keyboard
   , zgl_main
-  , zglChipmunk
+  //, zglChipmunk
   ;
 
 const
@@ -66,7 +67,16 @@ const
   TILE_COOLSPRITE = 2;
   TILE_EMITTER = 3;
 
+  CZ_POINT = 0;
+  CZ_CIRCLE = 1;
+  CZ_RECTANGLE = 2;
+  CZ_TRIANGLE = 3;
+
+
 type
+
+avk_TCollisionZone = class;
+
 { avk_TIntegerRect }
 
 avk_TIntegerRect = record
@@ -322,6 +332,19 @@ public
   destructor Destroy; override;
 end;
 
+{ avk_TCollisionZone }
+
+avk_TCollisionZone = class (TObject)
+  FTypeOfZone: byte;
+  FHostSkeletTile: avk_TSkeletTile;
+
+  //FP1, FP2, FP3, FP4: Single; //точки, радиусы и пр. в зависимости от типа
+  //function Check(AColZone: avk_TCollisionZone): boolean;
+public
+  constructor Create(const AHostSkeletTile: avk_TSkeletTile = nil);
+end;
+
+
 { avk_TSimpleSprite }
 
 avk_TSimpleSprite = class (avk_TSprite)
@@ -350,6 +373,9 @@ implementation
 
 //avk_TSprite
 {$INCLUDE avk_sprites_tsprite.inc}
+
+//avk_TCollisionZone
+{$INCLUDE avk_sprites_tcollisionzone.inc}
 
 end.
 
