@@ -263,6 +263,7 @@ begin
   HostPoint := nil;
   CountSubPoints := 0;
   FTileRotateByHost := true;
+  FCollisionZone := nil;
   inherited Create;
 end;
 

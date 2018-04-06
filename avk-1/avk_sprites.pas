@@ -67,11 +67,11 @@ const
   TILE_COOLSPRITE = 2;
   TILE_EMITTER = 3;
 
-  CZ_POINT = 0;
+  CZ_POINT = 0; //точка, берется от точки скелета, нет доп параметров
   CZ_CIRCLE = 1;
-  CZ_RECTANGLE = 2;
-  CZ_TRIANGLE = 3;
-
+  CZ_LINE = 3;
+  CZ_LINERECTANGLE = 3; //4 линии
+  CZ_RECTANGLE = 4;
 
 type
 
@@ -245,6 +245,7 @@ end;
 
 avk_TSkeletTile = class (avk_TSimpleTile)
   private
+    FCollisionZone: avk_TCollisionZone;
     FTileRotateByHost: boolean;
     FPoint: zglTPoint2D;
     AngleDeg: Single;
@@ -283,6 +284,31 @@ avk_TSkeletTile = class (avk_TSimpleTile)
     constructor Create;
     destructor Destroy; override;
 end;
+
+{ avk_TCollisionZone }
+
+avk_TCollisionZone = class (TObject)
+  FTypeOfZone: byte;
+  FHostSkeletTile: avk_TSkeletTile;
+  FRadius: Single; //Радиус, если тип круг
+  FRectangle: zglTRect; //прямоугольник
+  FPoints: array [0..3] of zglTPoint2D; //4 точки для реализации разных типов
+
+  FBufferCircle: Single;
+  FBufferRectangle: zglTRect;
+  FBufferPoints: array [0..3] of zglTPoint2D;
+
+public
+  procedure SetZone(ARadius: Single); overload; //это зона круг
+  procedure SetZone(APoint1, APoint2: zglTPoint2D); overload; //это зона линия
+  procedure SetZone(APoint1, APoint2, APoint3, APoint4: zglTPoint2D); overload; //это зона прямоугольник 4 линии
+  procedure SetZone(AX, AY, AW, AH: Single); overload; //это зона прямоугольник
+  procedure CalkBuffer;
+  //function Check(AColZone: avk_TCollisionZone): boolean;
+public
+  constructor Create(const AHostSkeletTile: avk_TSkeletTile = nil);
+end;
+
 
 { avk_TSprite }
 
@@ -332,19 +358,6 @@ public
   destructor Destroy; override;
 end;
 
-{ avk_TCollisionZone }
-
-avk_TCollisionZone = class (TObject)
-  FTypeOfZone: byte;
-  FHostSkeletTile: avk_TSkeletTile;
-
-  //FP1, FP2, FP3, FP4: Single; //точки, радиусы и пр. в зависимости от типа
-  //function Check(AColZone: avk_TCollisionZone): boolean;
-public
-  constructor Create(const AHostSkeletTile: avk_TSkeletTile = nil);
-end;
-
-
 { avk_TSimpleSprite }
 
 avk_TSimpleSprite = class (avk_TSprite)
@@ -371,11 +384,11 @@ implementation
 //avk_TSimpleSprite
 {$INCLUDE avk_sprites_tsimplesprite.inc}
 
-//avk_TSprite
-{$INCLUDE avk_sprites_tsprite.inc}
-
 //avk_TCollisionZone
 {$INCLUDE avk_sprites_tcollisionzone.inc}
+
+//avk_TSprite
+{$INCLUDE avk_sprites_tsprite.inc}
 
 end.
 
