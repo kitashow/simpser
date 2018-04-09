@@ -78,6 +78,8 @@ function SpriteFall(AMap: avk_TSimpleMap; ASprite: avk_TSprite; DoCorrectPositio
 
 function SpriteInMapFall(AMap: avk_TSimpleMap; ASprite: avk_TSprite): boolean;
 
+function ColisionPointAndCircle(APoint, ACircle: avk_TCollisionZone): boolean;
+
 implementation
 
 function SpriteFall(AMap: avk_TSimpleMap; ASprite: avk_TSprite; DoCorrectPosition: boolean = false): boolean;
@@ -88,7 +90,15 @@ begin
   TmpWPort := AMap.Stage[AMap.CurrentStage].WievPanel;
   InTileX := Trunc((TmpWPort.X + ASprite.Position.X) / AMap.Stage[AMap.CurrentStage].TileSizeW);
   InTileY := Trunc((TmpWPort.Y + ASprite.Position.Y) / AMap.Stage[AMap.CurrentStage].TileSizeH);
-  Result := AMap.Stage[AMap.CurrentStage].LOT[InTileX, InTileY] = nil;
+
+  Result := false;
+  Result := (InTileX >= AMap.Stage[AMap.CurrentStage].CountTileW) or
+         (InTileY >= AMap.Stage[AMap.CurrentStage].CountTileH) or
+         (InTileX < 0) or (InTileY < 0);
+
+  if not Result then
+    Result := AMap.Stage[AMap.CurrentStage].LOT[InTileX, InTileY] = nil;
+
   if Result and DoCorrectPosition then begin
     ASprite.Position.X := (InTileX * AMap.Stage[AMap.CurrentStage].TileSizeW - TmpWPort.X) + (AMap.Stage[AMap.CurrentStage].TileSizeW / 2);
     ASprite.Position.Y := (InTileY * AMap.Stage[AMap.CurrentStage].TileSizeH - TmpWPort.Y) + (AMap.Stage[AMap.CurrentStage].TileSizeH / 2);
@@ -101,7 +111,20 @@ var
 begin
   InTileX := Trunc(ASprite.MapPosition.X / AMap.Stage[AMap.CurrentStage].TileSizeW);
   InTileY := Trunc(ASprite.MapPosition.Y / AMap.Stage[AMap.CurrentStage].TileSizeH);
-  Result := AMap.Stage[AMap.CurrentStage].LOT[InTileX, InTileY] = nil;
+
+  Result := false;
+  Result := (InTileX >= AMap.Stage[AMap.CurrentStage].CountTileW) or
+         (InTileY >= AMap.Stage[AMap.CurrentStage].CountTileH) or
+         (InTileX < 0) or (InTileY < 0);
+
+  if not Result then
+     Result := AMap.Stage[AMap.CurrentStage].LOT[InTileX, InTileY] = nil;
+end;
+
+function ColisionPointAndCircle(APoint, ACircle: avk_TCollisionZone): boolean;
+begin
+  //Result := col2d_PointInCircle( APoint. X, Y : Single; const Circle : zglTCircle ) : Boolean;
+  Result := false;
 end;
 
 { avk_Checker }

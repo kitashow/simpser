@@ -176,7 +176,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="11">
+    <Units Count="9">
       <Unit0>
         <Filename Value="simpser.pas"/>
         <IsPartOfProject Value="True"/>
@@ -186,41 +186,33 @@
         <IsPartOfProject Value="True"/>
       </Unit1>
       <Unit2>
-        <Filename Value="avk_emitters.pas"/>
+        <Filename Value="sg_unit.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit2>
       <Unit3>
-        <Filename Value="sg_unit.pas"/>
+        <Filename Value="tgamer1.inc"/>
         <IsPartOfProject Value="True"/>
       </Unit3>
       <Unit4>
-        <Filename Value="tgamer1.inc"/>
+        <Filename Value="../avk-1/avk_sprites_tsprite.inc"/>
         <IsPartOfProject Value="True"/>
       </Unit4>
       <Unit5>
-        <Filename Value="../avk-1/avk_sprites_tsprite.inc"/>
+        <Filename Value="tbullet1.inc"/>
         <IsPartOfProject Value="True"/>
       </Unit5>
       <Unit6>
-        <Filename Value="tbullet1.inc"/>
+        <Filename Value="mineform_gamefield.inc"/>
         <IsPartOfProject Value="True"/>
       </Unit6>
       <Unit7>
-        <Filename Value="mineform_gamefield.inc"/>
+        <Filename Value="avk_checks.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit7>
       <Unit8>
-        <Filename Value="avk_loadmap.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit8>
-      <Unit9>
-        <Filename Value="avk_checks.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit9>
-      <Unit10>
         <Filename Value="../avk-1/avk_sprites_tcollisionzone.inc"/>
         <IsPartOfProject Value="True"/>
-      </Unit10>
+      </Unit8>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
