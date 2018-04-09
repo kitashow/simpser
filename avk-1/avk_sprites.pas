@@ -70,8 +70,8 @@ const
   CZ_POINT = 0; //точка, берется от точки скелета, нет доп параметров
   CZ_CIRCLE = 1;
   CZ_LINE = 3;
-  CZ_LINERECTANGLE = 3; //4 линии
-  CZ_RECTANGLE = 4;
+  CZ_LINERECTANGLE = 4; //4 линии
+  CZ_RECTANGLE = 5;
 
 type
 
@@ -288,25 +288,27 @@ end;
 { avk_TCollisionZone }
 
 avk_TCollisionZone = class (TObject)
-  FTypeOfZone: byte;
-  FHostSkeletTile: avk_TSkeletTile;
-  FRadius: Single; //Радиус, если тип круг
-  FRectangle: zglTRect; //прямоугольник
-  FPoints: array [0..3] of zglTPoint2D; //4 точки для реализации разных типов
+    FTypeOfZone: byte;
+    FHostSkeletTile: avk_TSkeletTile;
+    FRadius: Single; //Радиус, если тип круг
+    FRectangle: zglTRect; //прямоугольник
+    FPoints: array [0..3] of zglTPoint2D; //4 точки для реализации разных типов
 
-  FBufferCircle: Single;
-  FBufferRectangle: zglTRect;
-  FBufferPoints: array [0..3] of zglTPoint2D;
+    FBufferCircle: zglTCircle;
+    FBufferRectangle: zglTRect;
+    FBufferPoints: array [0..3] of zglTPoint2D;
 
-public
-  procedure SetZone(ARadius: Single); overload; //это зона круг
-  procedure SetZone(APoint1, APoint2: zglTPoint2D); overload; //это зона линия
-  procedure SetZone(APoint1, APoint2, APoint3, APoint4: zglTPoint2D); overload; //это зона прямоугольник 4 линии
-  procedure SetZone(AX, AY, AW, AH: Single); overload; //это зона прямоугольник
-  procedure CalkBuffer;
-  //function Check(AColZone: avk_TCollisionZone): boolean;
-public
-  constructor Create(const AHostSkeletTile: avk_TSkeletTile = nil);
+  public
+    procedure SetZone(ARadius: Single); overload; //это зона круг
+    procedure SetZone(APoint1, APoint2: zglTPoint2D); overload; //это зона линия
+    procedure SetZone(APoint1, APoint2, APoint3, APoint4: zglTPoint2D); overload; //это зона прямоугольник 4 линии
+    procedure SetZone(AX, AY, AW, AH: Single); overload; //это зона прямоугольник
+    procedure CalkBuffer;
+    function Check(AColZone: avk_TCollisionZone): boolean;
+  public
+    property TypeCollizionZone: byte read FTypeOfZone;
+  public
+    constructor Create(const AHostSkeletTile: avk_TSkeletTile = nil);
 end;
 
 
@@ -368,6 +370,9 @@ end;
 
 
 implementation
+
+uses
+  avk_checks;
 
 //avk_TSimpleTile
 {$INCLUDE avk_sprites_tsimpletile.inc}

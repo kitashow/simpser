@@ -13,7 +13,8 @@ function VcToAngle(AValue: zglTPoint2D): Single; overload;
 function VcToAngle(AValX, AValY: Single): Single; overload;
 
 //Длина вектора
-function VcLength(AValue: zglTPoint2D): Single;
+function VcLength(AValue: zglTPoint2D): Single; overload;
+function VcLength(AValX, AValY: Single): Single; overload;
 
 //точка на угол (умножить на длину вектора и вот тебе новая точка)
 function VcForAngle(AValue: Single): zglTPoint2D;
@@ -47,6 +48,11 @@ end;
 function ZeroPoint(AValue: zglTPoint2D): boolean;
 begin
   Result := (AValue.X = 0) and (AValue.Y = 0);
+end;
+
+function VcLength(AValX, AValY: Single): Single;
+begin
+  Result := m_Distance(0, 0, AValX, AValY);
 end;
 
 function VcLength(AValue: zglTPoint2D): Single;
