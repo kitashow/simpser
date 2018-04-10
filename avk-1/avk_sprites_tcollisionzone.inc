@@ -95,6 +95,7 @@ end;
 
 constructor avk_TCollisionZone.Create(const AHostSkeletTile: avk_TSkeletTile);
 begin
+  FHostSkeletTile := nil;
   FHostSkeletTile := AHostSkeletTile;
   FTypeOfZone := CZ_POINT; //точка, берется от точки скелета, нет доп параметров
 end;

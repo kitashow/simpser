@@ -19,6 +19,13 @@ begin
   SetPoint(TmpRP.X, TmpRP.Y);
 end;
 
+procedure avk_TSkeletTile.SetCollizionZone(AValue: avk_TCollisionZone);
+begin
+  if FCollizionZone=AValue then Exit;
+  if Assigned(FCollizionZone) then FCollizionZone.Destroy;
+  FCollizionZone:=AValue;
+end;
+
 procedure avk_TSkeletTile.stSetCoolSprite(AValue: clPSprite);
 begin
   FCoolSprite := AValue;
@@ -189,13 +196,27 @@ begin
     SubPoints[CKL].DoDraw;
   end;
 
-  {$IfDef Debug and ShowPoints}
+  {$IfDef Debug}
+    {$IfDef ShowPoints}
   LRP := RealPoint;
   if HostPoint = nil then
       pr2d_Circle(LRP.X, LRP.Y, 7, $7a250f, 150 ,250, PR2D_FILL)
   else if CountSubPoints > 0 then
       pr2d_Circle(LRP.X, LRP.Y, 6, $7a250f, 150 ,250, PR2D_FILL);
   pr2d_Circle(LRP.X, LRP.Y, 4, $e52b50, 150 ,250, PR2D_FILL);
+    {$EndIf}
+  if Assigned(FCollizionZone) then
+    with FCollizionZone do
+      case TypeCollizionZone of
+        CZ_CIRCLE: pr2d_Circle(FBufferCircle.cX, FBufferCircle.cY, FBufferCircle.Radius, $e52b50, 150 ,100, PR2D_FILL);
+        //CZ_CIRCLE: pr2d_Circle(LRP.X, LRP.Y, FBufferCircle.Radius, $e52b50, 150 ,100, PR2D_FILL);
+        CZ_LINE: pr2d_Line(FBufferPoints[0].X, FBufferPoints[0].Y,
+                 FBufferPoints[1].X, FBufferPoints[1].Y,
+                 $e52b50, 150 , PR2D_FILL);
+        CZ_RECTANGLE: pr2d_Rect(FBufferRectangle.X, FBufferRectangle.Y,
+                FBufferRectangle.W, FBufferRectangle.H,
+                $e52b50, 150 , PR2D_FILL);
+      end;
   {$EndIf}
 end;
 
@@ -207,6 +228,32 @@ begin
   for CKL := 0 to CountSubPoints - 1 do begin
     SubPoints[CKL].DoProc;
   end;
+end;
+
+procedure avk_TSkeletTile.CreateCollizionZone(ARadius: Single);
+begin
+  FCollizionZone := avk_TCollisionZone.Create(Self);
+  FCollizionZone.SetZone(ARadius);
+end;
+
+procedure avk_TSkeletTile.CreateCollizionZone(APoint1, APoint2: zglTPoint2D);
+begin
+  FCollizionZone := avk_TCollisionZone.Create(Self);
+  FCollizionZone.SetZone(APoint1, APoint2);
+end;
+
+procedure avk_TSkeletTile.CreateCollizionZone(APoint1, APoint2, APoint3,
+  APoint4: zglTPoint2D);
+begin
+  FCollizionZone := avk_TCollisionZone.Create(Self);
+  FCollizionZone.SetZone(APoint1, APoint2, APoint3,
+  APoint4);
+end;
+
+procedure avk_TSkeletTile.CreateCollizionZone(AX, AY, AW, AH: Single);
+begin
+  FCollizionZone := avk_TCollisionZone.Create(Self);
+  FCollizionZone.SetZone(AX, AY, AW, AH);
 end;
 
 procedure avk_TSkeletTile.ProcCoolSprite;
@@ -263,7 +310,7 @@ begin
   HostPoint := nil;
   CountSubPoints := 0;
   FTileRotateByHost := true;
-  FCollisionZone := nil;
+  FCollizionZone := nil;
   inherited Create;
 end;
 
@@ -274,6 +321,9 @@ begin
   for CKL := 0 to CountSubPoints - 1 do
     SubPoints[CKL].Destroy;
   SetLength(SubPoints, 0);
+
+  if Assigned(FCollizionZone) then FCollizionZone.Destroy;
+
   inherited Destroy;
 end;
 

@@ -245,11 +245,12 @@ end;
 
 avk_TSkeletTile = class (avk_TSimpleTile)
   private
-    FCollisionZone: avk_TCollisionZone;
+    FCollizionZone: avk_TCollisionZone;
     FTileRotateByHost: boolean;
     FPoint: zglTPoint2D;
     AngleDeg: Single;
     procedure SetAngle(AValue: Single);
+    procedure SetCollizionZone(AValue: avk_TCollisionZone);
     procedure stSetCoolSprite(AValue: clPSprite);
     procedure stSetEmitter(AValue: zglPEmitter2D);
     procedure SetTileParameters(ATexX, ATexY, AWigh, AHeight, ATexAngle: Single);
@@ -280,6 +281,12 @@ avk_TSkeletTile = class (avk_TSimpleTile)
     //нужно переопределить
     property CoolSprite: clPSprite read FCoolSprite write stSetCoolSprite; //кул спрайт
     property Emitter: zglPEmitter2D read FEmitter write stSetEmitter; //эмиттер
+  public
+    procedure CreateCollizionZone(ARadius: Single); overload; //это зона круг
+    procedure CreateCollizionZone(APoint1, APoint2: zglTPoint2D); overload; //это зона линия
+    procedure CreateCollizionZone(APoint1, APoint2, APoint3, APoint4: zglTPoint2D); overload; //это зона прямоугольник 4 линии
+    procedure CreateCollizionZone(AX, AY, AW, AH: Single); overload; //это зона прямоугольник
+    property CollizionZone: avk_TCollisionZone read FCollizionZone write SetCollizionZone;
   public
     constructor Create;
     destructor Destroy; override;
