@@ -78,8 +78,6 @@ function SpriteFall(AMap: avk_TSimpleMap; ASprite: avk_TSprite; DoCorrectPositio
 
 function SpriteInMapFall(AMap: avk_TSimpleMap; ASprite: avk_TSprite): boolean;
 
-function ColisionPointAndCircle(APoint, ACircle: avk_TCollisionZone): boolean;
-
 implementation
 
 function SpriteFall(AMap: avk_TSimpleMap; ASprite: avk_TSprite; DoCorrectPosition: boolean = false): boolean;
@@ -121,23 +119,27 @@ begin
      Result := AMap.Stage[AMap.CurrentStage].LOT[InTileX, InTileY] = nil;
 end;
 
-function ColisionPointAndCircle(APoint, ACircle: avk_TCollisionZone): boolean;
-begin
-  //Result := col2d_PointInCircle( APoint. X, Y : Single; const Circle : zglTCircle ) : Boolean;
-  Result := false;
-end;
 
 { avk_Checker }
 
 procedure avk_Checker.DoProc(Sender: TObject);
 var
   PMF: avk_THostForm;
+  CKL, CKL1: Integer;
 begin
   if Assigned(OnBeforeCheck) then FOnBeforeCheck(Self);
   //тут проверка столкновений
   PMF := avk_THostForm(Parent);
-  //список столкновений это стринглистстринг листов
+  //список столкновений это стринглист стринглистов
 
+  //пересчет всех зон коллизий
+  for CKL := 0 to PMF.Count - 1 do begin
+    if not(PMF.ListNom[CKL] is avk_TSprite) then Continue;
+    with avk_TSprite(PMF.ListNom[CKL]) do
+      for CKL1 := 0 to ColCount - 1 do
+        if Assigned(Sprite[CKL1, ColVisible[CKL1]].CollizionZone) then
+           Sprite[CKL1, ColVisible[CKL1]].CollizionZone.CalkBuffer;
+  end;
 end;
 
 constructor avk_Checker.Create(const InParent: avk_TFraim);

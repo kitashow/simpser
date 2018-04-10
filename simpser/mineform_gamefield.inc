@@ -182,7 +182,7 @@ begin
   {$EndIf}
 
   //мишеньки
-  for CKL := 0 to 25 do begin
+  for CKL := 0 to 10 do begin
     TmpSprTr := avk_TSimpleSprite.Create(MineForm);
     TmpSprTr.Name := UTF8String('Мишень'+u_IntToStr(CKL));
     TmpSprTr.SkPnt.Texture := MineForm.TexManager.TexName['Ящик мишень'];
@@ -191,12 +191,15 @@ begin
     TmpSprTr.SkPnt.StopCadre := 3;
     TmpSprTr.SkPnt.RateCadre := 15;
     TmpSprTr.SkPnt.Animate := false;
+    TmpSprTr.SkPnt.CreateCollizionZone(30);
 
     TmpSprTr.MapPosition.X := 32 + Random(2500);
     TmpSprTr.MapPosition.Y := 32 + Random(1400);
+    TmpSprTr.SkPnt.CollizionZone.CalkBuffer;
     while SpriteInMapFall(TmpMap, avk_TSprite(TmpSprTr)) do begin
       TmpSprTr.MapPosition.X := 32 + Random(2500);
       TmpSprTr.MapPosition.Y := 32 + Random(1400);
+      TmpSprTr.SkPnt.CollizionZone.CalkBuffer;
     end;
 
     TmpSprTr.PosAngle := Random(180);
