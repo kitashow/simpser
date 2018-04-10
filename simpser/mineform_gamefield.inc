@@ -11,6 +11,7 @@ var
   TmpSpr: TGamer1;
   Supervisor: avk_Checker;
   TmpSprTr: avk_TSimpleSprite;
+  WHAT: Boolean;
 
     function GetTile(NumTile: Word):avk_TSimpleTile;
     var
@@ -113,7 +114,8 @@ begin
     Supervisor := avk_Checker.Create(MineForm);
     Supervisor.Name := UTF8String('Проверяющий');
     Supervisor.OnBeforeCheck := DoSupervision;
-  end;
+  end else
+    Supervisor := avk_Checker(MineForm.ListName['Проверяющий']);
 
   //пол
   MapArray := MineForm.MapManager.MapArrayName['пример карты'];
@@ -182,7 +184,7 @@ begin
   {$EndIf}
 
   //мишеньки
-  for CKL := 0 to 10 do begin
+  for CKL := 0 to 25 do begin
     TmpSprTr := avk_TSimpleSprite.Create(MineForm);
     TmpSprTr.Name := UTF8String('Мишень'+u_IntToStr(CKL));
     TmpSprTr.SkPnt.Texture := MineForm.TexManager.TexName['Ящик мишень'];
@@ -195,8 +197,17 @@ begin
 
     TmpSprTr.MapPosition.X := 32 + Random(2500);
     TmpSprTr.MapPosition.Y := 32 + Random(1400);
-    TmpSprTr.SkPnt.CollizionZone.CalkBuffer;
-    while SpriteInMapFall(TmpMap, avk_TSprite(TmpSprTr)) do begin
+    //TmpSprTr.SkPnt.CollizionZone.CalkBuffer;
+    TmpSprTr.SkPnt.CollizionZone.FBufferCircle.cX := TmpSprTr.MapPosition.X;
+    TmpSprTr.SkPnt.CollizionZone.FBufferCircle.cX := TmpSprTr.MapPosition.Y;
+
+    WHAT := false;
+    if Supervisor.ColZoneHaveCollision(TmpSprTr.SkPnt.CollizionZone) then
+      WHAT := true;
+
+
+    while SpriteInMapFall(TmpMap, avk_TSprite(TmpSprTr)) or
+          Supervisor.ColZoneHaveCollision(TmpSprTr.SkPnt.CollizionZone) do begin
       TmpSprTr.MapPosition.X := 32 + Random(2500);
       TmpSprTr.MapPosition.Y := 32 + Random(1400);
       TmpSprTr.SkPnt.CollizionZone.CalkBuffer;
@@ -205,6 +216,7 @@ begin
     TmpSprTr.PosAngle := Random(180);
     TmpSprTr.PosHide := true;
     TmpSprTr.Layer := 3;
+    Supervisor.DoProc(nil);
   end;
 
 end;

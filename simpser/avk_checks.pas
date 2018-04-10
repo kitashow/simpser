@@ -65,10 +65,12 @@ type
   avk_Checker = class (avk_TFraim)
   private
     FOnBeforeCheck: TNotifyEvent;
+    ColZoneList: TStringList;
   public
     OffCheck: boolean;
     property OnBeforeCheck: TNotifyEvent read FOnBeforeCheck write FOnBeforeCheck;
     procedure DoProc(Sender: TObject);
+    function ColZoneHaveCollision(AColZone: avk_TCollisionZone): boolean;
   public
     constructor Create(const InParent: avk_TFraim = nil);
     destructor Destroy; override;
@@ -130,15 +132,31 @@ begin
   if Assigned(OnBeforeCheck) then FOnBeforeCheck(Self);
   //тут проверка столкновений
   PMF := avk_THostForm(Parent);
-  //список столкновений это стринглист стринглистов
 
   //пересчет всех зон коллизий
+  //список столкновений это стринглист стринглистов
+  //формирование списка
+  ColZoneList.Clear;
+
   for CKL := 0 to PMF.Count - 1 do begin
     if not(PMF.ListNom[CKL] is avk_TSprite) then Continue;
     with avk_TSprite(PMF.ListNom[CKL]) do
       for CKL1 := 0 to ColCount - 1 do
-        if Assigned(Sprite[CKL1, ColVisible[CKL1]].CollizionZone) then
+        if Assigned(Sprite[CKL1, ColVisible[CKL1]].CollizionZone) then begin
            Sprite[CKL1, ColVisible[CKL1]].CollizionZone.CalkBuffer;
+           ColZoneList.AddObject(Name + '.' + u_IntToStr(CKL1) + '.' + u_IntToStr(ColVisible[CKL1]), Sprite[CKL1, ColVisible[CKL1]].CollizionZone);
+        end;
+  end;
+end;
+
+function avk_Checker.ColZoneHaveCollision(AColZone: avk_TCollisionZone): boolean;
+var
+  CKL: Integer;
+begin
+  Result := false;
+  for CKL := 0 to ColZoneList.Count - 1 do begin
+    if not Assigned(ColZoneList.Objects[CKL]) then Continue;
+    Result := Result or AColZone.Check(avk_TCollisionZone(ColZoneList.Objects[CKL]));
   end;
 end;
 
@@ -146,11 +164,14 @@ constructor avk_Checker.Create(const InParent: avk_TFraim);
 begin
   inherited Create(InParent);
   OnProc := DoProc;
+  ColZoneList := TStringList.Create;
+  ColZoneList.Sorted := true;
 end;
 
 destructor avk_Checker.Destroy;
 begin
   inherited Destroy;
+  ColZoneList.Destroy;
 end;
 
 
