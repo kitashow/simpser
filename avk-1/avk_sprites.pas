@@ -246,6 +246,7 @@ end;
 avk_TSkeletTile = class (avk_TSimpleTile)
   private
     FCollizionZone: avk_TCollisionZone;
+    FParent: TObject;
     FTileRotateByHost: boolean;
     FPoint: zglTPoint2D;
     AngleDeg: Single;
@@ -288,7 +289,7 @@ avk_TSkeletTile = class (avk_TSimpleTile)
     procedure CreateCollizionZone(AX, AY, AW, AH: Single); overload; //это зона прямоугольник
     property CollizionZone: avk_TCollisionZone read FCollizionZone write SetCollizionZone;
   public
-    constructor Create;
+    constructor Create(AParent: TObject = nil);
     destructor Destroy; override;
 end;
 

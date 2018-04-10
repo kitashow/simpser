@@ -71,6 +71,10 @@ var
 begin
   if HostPoint = nil then begin
      Result := FPoint;
+     //проверяем класс родителя и если он на карте, то возвращаем координаты на карте
+     if FParent is avk_TSprite then begin
+
+     end;
      Exit;
   end;
 
@@ -302,7 +306,7 @@ begin
 end;
 
 
-constructor avk_TSkeletTile.Create;
+constructor avk_TSkeletTile.Create(AParent: TObject);
 begin
   FPoint.X := 0;
   FPoint.Y := 0;
@@ -312,6 +316,7 @@ begin
   FTileRotateByHost := true;
   FCollizionZone := nil;
   inherited Create;
+  FParent := AParent;
 end;
 
 destructor avk_TSkeletTile.Destroy;
