@@ -11,7 +11,6 @@ var
   TmpSpr: TGamer1;
   Supervisor: avk_Checker;
   TmpSprTr: avk_TSimpleSprite;
-  WHAT: Boolean;
 
     function GetTile(NumTile: Word):avk_TSimpleTile;
     var
@@ -194,27 +193,20 @@ begin
     TmpSprTr.SkPnt.RateCadre := 15;
     TmpSprTr.SkPnt.Animate := false;
     TmpSprTr.SkPnt.CreateCollizionZone(30);
+    TmpSprTr.Map := TmpMap.Stage[0]; //Это спрайт на карте
 
-    TmpSprTr.MapPosition.X := 32 + Random(2500);
-    TmpSprTr.MapPosition.Y := 32 + Random(1400);
-    //TmpSprTr.SkPnt.CollizionZone.CalkBuffer;
-    TmpSprTr.SkPnt.CollizionZone.FBufferCircle.cX := TmpSprTr.MapPosition.X;
-    TmpSprTr.SkPnt.CollizionZone.FBufferCircle.cX := TmpSprTr.MapPosition.Y;
+    TmpSprTr.Position.X := 32 + Random(2500);
+    TmpSprTr.Position.Y := 32 + Random(1400);
+    TmpSprTr.SetPosForAll;
 
-    WHAT := false;
-    if Supervisor.ColZoneHaveCollision(TmpSprTr.SkPnt.CollizionZone) then
-      WHAT := true;
-
-
-    while SpriteInMapFall(TmpMap, avk_TSprite(TmpSprTr)) or
+    while SpriteFall(avk_TSprite(TmpSprTr)) or
           Supervisor.ColZoneHaveCollision(TmpSprTr.SkPnt.CollizionZone) do begin
-      TmpSprTr.MapPosition.X := 32 + Random(2500);
-      TmpSprTr.MapPosition.Y := 32 + Random(1400);
-      TmpSprTr.SkPnt.CollizionZone.CalkBuffer;
+      TmpSprTr.Position.X := 32 + Random(2500);
+      TmpSprTr.Position.Y := 32 + Random(1400);
+      TmpSprTr.SetPosForAll;
     end;
 
     TmpSprTr.PosAngle := Random(180);
-    TmpSprTr.PosHide := true;
     TmpSprTr.Layer := 3;
     Supervisor.DoProc(nil);
   end;
@@ -225,17 +217,21 @@ procedure TMineForm.MoveAllObjectInGameField(AX, AY: Single);
 var
   CKL: Integer;
   TFR: avk_TFraim;
+  WHAT: UTF8String;
 begin
   for CKL := 0 to MineForm.Count - 1 do begin
     TFR := MineForm.ListNom[CKL];
     if not Assigned(TFR) then Continue;
     if TFR.Name = UTF8String('Тайловая карта') then Continue;
     if TFR.Name = UTF8String('Ид игрока') then Continue;
-    if TFR is avk_TSprite then begin
-      avk_TSprite(TFR).Position.X := trunc(avk_TSprite(TFR).Position.X + AX);
-      avk_TSprite(TFR).Position.Y := trunc(avk_TSprite(TFR).Position.Y + AY);
-      avk_TSprite(TFR).SetPosForAll;
-    end;
+    WHAT := TFR.Name;
+    if TFR is avk_TSprite then
+      if avk_TSprite(TFR).Map = nil then //на карте не надо
+      begin
+        avk_TSprite(TFR).Position.X := trunc(avk_TSprite(TFR).Position.X + AX);
+        avk_TSprite(TFR).Position.Y := trunc(avk_TSprite(TFR).Position.Y + AY);
+        avk_TSprite(TFR).SetPosForAll;
+      end;
   end;
 end;
 
@@ -301,12 +297,13 @@ var
   TmpMousePosition: zglTPoint2D;
   TmpBorder: zglTRect;
   TmpUD: avk_TElement;
+  TMAP: avk_TSimpleMap;
 begin
   if Sender.ClassName <> 'TGamer1' then Exit;
   FTG := TGamer1(Sender);
-
+  TMAP := avk_TSimpleMap(MineForm.ListName['Тайловая карта']);
   //Проверка на падения в дырки
-  if SpriteFall(avk_TSimpleMap(FTG.Parent.ListName['Тайловая карта']), FTG, true) then begin
+  if SpriteFall(FTG, TMAP.Stage[TMAP.CurrentStage], true) then begin
       {$IfDef Debug}
       with avk_TElement(FTG.Parent) do begin
         avk_TSimpleButton(GetFraimById(GetIdByName('Кадры'))).LabelCaption.Caption := UTF8String('Падение: ') + u_FloatToStr(FTG.PosScale);
@@ -403,24 +400,25 @@ begin
     Exit; //Дальше на тесте не надо
   end;
 
-  TMap := avk_TSimpleMap(MineForm.ListName['Тайловая карта']);
-  TCS := TMap.Stage[TMap.CurrentStage];
-  TmpWPort := TMap.Stage[TMap.CurrentStage].WievPanel;
-  For CKL := 0 to MineForm.Count - 1 do
-    if Assigned(MineForm.ListNom[CKL]) then
-      if MineForm.ListNom[CKL].Name <> UTF8String('Ид игрока') then
-        if MineForm.ListNom[CKL] is avk_TSprite then
-          with avk_TSprite(MineForm.ListNom[CKL]) do begin
-            MPS := MapPosition;
-            PosHide := false;
-            PosHide := (MPS.X < (TmpWPort.X - TCS.TileSizeW)) or
-              (MPS.X > (TmpWPort.X + TmpWPort.W + TCS.TileSizeW)) or
-              (MPS.Y < (TmpWPort.Y - TCS.TileSizeH)) or
-              (MPS.Y > (TmpWPort.Y + TmpWPort.H + TCS.TileSizeH));
-
-            Position.X := MPS.X - TmpWPort.X;
-            Position.Y := MPS.Y - TmpWPort.Y;
-            SetPosForAll;
-         end;
+  //TMap := avk_TSimpleMap(MineForm.ListName['Тайловая карта']);
+  //TCS := TMap.Stage[TMap.CurrentStage];
+  //TmpWPort := TMap.Stage[TMap.CurrentStage].WievPanel;
+  //For CKL := 0 to MineForm.Count - 1 do
+  //  if Assigned(MineForm.ListNom[CKL]) then
+  //    if MineForm.ListNom[CKL].Name <> UTF8String('Ид игрока') then
+  //      if MineForm.ListNom[CKL] is avk_TSprite then
+  //        if avk_TSprite(MineForm.ListNom[CKL]).Map = nil then //для тех кто на карте все и так норм
+  //          with avk_TSprite(MineForm.ListNom[CKL]) do begin
+  //            MPS := MapPosition;
+  //            PosHide := false;
+  //            PosHide := (MPS.X < (TmpWPort.X - TCS.TileSizeW)) or
+  //              (MPS.X > (TmpWPort.X + TmpWPort.W + TCS.TileSizeW)) or
+  //              (MPS.Y < (TmpWPort.Y - TCS.TileSizeH)) or
+  //              (MPS.Y > (TmpWPort.Y + TmpWPort.H + TCS.TileSizeH));
+  //
+  //            Position.X := MPS.X - TmpWPort.X;
+  //            Position.Y := MPS.Y - TmpWPort.Y;
+  //            SetPosForAll;
+  //         end;
 
 end;

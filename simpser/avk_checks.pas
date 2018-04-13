@@ -76,51 +76,47 @@ type
     destructor Destroy; override;
   end;
 
-function SpriteFall(AMap: avk_TSimpleMap; ASprite: avk_TSprite; DoCorrectPosition: boolean = false): boolean;
-
-function SpriteInMapFall(AMap: avk_TSimpleMap; ASprite: avk_TSprite): boolean;
+function SpriteFall(ASprite: avk_TSprite; AMapCheck: avk_TTileMap = nil; DoCorrectPosition: boolean = false): boolean;
 
 implementation
 
-function SpriteFall(AMap: avk_TSimpleMap; ASprite: avk_TSprite; DoCorrectPosition: boolean = false): boolean;
+function SpriteFall(ASprite: avk_TSprite; AMapCheck: avk_TTileMap = nil; DoCorrectPosition: boolean = false): boolean;
 var
   TmpWPort: zglTRect;
   InTileX, InTileY: Integer;
+  AMap: avk_TTileMap;
+  ASP: zglTPoint2D;
 begin
-  TmpWPort := AMap.Stage[AMap.CurrentStage].WievPanel;
-  InTileX := Trunc((TmpWPort.X + ASprite.Position.X) / AMap.Stage[AMap.CurrentStage].TileSizeW);
-  InTileY := Trunc((TmpWPort.Y + ASprite.Position.Y) / AMap.Stage[AMap.CurrentStage].TileSizeH);
+  AMap := nil;
+  ASP := ASprite.Position;
+
+  if AMapCheck = nil then
+    AMap := ASprite.Map
+  else begin
+    AMap := AMapCheck;
+    ASP.X := ASP.X + AMap.WievPanel.X;
+    ASP.Y := ASP.Y + AMap.WievPanel.Y;
+  end;
+
+  if AMap = nil then Exit;
+
+  InTileX := Trunc(ASP.X / AMap.TileSizeW);
+  InTileY := Trunc(ASP.Y / AMap.TileSizeH);
 
   Result := false;
-  Result := (InTileX >= AMap.Stage[AMap.CurrentStage].CountTileW) or
-         (InTileY >= AMap.Stage[AMap.CurrentStage].CountTileH) or
+  Result := (InTileX >= AMap.CountTileW) or
+         (InTileY >= AMap.CountTileH) or
          (InTileX < 0) or (InTileY < 0);
 
   if not Result then
-    Result := AMap.Stage[AMap.CurrentStage].LOT[InTileX, InTileY] = nil;
+    Result := AMap.LOT[InTileX, InTileY] = nil;
 
   if Result and DoCorrectPosition then begin
-    ASprite.Position.X := (InTileX * AMap.Stage[AMap.CurrentStage].TileSizeW - TmpWPort.X) + (AMap.Stage[AMap.CurrentStage].TileSizeW / 2);
-    ASprite.Position.Y := (InTileY * AMap.Stage[AMap.CurrentStage].TileSizeH - TmpWPort.Y) + (AMap.Stage[AMap.CurrentStage].TileSizeH / 2);
+    TmpWPort := AMap.WievPanel;
+    ASprite.Position.X := (InTileX * AMap.TileSizeW - TmpWPort.X) + (AMap.TileSizeW / 2);
+    ASprite.Position.Y := (InTileY * AMap.TileSizeH - TmpWPort.Y) + (AMap.TileSizeH / 2);
   end;
 end;
-
-function SpriteInMapFall(AMap: avk_TSimpleMap; ASprite: avk_TSprite): boolean;
-var
-  InTileX, InTileY: Integer;
-begin
-  InTileX := Trunc(ASprite.MapPosition.X / AMap.Stage[AMap.CurrentStage].TileSizeW);
-  InTileY := Trunc(ASprite.MapPosition.Y / AMap.Stage[AMap.CurrentStage].TileSizeH);
-
-  Result := false;
-  Result := (InTileX >= AMap.Stage[AMap.CurrentStage].CountTileW) or
-         (InTileY >= AMap.Stage[AMap.CurrentStage].CountTileH) or
-         (InTileX < 0) or (InTileY < 0);
-
-  if not Result then
-     Result := AMap.Stage[AMap.CurrentStage].LOT[InTileX, InTileY] = nil;
-end;
-
 
 { avk_Checker }
 
@@ -157,6 +153,7 @@ begin
   for CKL := 0 to ColZoneList.Count - 1 do begin
     if not Assigned(ColZoneList.Objects[CKL]) then Continue;
     Result := Result or AColZone.Check(avk_TCollisionZone(ColZoneList.Objects[CKL]));
+    if Result then Break;
   end;
 end;
 
