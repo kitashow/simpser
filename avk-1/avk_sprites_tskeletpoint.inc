@@ -19,6 +19,14 @@ begin
   SetPoint(TmpRP.X, TmpRP.Y);
 end;
 
+function avk_TSkeletTile.GetParent: TObject;
+begin
+  if (FParent = nil) and (HostPoint <> nil) then
+    Result := HostPoint.GetParent
+  else
+    Result := FParent;
+end;
+
 procedure avk_TSkeletTile.SetCollizionZone(AValue: avk_TCollisionZone);
 begin
   if FCollizionZone=AValue then Exit;
@@ -56,6 +64,53 @@ begin
     Result := HostPoint.FHostAnimate;
 end;
 
+function avk_TSkeletTile.FParentOnMapHide: boolean;
+var
+  TCS: avk_TTileMap;
+  TmpParent: TObject;
+  MPS: zglTPoint2D;
+  TmpWPort: zglTRect;
+begin
+  Result := false;
+
+  TmpParent := GetParent;
+  if not(TmpParent is avk_TSprite) then Exit;
+
+  TCS := avk_TSprite(TmpParent).FMap;
+  if TCS = nil then Exit;
+
+  MPS := RealPoint;
+  TmpWPort := TCS.WievPanel;
+  Result := (MPS.X < (TmpWPort.X - TCS.TileSizeW)) or
+    (MPS.X > (TmpWPort.X + TmpWPort.W + TCS.TileSizeW)) or
+    (MPS.Y < (TmpWPort.Y - TCS.TileSizeH)) or
+    (MPS.Y > (TmpWPort.Y + TmpWPort.H + TCS.TileSizeH));
+
+end;
+
+function avk_TSkeletTile.WiewPortLeftUpConnorPoint: zglTPoint2D;
+var
+  TCS: avk_TTileMap;
+  TmpParent: TObject;
+  MPS: zglTPoint2D;
+  TmpWPort: zglTRect;
+begin
+  Result.X := 0;
+  Result.Y := 0;
+
+  TmpParent := GetParent;
+  if not(TmpParent is avk_TSprite) then Exit;
+
+  TCS := avk_TSprite(TmpParent).FMap;
+  if TCS = nil then Exit;
+
+  TmpWPort := TCS.WievPanel;
+  Result.X := TmpWPort.X;
+  Result.Y := TmpWPort.Y;
+
+end;
+
+
 procedure avk_TSkeletTile.SetPoint(AX, AY: Single);
 begin
   FPoint.X := AX;
@@ -71,10 +126,6 @@ var
 begin
   if HostPoint = nil then begin
      Result := FPoint;
-     //проверяем класс родителя и если он на карте, то возвращаем координаты на карте
-     if FParent is avk_TSprite then begin
-
-     end;
      Exit;
   end;
 
@@ -173,28 +224,32 @@ end;
 
 procedure avk_TSkeletTile.DoDraw;
 var
-  LRP: zglTPoint2D;
+  LRP, WPLUCP: zglTPoint2D;
   CmpAngle: Single;
   CKL: Integer;
 begin
-  if not Hide then
-    if (Texture <> nil) or (CoolSprite <> nil) or (Emitter <> nil) then begin
-      LRP := RealPoint;
+  if (not Hide) then
+    if (Texture <> nil) or (CoolSprite <> nil) or (Emitter <> nil) then
+      if not FParentOnMapHide then
+        begin
+          LRP := RealPoint;
+          WPLUCP := WiewPortLeftUpConnorPoint;
+          LRP.X := LRP.X - WPLUCP.X;
+          LRP.Y := LRP.Y - WPLUCP.Y;
 
-      if FTileRotateByHost then
-        CmpAngle := HostAngle
-      else
-        CmpAngle := RealAngle;
+          if FTileRotateByHost then
+            CmpAngle := HostAngle
+          else
+            CmpAngle := RealAngle;
 
-      if Emitter <> nil then
-         LRP := LRP;
+          if Emitter <> nil then
+             LRP := LRP;
 
-      if Texture <> nil then
-        DrawTexture(LRP, CmpAngle)
-      else
-        inherited DoDraw;
-    end;
-
+          if Texture <> nil then
+            DrawTexture(LRP, CmpAngle)
+          else
+            inherited DoDraw;
+        end;
 
   for CKL := 0 to CountSubPoints - 1 do begin
     SubPoints[CKL].DoDraw;
@@ -203,6 +258,9 @@ begin
   {$IfDef Debug}
     {$IfDef ShowPoints}
   LRP := RealPoint;
+  WPLUCP := WiewPortLeftUpConnorPoint;
+  LRP.X := LRP.X - WPLUCP.X;
+  LRP.Y := LRP.Y - WPLUCP.Y;
   if HostPoint = nil then
       pr2d_Circle(LRP.X, LRP.Y, 7, $7a250f, 150 ,250, PR2D_FILL)
   else if CountSubPoints > 0 then
@@ -212,7 +270,7 @@ begin
   if Assigned(FCollizionZone) then
     with FCollizionZone do
       case TypeCollizionZone of
-        CZ_CIRCLE: pr2d_Circle(FBufferCircle.cX, FBufferCircle.cY, FBufferCircle.Radius, $e52b50, 150 ,100, PR2D_FILL);
+        CZ_CIRCLE: pr2d_Circle(LRP.X, LRP.Y, FBufferCircle.Radius, $e52b50, 150 ,100, PR2D_FILL);
         //CZ_CIRCLE: pr2d_Circle(LRP.X, LRP.Y, FBufferCircle.Radius, $e52b50, 150 ,100, PR2D_FILL);
         CZ_LINE: pr2d_Line(FBufferPoints[0].X, FBufferPoints[0].Y,
                  FBufferPoints[1].X, FBufferPoints[1].Y,

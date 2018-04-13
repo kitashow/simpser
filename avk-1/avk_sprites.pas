@@ -250,12 +250,15 @@ avk_TSkeletTile = class (avk_TSimpleTile)
     FTileRotateByHost: boolean;
     FPoint: zglTPoint2D;
     AngleDeg: Single;
+    function GetParent: TObject;
     procedure SetAngle(AValue: Single);
     procedure SetCollizionZone(AValue: avk_TCollisionZone);
     procedure stSetCoolSprite(AValue: clPSprite);
     procedure stSetEmitter(AValue: zglPEmitter2D);
     procedure SetTileParameters(ATexX, ATexY, AWigh, AHeight, ATexAngle: Single);
     function FHostAnimate: Boolean;
+    function FParentOnMapHide: boolean;
+    function WiewPortLeftUpConnorPoint: zglTPoint2D;
   protected
     procedure ProcCoolSprite;
     procedure ProcEmitter;
@@ -275,6 +278,7 @@ avk_TSkeletTile = class (avk_TSimpleTile)
       const ATextureW: Single = 0; const ATextureH: Single = 0);
     procedure DoDraw;
     procedure DoProc;
+    property Parent: TObject read GetParent;
   public
     property Angle: Single read AngleDeg write SetAngle;
     property Point: zglTPoint2D read FPoint;
@@ -325,6 +329,7 @@ end;
 avk_TSprite = class(avk_TFraim)
 private
   FSprites: array of array of avk_TSkeletTile;
+  FMap: avk_TTileMap;
   function GetColCount: Integer;
   function GetRowCount(const ACol: Integer): Integer;
 private
@@ -349,14 +354,13 @@ public
   property ColCount: Integer read GetColCount;
   property RowCount[const ACol: Integer]: Integer read GetRowCount;
 public
-  MapPosition: zglTPoint2D;
   Position: zglTPoint2D;
   PosAngle: Single;
   PosScale: Single;
-  procedure SetPosForAll;
-public
   PosHide: boolean;
   PosAnimate: boolean;
+  procedure SetPosForAll;
+  property Map: avk_TTileMap read FMap write FMap;
 public
   property OnBeforeProc: TNotifyEvent read FOnBeforeProc write FOnBeforeProc;
   property OnAfterProc: TNotifyEvent read FOnAfterProc write FOnAfterProc;

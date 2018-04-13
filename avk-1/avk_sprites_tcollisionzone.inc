@@ -90,6 +90,7 @@ begin
   end else if (FTypeOfZone = CZ_CIRCLE) and (AColZone.FTypeOfZone = CZ_CIRCLE) then begin
     Result := col2d_Circle(FBufferCircle, AColZone.FBufferCircle)
       or col2d_CircleInCircle(FBufferCircle, AColZone.FBufferCircle);
+  //TODO: ПРОЧИЕ!
   end;
 end;
 

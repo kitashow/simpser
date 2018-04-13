@@ -68,7 +68,7 @@ begin
     PrevSize := Length(FSprites[ACol]) + 1;
     for CKL := PrevSize to ARow - 1 do begin
       SetLength(FSprites[ACol], CKL);
-      FSprites[ACol, CKL - 1] := avk_TSkeletTile.Create;
+      FSprites[ACol, CKL - 1] := avk_TSkeletTile.Create(Self);
     end;
     SetLength(FSprites[ACol], ARow + 1);
   end;
@@ -79,7 +79,7 @@ begin
   FSprites[ACol, ARow] := AValue;
 
   if not Assigned(FSprites[ACol, ARow]) then
-    FSprites[ACol, ARow] := avk_TSkeletTile.Create;
+    FSprites[ACol, ARow] := avk_TSkeletTile.Create(Self);
 end;
 
 function avk_TSprite.GetColVisible(const ACol: Integer): Integer;
@@ -112,6 +112,8 @@ begin
     for CKL2 := 0 to Length(FSprites[CKL1]) - 1 do begin
       FSprites[CKL1, CKL2].SetInternalParameters(Position.X, Position.Y, PosAngle, PosScale,
         FSprites[CKL1, CKL2].X, FSprites[CKL1, CKL2].Y, FSprites[CKL1, CKL2].W, FSprites[CKL1, CKL2].H);
+      if Assigned(FSprites[CKL1, CKL2].CollizionZone) then
+        FSprites[CKL1, CKL2].CollizionZone.CalkBuffer;
     end;
 end;
 
@@ -119,6 +121,7 @@ procedure avk_TSprite.DoDraw(Sender: TObject);
 var
   CKL1, CKL2: Integer;
 begin
+
   if not PosHide then
     for CKL1 := 0 to Length(FSprites) - 1 do
       for CKL2 := 0 to Length(FSprites[CKL1]) - 1 do
@@ -148,6 +151,7 @@ begin
   PosAnimate := true;
   OnDraw := DoDraw;
   OnProc := DoProc;
+  FMap := nil;
 end;
 
 destructor avk_TSprite.Destroy;
